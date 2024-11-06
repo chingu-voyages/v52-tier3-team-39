@@ -36,5 +36,5 @@ coding!
 
 - Farrah Macchiwalla (Scrum Master) #1: [GitHub](https://github.com/fmachus) / [LinkedIn](https://www.linkedin.com/in/farrah-macchiwalla/) / [Email](farrah.macchiwalla@gmail.com)
 - Justin Abellera (Developer) #2: [GitHub](https://github.com/j-abellera) / [LinkedIn](https://www.linkedin.com/in/justin-abellera/)
-- Jessica Lane: [GitHub](https://github.com/jesslane94) / [LinkedIn](https://www.linkedin.com/in/jessicalane9794/)
+- Jessica Lane (Developer): [GitHub](https://github.com/jesslane94) / [LinkedIn](https://www.linkedin.com/in/jessicalane9794/)
 - Chris Daly (Developeer): [Github](https://github.com/DalySoftware) / [LinkedIn](https://www.linkedin.com/in/chris-daly-89a6b255/)
