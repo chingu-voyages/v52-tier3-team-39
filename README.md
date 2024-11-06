@@ -35,7 +35,7 @@ your repo access and to practice PR'ing with your team *before* you start
 coding!
 
 - Farrah Macchiwalla (Scrum Master) #1: [GitHub](https://github.com/fmachus) / [LinkedIn](https://www.linkedin.com/in/farrah-macchiwalla/)
-- Teammate name #2: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
+- Justin Abellera [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://www.linkedin.com/in/justin-abellera/)
 
    ...
-- Teammate name #n: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
+- Teammate name #n: [GitHub]([https://github.com/ghaccountname](https://github.com/j-abellera)) / [LinkedIn](https://linkedin.com/in/liaccountname)
