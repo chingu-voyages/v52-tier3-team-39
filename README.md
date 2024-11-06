@@ -36,6 +36,4 @@ coding!
 
 - Farrah Macchiwalla (Scrum Master) #1: [GitHub](https://github.com/fmachus) / [LinkedIn](https://www.linkedin.com/in/farrah-macchiwalla/)
 - Justin Abellera [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://www.linkedin.com/in/justin-abellera/)
-
-   ...
-- Teammate name #n: [GitHub]([https://github.com/ghaccountname](https://github.com/j-abellera)) / [LinkedIn](https://linkedin.com/in/liaccountname)
+- Jessica Lane: [GitHub](https://github.com/jesslane94) / [LinkedIn](https://www.linkedin.com/in/jessicalane9794/)
