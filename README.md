@@ -40,4 +40,4 @@ coding!
 - Chris Daly (Developeer): [Github](https://github.com/DalySoftware) / [LinkedIn](https://www.linkedin.com/in/chris-daly-89a6b255/)
 - Aya Shiau (Developer): [Github](https://github.com/adbshiau) / [LinkedIn](https://www.linkedin.com/in/adbshiau/)
 - Tim Kent (Developer): [Github](https://github.com/tdkent) / [LinkedIn](https://www.linkedin.com/in/timkent1/) / [Email](timkentdev@gmail.com)
-- Zuzu Ali (Scrum Master) #2: [Github](https://github.com/zuweeali) / [LinkedIn](https://www.linkedin.com/in/zuwaira-aliyu-mohammed/) / [Email](zuweeali@gmail.com)
+- Zuzu Ali (Scrum Master) #7: [Github](https://github.com/zuweeali) / [LinkedIn](https://www.linkedin.com/in/zuwaira-aliyu-mohammed/) / [Email](zuweeali@gmail.com)
