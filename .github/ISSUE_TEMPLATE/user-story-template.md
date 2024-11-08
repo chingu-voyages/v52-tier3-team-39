@@ -12,10 +12,6 @@ assignees: ''
 As a [role]
 I want to [action to be performed]
 So I can [result to be achieved]
-**_Budget Constraints_**
-As a [user]
-I want to [set a maximum budget for my solar panel installation]
-So I can [ compare efficiency and cost options]
 
 **__Steps to Follow (optional)__**
 - [ ] Step #1
