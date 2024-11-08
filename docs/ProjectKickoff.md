@@ -27,4 +27,4 @@ In attendance were 8 team members – Chris, Kris, Tim, Jessica, Justin, Aya, Zu
 * Zuzu - will create the meeting recap, set up Jira, and share access with the team
 
 **Links:**
-* <a href="https://app.mural.co/t/chinguv53t39s1projectkickoff3092/m/chinguv53t39s1projectkickoff3092/1730908212143/99eeb32bd88fa262c16346d6c298e65c107cb169" target="_blank">Mural board</a>
+* [Mural board](https://app.mural.co/t/chinguv53t39s1projectkickoff3092/m/chinguv53t39s1projectkickoff3092/1730908212143/99eeb32bd88fa262c16346d6c298e65c107cb169){:target="_blank"}
