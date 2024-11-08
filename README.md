@@ -37,7 +37,7 @@ coding!
 - Farrah Macchiwalla (Scrum Master) #1: [GitHub](https://github.com/fmachus) / [LinkedIn](https://www.linkedin.com/in/farrah-macchiwalla/) / [Email](farrah.macchiwalla@gmail.com)
 - Justin Abellera (Developer) #2: [GitHub](https://github.com/j-abellera) / [LinkedIn](https://www.linkedin.com/in/justin-abellera/) / [Email](justin.c.abellera@gmail.com)
 - Jessica Lane (Developer): [GitHub](https://github.com/jesslane94) / [LinkedIn](https://www.linkedin.com/in/jessicalane9794/) /  [Email](jesslane94@gmail.com)
-- Chris Daly (Developeer): [Github](https://github.com/DalySoftware) / [LinkedIn](https://www.linkedin.com/in/chris-daly-89a6b255/)
+- Chris Daly (Developeer): [Github](https://github.com/DalySoftware) / [LinkedIn](https://www.linkedin.com/in/chris-daly-89a6b255/) / [Email](mailto:chrisdalyenq@gmail.com)
 - Aya Shiau (Developer): [Github](https://github.com/adbshiau) / [LinkedIn](https://www.linkedin.com/in/adbshiau/)
 - Tim Kent (Developer): [Github](https://github.com/tdkent) / [LinkedIn](https://www.linkedin.com/in/timkent1/) / [Email](timkentdev@gmail.com)
 - Zuzu Ali (Scrum Master) #7: [Github](https://github.com/zuweeali) / [LinkedIn](https://www.linkedin.com/in/zuwaira-aliyu-mohammed/) / [Email](zuweeali@gmail.com)
