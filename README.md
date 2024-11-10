@@ -41,4 +41,4 @@ coding!
 - Aya Shiau (Developer): [Github](https://github.com/adbshiau) / [LinkedIn](https://www.linkedin.com/in/adbshiau/) / [Email](angelicashiau@gmail.com)
 - Tim Kent (Developer): [Github](https://github.com/tdkent) / [LinkedIn](https://www.linkedin.com/in/timkent1/) / [Email](timkentdev@gmail.com)
 - Zuzu Ali (Scrum Master) #7: [Github](https://github.com/zuweeali) / [LinkedIn](https://www.linkedin.com/in/zuwaira-aliyu-mohammed/) / [Email](zuweeali@gmail.com)
-  Kristi Hwang (Developer): [GitHub](https://github.com/kristi-h) / [LinkedIn](https://www.linkedin.com/in/kristi-h-4542b38a/)
+- Kristi Hwang (Developer): [GitHub](https://github.com/kristi-h) / [LinkedIn](https://www.linkedin.com/in/kristi-h-4542b38a/)
