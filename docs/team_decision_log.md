@@ -7,4 +7,4 @@
 - Backend: Node via Express
   - Language: Javascript
 - Database: Mongo DB
-- Hosting: TBC
+- Hosting: AWS
