@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import Joi from "joi";
-import { FormControl, InputLabel, Input, FormHelperText } from '@mui/material';
-import { Button } from '@mui/material';
+import { FormControl, InputLabel, Input, FormHelperText } from "@mui/material";
+import { Button } from "@mui/material";
 import { requestAppt } from "@/actions/form";
 
 // define schema
@@ -31,36 +31,23 @@ export default function Form() {
   const [errorMsg, setErrorMsg] = useState("");
   const [errorPath, setErrorPath] = useState("");
 
-  // on submit function
   async function handleSubmit(e) {
     e.preventDefault();
-    const values = schema.validate({
+    const { error, value } = schema.validate({
       name,
       email,
       phone,
       address,
     });
-    console.log(values)
-    // validate here
-    if (values.error) {
+
+    if (error) {
       setErrorMsg(values.error.details[0].message);
       setErrorPath(values.error.details[0].path[0]);
-      return
+      return;
     }
-    // package values into an obj (use values.value)
-    const formValues = {
-        name,
-        email,
-        phone,
-        address,
-    }
-    const response = await requestAppt(formValues);
-    console.log(response)
-    // invoke server action
+    const response = await requestAppt(value);
+    console.log(response);
 
-    // reset the inputs
-
-    // handle the response
     setName("");
     setEmail("");
     setPhone("");
@@ -75,47 +62,77 @@ export default function Form() {
       onSubmit={handleSubmit}
     >
       <FormControl>
-  <InputLabel htmlFor="name">Name</InputLabel>
-  <Input id="name" aria-describedby="name-error-text" 
-    value={name}
+        <InputLabel htmlFor="name">Name</InputLabel>
+        <Input
+          id="name"
+          aria-describedby="name-error-text"
+          value={name}
           onChange={(event) => {
             setName(event.currentTarget.value);
-          }}/>
-  {errorPath && errorPath === "name" && <FormHelperText id="name-error-text" error>{errorMsg}</FormHelperText>}
-  </FormControl>
+          }}
+        />
+        {errorPath && errorPath === "name" && (
+          <FormHelperText id="name-error-text" error>
+            {errorMsg}
+          </FormHelperText>
+        )}
+      </FormControl>
 
-  <FormControl>
-  <InputLabel htmlFor="email">Email</InputLabel>
-  <Input id="email" aria-describedby="email-error-text" 
-    value={email}
+      <FormControl>
+        <InputLabel htmlFor="email">Email</InputLabel>
+        <Input
+          id="email"
+          aria-describedby="email-error-text"
+          value={email}
           onChange={(event) => {
             setEmail(event.currentTarget.value);
-          }}/>
-  {errorPath && errorPath === "email" && <FormHelperText id="email-error-text" error>{errorMsg}</FormHelperText>}
-  </FormControl>
+          }}
+        />
+        {errorPath && errorPath === "email" && (
+          <FormHelperText id="email-error-text" error>
+            {errorMsg}
+          </FormHelperText>
+        )}
+      </FormControl>
 
-  <FormControl>
-  <InputLabel htmlFor="phone">Phone Number</InputLabel>
-  <Input id="phone" aria-describedby="phone-error-text" 
-    value={phone}
+      <FormControl>
+        <InputLabel htmlFor="phone">Phone Number</InputLabel>
+        <Input
+          id="phone"
+          aria-describedby="phone-error-text"
+          value={phone}
           onChange={(event) => {
             setPhone(event.currentTarget.value);
-          }}/>
-  {errorPath && errorPath === "phone" && <FormHelperText id="phone-error-text" error>{errorMsg}</FormHelperText>}
-  </FormControl>
+          }}
+        />
+        {errorPath && errorPath === "phone" && (
+          <FormHelperText id="phone-error-text" error>
+            {errorMsg}
+          </FormHelperText>
+        )}
+      </FormControl>
 
-  <FormControl>
-  <InputLabel htmlFor="address">Address</InputLabel>
-  <Input id="address" aria-describedby="address-error-text" 
-    value={address}
+      <FormControl>
+        <InputLabel htmlFor="address">Address</InputLabel>
+        <Input
+          id="address"
+          aria-describedby="address-error-text"
+          value={address}
           onChange={(event) => {
             setAddress(event.currentTarget.value);
-          }}/>
-  {errorPath && errorPath === "address" && <FormHelperText id="address-error-text" error>{errorMsg}</FormHelperText>}
-  </FormControl>
-     
+          }}
+        />
+        {errorPath && errorPath === "address" && (
+          <FormHelperText id="address-error-text" error>
+            {errorMsg}
+          </FormHelperText>
+        )}
+      </FormControl>
+
       <div>
-      <Button variant="contained" type="submit">Submit</Button>
+        <Button variant="contained" type="submit">
+          Submit
+        </Button>
       </div>
     </form>
   );
