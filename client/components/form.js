@@ -2,7 +2,14 @@
 
 import { useState } from "react";
 import Joi from "joi";
-import { FormControl, InputLabel, Input, FormHelperText } from "@mui/material";
+import {
+  Alert,
+  FormControl,
+  InputLabel,
+  Input,
+  FormHelperText,
+  Snackbar,
+} from "@mui/material";
 import { Button } from "@mui/material";
 import { requestAppt } from "@/actions/form";
 
@@ -30,6 +37,16 @@ export default function Form() {
   // error state
   const [errorMsg, setErrorMsg] = useState("");
   const [errorPath, setErrorPath] = useState("");
+  const [toast, setToast] = useState(false);
+  const [toastMsg, setToastMsg] = useState("");
+
+  const handleToastClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setToast(false);
+    setToastMsg("");
+  };
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -41,99 +58,113 @@ export default function Form() {
     });
 
     if (error) {
-      setErrorMsg(values.error.details[0].message);
-      setErrorPath(values.error.details[0].path[0]);
+      setErrorMsg(error.details[0].message);
+      setErrorPath(error.details[0].path[0]);
       return;
     }
-    const response = await requestAppt(value);
-    console.log(response);
+    const res = await requestAppt({ name, email, phone, address });
 
-    setName("");
-    setEmail("");
-    setPhone("");
-    setAddress("");
-    setErrorMsg("");
-    setErrorPath("");
+    if (res) {
+      setToast(true);
+      setToastMsg(res.message);
+    }
   }
 
   return (
-    <form
-      className="flex flex-col gap-4 w-1/2 mx-auto mt-12"
-      onSubmit={handleSubmit}
-    >
-      <FormControl>
-        <InputLabel htmlFor="name">Name</InputLabel>
-        <Input
-          id="name"
-          aria-describedby="name-error-text"
-          value={name}
-          onChange={(event) => {
-            setName(event.currentTarget.value);
-          }}
-        />
-        {errorPath && errorPath === "name" && (
-          <FormHelperText id="name-error-text" error>
-            {errorMsg}
-          </FormHelperText>
-        )}
-      </FormControl>
+    <>
+      <Snackbar
+        open={toast}
+        autoHideDuration={6000}
+        onClose={handleToastClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        <Alert
+          onClose={handleToastClose}
+          severity="error"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {toastMsg}
+        </Alert>
+      </Snackbar>
+      <form
+        className="flex flex-col gap-4 w-1/2 mx-auto mt-12"
+        onSubmit={handleSubmit}
+      >
+        <FormControl>
+          <InputLabel htmlFor="name">Name</InputLabel>
+          <Input
+            id="name"
+            aria-describedby="name-error-text"
+            value={name}
+            onChange={(event) => {
+              setName(event.currentTarget.value);
+            }}
+          />
+          {errorPath && errorPath === "name" && (
+            <FormHelperText id="name-error-text" error>
+              {errorMsg}
+            </FormHelperText>
+          )}
+        </FormControl>
 
-      <FormControl>
-        <InputLabel htmlFor="email">Email</InputLabel>
-        <Input
-          id="email"
-          aria-describedby="email-error-text"
-          value={email}
-          onChange={(event) => {
-            setEmail(event.currentTarget.value);
-          }}
-        />
-        {errorPath && errorPath === "email" && (
-          <FormHelperText id="email-error-text" error>
-            {errorMsg}
-          </FormHelperText>
-        )}
-      </FormControl>
+        <FormControl>
+          <InputLabel htmlFor="email">Email</InputLabel>
+          <Input
+            id="email"
+            aria-describedby="email-error-text"
+            value={email}
+            onChange={(event) => {
+              setEmail(event.currentTarget.value);
+            }}
+          />
+          {errorPath && errorPath === "email" && (
+            <FormHelperText id="email-error-text" error>
+              {errorMsg}
+            </FormHelperText>
+          )}
+        </FormControl>
 
-      <FormControl>
-        <InputLabel htmlFor="phone">Phone Number</InputLabel>
-        <Input
-          id="phone"
-          aria-describedby="phone-error-text"
-          value={phone}
-          onChange={(event) => {
-            setPhone(event.currentTarget.value);
-          }}
-        />
-        {errorPath && errorPath === "phone" && (
-          <FormHelperText id="phone-error-text" error>
-            {errorMsg}
-          </FormHelperText>
-        )}
-      </FormControl>
+        <FormControl>
+          <InputLabel htmlFor="phone">Phone Number</InputLabel>
+          <Input
+            id="phone"
+            aria-describedby="phone-error-text"
+            value={phone}
+            onChange={(event) => {
+              setPhone(event.currentTarget.value);
+            }}
+          />
+          {errorPath && errorPath === "phone" && (
+            <FormHelperText id="phone-error-text" error>
+              {errorMsg}
+            </FormHelperText>
+          )}
+        </FormControl>
 
-      <FormControl>
-        <InputLabel htmlFor="address">Address</InputLabel>
-        <Input
-          id="address"
-          aria-describedby="address-error-text"
-          value={address}
-          onChange={(event) => {
-            setAddress(event.currentTarget.value);
-          }}
-        />
-        {errorPath && errorPath === "address" && (
-          <FormHelperText id="address-error-text" error>
-            {errorMsg}
-          </FormHelperText>
-        )}
-      </FormControl>
+        <FormControl>
+          <InputLabel htmlFor="address">Address</InputLabel>
+          <Input
+            id="address"
+            aria-describedby="address-error-text"
+            value={address}
+            onChange={(event) => {
+              setAddress(event.currentTarget.value);
+            }}
+          />
+          {errorPath && errorPath === "address" && (
+            <FormHelperText id="address-error-text" error>
+              {errorMsg}
+            </FormHelperText>
+          )}
+        </FormControl>
 
-      <div>
-        <Button variant="contained" type="submit">
-          Submit
-        </Button>
-      </div>
-    </form>
+        <div>
+          <Button variant="contained" type="submit">
+            Submit
+          </Button>
+        </div>
+      </form>
+    </>
   );
 }

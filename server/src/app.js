@@ -21,6 +21,12 @@ app.use("/", (req, res) => {
   return res.json({ message: "Hello team Radiant Minds" });
 });
 
+// error handler
+app.use((error, req, res, next) => {
+  res.status ? res.status : res.status(500);
+  res.json({ message: error.message });
+});
+
 // init server
 app.listen(process.env.PORT, () => {
   console.log(
