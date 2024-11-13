@@ -1,6 +1,3 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
 name: Build and Deploy Server
 
 on:
@@ -22,15 +19,10 @@ jobs:
             - name: Copy server files to EC2 server
               uses: contention/rsync-deployments@v2.0.0
               with:
-                  # The server user
                   user: ec2-user
-                  # The deployment target
                   host: ec2-54-177-26-87.us-west-1.compute.amazonaws.com
-                  # The local path to sync
                   localpath: server
-                  # The remote path to sync
                   remotepath: /home/www
-                  # The private key
                   deploy_key: ${{ secrets.SERVER_DEPLOYMENT_KEY }}
             - name: Execute commands on server
               uses: appleboy/ssh-action@v1.1.0
