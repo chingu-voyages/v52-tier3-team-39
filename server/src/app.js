@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
+import formRouter from "./routes/form"
 
 // load env vars from .env
 dotenv.config();
@@ -17,6 +18,8 @@ app.use(cors());
 app.use("/", (req, res) => {
   return res.json({ message: "Hello team Radiant Minds" });
 });
+
+app.use("/form", formRouter)
 
 // init server
 app.listen(process.env.PORT, () => {

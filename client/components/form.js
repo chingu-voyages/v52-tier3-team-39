@@ -4,6 +4,7 @@ import { useState } from "react";
 import Joi from "joi";
 import { FormControl, InputLabel, Input, FormHelperText } from '@mui/material';
 import { Button } from '@mui/material';
+import { requestAppt } from "@/actions/form";
 
 // define schema
 
@@ -39,7 +40,7 @@ export default function Form() {
       phone,
       address,
     });
-
+    console.log(values)
     // validate here
     if (values.error) {
       setErrorMsg(values.error.details[0].message);
@@ -47,7 +48,14 @@ export default function Form() {
       return
     }
     // package values into an obj (use values.value)
-
+    const formValues = {
+        name,
+        email,
+        phone,
+        address,
+    }
+    const response = await requestAppt(formValues);
+    console.log(response)
     // invoke server action
 
     // reset the inputs
