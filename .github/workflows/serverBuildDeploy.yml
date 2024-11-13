@@ -25,7 +25,7 @@ jobs:
                   # The server user
                   user: ec2-user
                   # The deployment target
-                  host: https://ec2-54-177-26-87.us-west-1.compute.amazonaws.com/
+                  host: ec2-54-177-26-87.us-west-1.compute.amazonaws.com
                   # The local path to sync
                   localpath: server
                   # The remote path to sync
