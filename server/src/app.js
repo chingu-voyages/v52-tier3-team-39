@@ -16,13 +16,13 @@ app.use(bodyParser.json());
 //! enable all CORS requests
 app.use(cors());
 
-app.use("/", (req, res) => {
-  return res.json({ message: "Hello team Radiant Minds" });
-});
-
 app.use("/form", formRouter);
 
 app.use('/client-track', clientTrackRouter);
+
+app.use("/", (req, res) => {
+  return res.json({ message: "Hello team Radiant Minds" });
+});
 
 // init server
 app.listen(process.env.PORT, () => {

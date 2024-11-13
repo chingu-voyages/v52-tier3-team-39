@@ -1,13 +1,22 @@
 import express from 'express';
 
-const mockData = {
-    'name': 'Rave Illusion',
-    'email': 'sun.in.my.eyes@gmail.com',
-    'phone': '7028675309',
-    'address': '123 Glaring St',
-    'city': 'California City',
-    'state': 'CA',
-    'zipcode': '89146'
+const mockData = [{
+    name: 'Rave Illusion',
+    email: 'sun.in.my.eyes@gmail.com',
+    phone: '7028675309',
+    address: '123 Glaring St',
+    city: 'California City',
+    state: 'CA',
+    zipcode: '89146'
+}]
+
+const dbFindFunction = (formEmail, formPhone) => {
+    for(let i = 0; i < mockData.length; i++) {
+        const { phone, email } = mockData[i];
+        if(phone === formPhone && email === formEmail) {
+            return mockData[i];
+        }
+    }
 }
 
 const router = express.Router();
@@ -16,10 +25,15 @@ router.get('/', async (req, res, next) => {
     try {
         const { email, phone } = req.query;
         if(!email || !phone) throw new Error('Invalid request');
-        console.log(email, phone);
-        res.json({ message: 'Es Goo' });
+
+        //Async
+        const data = dbFindFunction(email, phone);
+
+        if(data === undefined) throw new Error('Appointment not found');
+        res.json({ status: 200, message: data });
     } catch(err) {
-        console.log(err.message)
+        err.status = err.message === 'Invalid Request' ? 400 : 404;
+        next(err);
     }
 })
 
