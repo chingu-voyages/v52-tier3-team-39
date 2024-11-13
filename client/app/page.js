@@ -1,4 +1,6 @@
+"use client";
 import { Container, Typography } from "@mui/material";
+import AdminDashboard from "../components/AdminDashboard";
 
 export default function Home() {
   return (
@@ -8,6 +10,7 @@ export default function Home() {
         So you say you want a <q>rayvolution</q> ... in affordable solar panel
         installation services specific to the Los Angeles area.
       </Typography>
+      <AdminDashboard />
     </Container>
   );
 }
