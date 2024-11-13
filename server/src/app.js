@@ -2,7 +2,8 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import formRouter from "./routes/form"
+import formRouter from "./routes/form.js"
+import clientTrackRouter from './routes/client-track.js';
 
 // load env vars from .env
 dotenv.config();
@@ -19,7 +20,9 @@ app.use("/", (req, res) => {
   return res.json({ message: "Hello team Radiant Minds" });
 });
 
-app.use("/form", formRouter)
+app.use("/form", formRouter);
+
+app.use('/client-track', clientTrackRouter);
 
 // init server
 app.listen(process.env.PORT, () => {

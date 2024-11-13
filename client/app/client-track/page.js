@@ -64,7 +64,10 @@ const ClientTrack = () => {
         btn.value = 'Submit'
         console.log(data);
         if(data !== undefined) {
+
+            //Not sure how to pass data without a parent component or advanced state management
             sessionStorage.setItem('appointment-details', JSON.stringify(data));
+
             setMessages([]);
             setForm({ email: '', phoneNumber: '' });
             router.push('/client-track/details');
