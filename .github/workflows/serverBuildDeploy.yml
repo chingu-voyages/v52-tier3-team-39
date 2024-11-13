@@ -17,13 +17,14 @@ jobs:
                   node-version: 22
             - run: npm ci --prefix server
             - name: Copy server files to EC2 server
-              uses: contention/rsync-deployments@v2.0.0
+              uses: burnett01/rsync-deployments@7.0.1
               with:
-                  user: ec2-user
-                  host: ec2-54-177-26-87.us-west-1.compute.amazonaws.com
-                  localpath: server
-                  remotepath: /home/www
-                  deploy_key: ${{ secrets.SERVER_DEPLOYMENT_KEY }}
+                  switches: --verbose --human-readable --archive --delete
+                  path: server/
+                  remote_user: ec2-user
+                  remote_host: ec2-54-177-26-87.us-west-1.compute.amazonaws.com
+                  remote_path: /home/www
+                  remote_key: ${{ secrets.SERVER_DEPLOYMENT_KEY }}
             - name: Execute commands on server
               uses: appleboy/ssh-action@v1.1.0
               with:
