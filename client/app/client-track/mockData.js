@@ -10,24 +10,14 @@ const mockData = [
     }
 ]
 
- export const searchDB = (email, phone) => {
+ export const searchDB = (formEmail, formPhone) => {
     for(let i = 0; i < mockData.length; i++) {
-        let email = mockData[i].email
-        let phone = mockData[i].phone
+        let dbEmail = mockData[i].email
+        let dbPhone = mockData[i].phone
 
-        if(email === email && phone === phone) {
+        if(dbEmail === formEmail.toLowerCase() && dbPhone === formPhone.toString()) {
             console.log('user found');
             return mockData[i];
         }
     }
-
-
-    mockData.map(e => {
-        if(
-            e.email.toLowerCase() === email.toLowerCase().trim() &&
-            phone === phone.toString().trim()
-        ) {
-            return e
-        }
-    })
 }

@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import './client-track.css';
 import { searchDB } from './mockData'
+import { useRouter } from 'next/navigation';
 
 //Form validation using yup
 import * as yup from 'yup';
@@ -22,6 +23,7 @@ const ClientTrack = () => {
     const [formErrors, setFormErrors] = useState({});
     const [messages, setMessages] = useState([]);
     const [isDisabled, setIsDisabled] = useState(true);
+    const router = useRouter();
 
     //Auto validate form data when data is inputted
     useEffect(() => {
@@ -55,9 +57,20 @@ const ClientTrack = () => {
         e.preventDefault();
         const btn = document.querySelector('.submit-btn');
         btn.value = 'searching...';
+
+        //Mock data while waiting for database
         const data = searchDB(form.email, form.phoneNumber);
-        console.log(data);
+
         btn.value = 'Submit'
+        console.log(data);
+        if(data !== undefined) {
+            sessionStorage.setItem('appointment-details', JSON.stringify(data));
+            setMessages([]);
+            setForm({ email: '', phoneNumber: '' });
+            router.push('/client-track/details');
+        } else {
+            setMessages(['Appointment not found. Please verify email and phone number']);
+        }
     }
 
     //Runs when input loses focus after being touched
