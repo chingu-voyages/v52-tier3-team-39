@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Joi from "joi";
+import { FormControl, InputLabel, Input, FormHelperText } from '@mui/material';
+import { Button } from '@mui/material';
 
 // define schema
 
@@ -25,7 +27,8 @@ export default function Form() {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   // error state
-  const [error, setError] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [errorPath, setErrorPath] = useState("");
 
   // on submit function
   async function handleSubmit(e) {
@@ -39,7 +42,9 @@ export default function Form() {
 
     // validate here
     if (values.error) {
-      console.log(values);
+      setErrorMsg(values.error.details[0].message);
+      setErrorPath(values.error.details[0].path[0]);
+      return
     }
     // package values into an obj (use values.value)
 
@@ -52,6 +57,8 @@ export default function Form() {
     setEmail("");
     setPhone("");
     setAddress("");
+    setErrorMsg("");
+    setErrorPath("");
   }
 
   return (
@@ -59,60 +66,48 @@ export default function Form() {
       className="flex flex-col gap-4 w-1/2 mx-auto mt-12"
       onSubmit={handleSubmit}
     >
-      <div className="flex flex-col gap-2">
-        <label htmlFor="name">Name</label>
-        {/* remove required tag for custom error handling */}
-        <input
-          id="name"
-          type="text"
-          className="text-black"
-          value={name}
+      <FormControl>
+  <InputLabel htmlFor="name">Name</InputLabel>
+  <Input id="name" aria-describedby="name-error-text" 
+    value={name}
           onChange={(event) => {
             setName(event.currentTarget.value);
-          }}
-        />
-        {error && <p className="text-red-500 text-xs">{error}</p>}
-      </div>
-      <div className="flex flex-col gap-2">
-        <label htmlFor="email">Email</label>
-        <input
-          id="email"
-          type="text"
-          className="text-black"
-          value={email}
+          }}/>
+  {errorPath && errorPath === "name" && <FormHelperText id="name-error-text" error>{errorMsg}</FormHelperText>}
+  </FormControl>
+
+  <FormControl>
+  <InputLabel htmlFor="email">Email</InputLabel>
+  <Input id="email" aria-describedby="email-error-text" 
+    value={email}
           onChange={(event) => {
             setEmail(event.currentTarget.value);
-          }}
-        />
-        {error && <p className="text-red-500 text-xs">{error}</p>}
-      </div>
-      <div className="flex flex-col gap-2">
-        <label htmlFor="phone">Phone Number</label>
-        <input
-          id="phone"
-          type="text"
-          className="text-black"
-          value={phone}
+          }}/>
+  {errorPath && errorPath === "email" && <FormHelperText id="email-error-text" error>{errorMsg}</FormHelperText>}
+  </FormControl>
+
+  <FormControl>
+  <InputLabel htmlFor="phone">Phone Number</InputLabel>
+  <Input id="phone" aria-describedby="phone-error-text" 
+    value={phone}
           onChange={(event) => {
             setPhone(event.currentTarget.value);
-          }}
-        />
-        {error && <p className="text-red-500 text-xs">{error}</p>}
-      </div>
-      <div className="flex flex-col gap-2">
-        <label htmlFor="address">Address</label>
-        <input
-          id="address"
-          type="text"
-          className="text-black"
-          value={address}
+          }}/>
+  {errorPath && errorPath === "phone" && <FormHelperText id="phone-error-text" error>{errorMsg}</FormHelperText>}
+  </FormControl>
+
+  <FormControl>
+  <InputLabel htmlFor="address">Address</InputLabel>
+  <Input id="address" aria-describedby="address-error-text" 
+    value={address}
           onChange={(event) => {
             setAddress(event.currentTarget.value);
-          }}
-        />
-      </div>
+          }}/>
+  {errorPath && errorPath === "address" && <FormHelperText id="address-error-text" error>{errorMsg}</FormHelperText>}
+  </FormControl>
+     
       <div>
-        <button className="text-white">Submit</button>
+      <Button variant="contained" type="submit">Submit</Button>
       </div>
     </form>
   );
