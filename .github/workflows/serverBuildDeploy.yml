@@ -32,4 +32,21 @@ jobs:
                   remotepath: /home/www
                   # The private key
                   deploy_key: ${{ secrets.SERVER_DEPLOYMENT_KEY }}
-            # TODO start/restart the node server
+            - name: Execute commands on server
+              uses: appleboy/ssh-action@v1.1.0
+              with:
+                  username: ec2-user
+                  host: ec2-54-177-26-87.us-west-1.compute.amazonaws.com
+                  key: ${{ secrets.SERVER_DEPLOYMENT_KEY }}
+                  script: |
+                      echo "Checking if pm2 installed"
+                      if [ ! "$(which pm2 2>/dev/null)" ]; then 
+                          echo "Not found. Installing pm2"
+                          sudo npm i -g pm2
+                      fi
+
+                      echo "Deleting node server if exists"
+                      pm2 delete /home/www/src/app.js 2> /dev/null
+
+                      echo "Starting node server"
+                      PORT=4000 pm2 start /home/www/src/app.js
