@@ -1,10 +1,8 @@
 import { Router } from "express";
+import { newAppt } from "../controllers/form.js";
 
-const router = Router()
+const router = Router();
 
-router.post("/", async (req, res) => {
-    console.log(req.body)
-    res.json({ message: "ok" })
-})
+router.post("/", newAppt);
 
 export default router;
