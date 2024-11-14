@@ -1,8 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
 import './client-track.css';
-import { searchDB } from './mockData'
 import { useRouter } from 'next/navigation';
+import { getAppointment } from '../../actions/client-track';
 
 //Form validation using yup
 import * as yup from 'yup';
@@ -53,24 +53,24 @@ const ClientTrack = () => {
         setForm({ ...form, [name]: value });
     }
 
-    const onSubmit = e => {
+    const onSubmit = async e => {
         e.preventDefault();
         const btn = document.querySelector('.submit-btn');
         btn.value = 'searching...';
 
         //Mock data while waiting for database
-        const data = searchDB(form.email, form.phoneNumber);
+        const data = await getAppointment(form.email, form.phoneNumber);
 
         btn.value = 'Submit'
-        console.log(data);
+        // console.log('from submit button', data);
         if(data !== undefined) {
 
             //Not sure how to pass data without a parent component or advanced state management
-            sessionStorage.setItem('appointment-details', JSON.stringify(data));
+            // sessionStorage.setItem('appointment-details', JSON.stringify(data));
 
             setMessages([]);
             setForm({ email: '', phoneNumber: '' });
-            router.push('/client-track/details');
+            // router.push('/client-track/details');
         } else {
             setMessages(['Appointment not found. Please verify email and phone number']);
         }

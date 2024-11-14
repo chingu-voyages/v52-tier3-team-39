@@ -11,12 +11,15 @@ const mockData = [{
 }]
 
 const dbFindFunction = (formEmail, formPhone) => {
-    for(let i = 0; i < mockData.length; i++) {
-        const { phone, email } = mockData[i];
-        if(phone === formPhone && email === formEmail) {
-            return mockData[i];
+    return new Promise((resolve, reject) => {
+        for (let i = 0; i < mockData.length; i++) {
+            const { phone, email } = mockData[i];
+            if (phone === formPhone && email === formEmail) {
+                return resolve(mockData[i]);
+            }
         }
-    }
+    })
+
 }
 
 const router = express.Router();
@@ -24,21 +27,24 @@ const router = express.Router();
 router.get('/', async (req, res, next) => {
     try {
         const { email, phone } = req.query;
-        if(!email || !phone) throw new Error('Invalid request');
+        console.log('from routes', email, phone)
+        if (!email || !phone) throw new Error('Invalid request');
 
         //Async
-        const data = dbFindFunction(email, phone);
+        const dbData = await dbFindFunction(email, phone);
 
-        if(data === undefined) throw new Error('Appointment not found');
-        res.json({ status: 200, message: data });
-    } catch(err) {
+        console.log('from dbData', dbData);
+
+        if (dbData === undefined) throw new Error('Appointment not found');
+        res.status(200).json({message: 'Appointment found', data: dbData});
+    } catch (err) {
         err.status = err.message === 'Invalid Request' ? 400 : 404;
         next(err);
     }
 })
 
 router.use((err, req, res, next) => {
-    if(err) {
+    if (err) {
         return res
             .status(err.status || 500)
             .json(
