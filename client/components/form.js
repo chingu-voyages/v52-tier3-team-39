@@ -14,17 +14,19 @@ import { Button } from "@mui/material";
 import { requestAppt } from "@/actions/form";
 
 // define schema
-
 const schema = Joi.object({
-  //! add regex to restrict to alpha only
-  name: Joi.string().alphanum().min(2).max(30).required(),
-  //! update tlds config (throws error if not present)
+  name: Joi.string()
+    .pattern(new RegExp(/^[A-Za-z]+$/))
+    .min(2)
+    .max(30)
+    .required(),
   email: Joi.string().email({
     minDomainSegments: 2,
-    tlds: { allow: ["com", "net"] },
+    tlds: { allow: false },
   }),
-  //! add regex to restrict to nums only
-  phone: Joi.string().alphanum().length(10),
+  phone: Joi.string()
+    .pattern(new RegExp(/^[0-9]*$/))
+    .length(10),
   address: Joi.string().required(),
 });
 
@@ -58,6 +60,7 @@ export default function Form() {
     });
 
     if (error) {
+      console.log(error);
       setErrorMsg(error.details[0].message);
       setErrorPath(error.details[0].path[0]);
       return;
