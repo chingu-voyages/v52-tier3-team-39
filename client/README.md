@@ -11,7 +11,15 @@ Client application built with Next.js
 
 ## Getting Started
 
-First, run the development server:
+#### Environment variables
+
+Create a `.env` file in the root of the `client` directory:
+
+```
+SERVER_URL=http://localhost:4000/
+```
+
+#### Run app in dev mode
 
 ```bash
 npm run dev
