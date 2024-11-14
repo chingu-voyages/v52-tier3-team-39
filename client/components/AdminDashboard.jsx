@@ -3,13 +3,13 @@ import React, { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 
 export default function AdminDashboard() {
-  const [hasVisited, setHasVisited] = useState(false);
+  //   const [hasVisited, setHasVisited] = useState(false);
   const status_options = ["Requested", "Confirmed", "Pending", "Visited"];
 
   const [rows, setRows] = useState([
     {
       id: 1,
-      col1: hasVisited,
+      col1: false,
       col2: "Confirmed",
       col3: "6a-8a",
       col4: "Targaryen",
@@ -20,7 +20,7 @@ export default function AdminDashboard() {
     },
     {
       id: 2,
-      col1: hasVisited,
+      col1: false,
       col2: "Pending",
       col3: "2p-4p",
       col4: "Lannister",
@@ -31,7 +31,7 @@ export default function AdminDashboard() {
     },
     {
       id: 3,
-      col1: hasVisited,
+      col1: false,
       col2: "Requested",
       col3: "11a-1p",
       col4: "Stark",
@@ -65,15 +65,22 @@ export default function AdminDashboard() {
     { field: "col8", headerName: "Address", width: 150 },
   ];
 
+  //   React.useEffect(() => {
+  //     function manageVisited() {
+  //       setHasVisited(!hasVisited);
+  //     }
+  //     return manageVisited;
+  //   }, [hasVisited]);
+
   const handleVisited = (id) => {
-    setHasVisited(!hasVisited);
+    // setHasVisited(!hasVisited);
     setRows((prev) =>
       prev.map((row) =>
         row.id === id
           ? {
               ...row,
-              col1: hasVisited,
-              col2: hasVisited ? "Visited" : row.status,
+              col1: !row.col1,
+              col2: !row.col1 ? "Visited" : "Pending",
             }
           : row
       )
