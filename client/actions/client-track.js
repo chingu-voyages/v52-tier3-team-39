@@ -12,9 +12,10 @@ const getAppointment = async (formEmail, formPhone) => {
             params: {email: formEmail, phone: formPhone}
         });
         console.log('from action', data.data.data);
-        return data;
+        return data.data.data;
     } catch(err) {
         console.log(err.response.data);
+        return err.response.data;
     }
 }
 

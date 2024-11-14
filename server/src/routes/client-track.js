@@ -2,7 +2,7 @@ import express from 'express';
 
 const mockData = [{
     name: 'Rave Illusion',
-    email: 'sun.in.my.eyes@gmail.com',
+    email: 'test@gmail.com',
     phone: '7028675309',
     address: '123 Glaring St',
     city: 'California City',
@@ -15,7 +15,7 @@ const dbFindFunction = (formEmail, formPhone) => {
         for (let i = 0; i < mockData.length; i++) {
             const { phone, email } = mockData[i];
             if (phone === formPhone && email === formEmail) {
-                return resolve(mockData[i]);
+                resolve(mockData[i]);
             }
         }
         reject(new Error('Appointment not found'));
