@@ -1,8 +1,10 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import { Box } from "@mui/material";
 import { StyledRoot } from "./StyledRoot";
 import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,8 +30,11 @@ export default function RootLayout({ children }) {
       >
         <AppRouterCacheProvider>
           <StyledRoot>
-            <Header />
-            {children}
+            <Box className="min-h-[calc(100vh-80px)]">
+              <Header />
+              {children}
+            </Box>
+            <Footer />
           </StyledRoot>
         </AppRouterCacheProvider>
       </body>
