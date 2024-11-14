@@ -47,8 +47,10 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="bg-lime-200 p-8 rounded-lg shadow-lg">
-      <h1 className="text-2xl font-semibold mb-4">Reservations:</h1>
+    <div className="bg-green-100 p-8 rounded-lg shadow-lg">
+      <h1 className="text-2xl text-stone-800 font-semibold mb-4">
+        Reservations:
+      </h1>
       <div style={{ height: 300, width: "100%" }}>
         <DataGrid rows={rows} columns={columns} />
       </div>
