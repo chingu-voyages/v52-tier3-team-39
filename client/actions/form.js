@@ -1,9 +1,10 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { serverUrl } from "@/constants";
 
 export async function requestAppt(formValues) {
-  const response = await fetch("http://localhost:4000/form", {
+  const response = await fetch(serverUrl + "form", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(formValues),
