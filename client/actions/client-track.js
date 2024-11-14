@@ -11,6 +11,7 @@ const getAppointment = async (formEmail, formPhone) => {
             headers: {"Content-Type": "application/json"},
             params: {email: formEmail, phone: formPhone}
         });
+        console.log('returns', data);
         console.log('from action', data.data.data);
         return data.data.data;
     } catch(err) {
@@ -19,6 +20,29 @@ const getAppointment = async (formEmail, formPhone) => {
     }
 }
 
+const cancelAppointment = async (id) => {
+    console.log('deleting appointment');
+    try {
+        const res = await axios({
+            url: `http://localhost:9000/client-track/details/${id}`,
+            method: 'DELETE',
+            headers: {"Content-Type": "application/json"},
+        })
+
+        if(res.status === 204) {
+            console.log('Delete Successful');
+            return res.status;
+        } else {
+            console.log('Delete failed');
+            return false
+        }
+    } catch(err) {
+        console.log(err);
+        return false;
+    }
+}
+
 export {
-    getAppointment
+    getAppointment,
+    cancelAppointment
 }

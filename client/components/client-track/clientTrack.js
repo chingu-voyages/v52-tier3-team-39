@@ -66,8 +66,8 @@ const ClientTrack = () => {
 
         btn.value = 'Submit'
         console.log('from submit button', data);
-        if(data !== undefined) {
-            console.log('this is a test')
+        if(!data.message) {
+            console.log('this:', data)
             setMessages([]);
             setForm({ email: '', phoneNumber: '' });
             setAppointmentData(data);
@@ -104,7 +104,7 @@ const ClientTrack = () => {
                             name="email"
                             onBlur={handleBlur}
                             type="text"
-                            placeholder='example@gmail.com'
+                            placeholder='test with test@gmail.com'
                             value={form.email}
                             onChange={onChange}
                         />
@@ -116,7 +116,7 @@ const ClientTrack = () => {
                             name="phoneNumber"
                             onBlur={handleBlur}
                             type="phone"
-                            placeholder='7023275004'
+                            placeholder='test with 7028675309'
                             value={form.phoneNumber}
                             onChange={onChange}
                         />

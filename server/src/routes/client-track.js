@@ -1,13 +1,15 @@
 import express from 'express';
 
 const mockData = [{
+    id: 12,
     name: 'Rave Illusion',
     email: 'test@gmail.com',
     phone: '7028675309',
     address: '123 Glaring St',
     city: 'California City',
     state: 'CA',
-    zipcode: '89146'
+    zipcode: '89146',
+    appointmentTime: 'November 4, 2024'
 }]
 
 const dbFindFunction = (formEmail, formPhone) => {
@@ -38,15 +40,18 @@ router.get('/', async (req, res, next) => {
         const dbData = await dbFindFunction(email, phone);
 
         console.log('from dbData', dbData);
-
-        //Now handled from dbFindFunction
-        // if (dbData === undefined) throw new Error('Appointment not found');
         res.status(200).json({message: 'Appointment found', data: dbData});
     } catch (err) {
         console.log(err);
         err.status = err.message === 'Invalid Request' ? 400 : 404;
         next(err);
     }
+})
+
+router.delete('/details/:id', async (req, res, next) => {
+    const { id } = req.params;
+    console.log(id);
+    res.status(204).send();
 })
 
 router.use((err, req, res, next) => {
