@@ -1,9 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 
 export default function AdminDashboard() {
-  const rows: GridRowsProp = [
+  const rows = [
     {
       id: 1,
       col1: "confirmed",
@@ -12,7 +12,7 @@ export default function AdminDashboard() {
       col4: "Daenerys",
       col5: "333-333-3333",
       col6: "iConquor@westeros.com",
-      col7: "333 Dothraki Valley, Free City of Penthos, Esos 33333",
+      col7: "333 Dothraki Valley, Free City of Penthos, Valerya 33333",
     },
     {
       id: 2,
@@ -32,11 +32,11 @@ export default function AdminDashboard() {
       col4: "Arya",
       col5: "909-485-3822",
       col6: "aGirl@IsNoOne.com",
-      col7: "39842 Northern Way, Many Faced God, Esos 33333",
+      col7: "39842 Northern Way, Many Faced God, Esos 10101",
     },
   ];
 
-  const columns: GridColDef[] = [
+  const columns = [
     { field: "col1", headerName: "Status", width: 150 },
     { field: "col2", headerName: "Timeslot", width: 150 },
     { field: "col3", headerName: "Last Name", width: 150 },
@@ -47,7 +47,7 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="bg-green-500 bg-opacity-70 p-8 rounded-lg shadow-lg">
+    <div className="bg-lime-200 p-8 rounded-lg shadow-lg">
       <h1 className="text-2xl font-semibold mb-4">Reservations:</h1>
       <div style={{ height: 300, width: "100%" }}>
         <DataGrid rows={rows} columns={columns} />
