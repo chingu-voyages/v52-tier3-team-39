@@ -1,0 +1,49 @@
+name: Build and Deploy Server
+
+on:
+    push:
+        branches: ["main"]
+    workflow_dispatch:
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        env:
+            SSH_USER: ec2-user
+            SSH_HOST: ec2-54-177-26-87.us-west-1.compute.amazonaws.com
+            WEB_ROOT: /home/www
+
+        steps:
+            - uses: actions/checkout@v4
+            - name: Use Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+            - run: npm ci --prefix server
+            - name: Copy server files to EC2 server
+              uses: burnett01/rsync-deployments@7.0.1
+              with:
+                  switches: --verbose --human-readable --archive --delete
+                  path: server/
+                  remote_user: ${{ vars.SSH_USER }}
+                  remote_host: ${{ vars.SSH_HOST }}
+                  remote_path: ${{ vars.WEB_ROOT}}
+                  remote_key: ${{ secrets.SERVER_DEPLOYMENT_KEY }}
+            - name: Execute commands on server
+              uses: appleboy/ssh-action@v1.1.0
+              with:
+                  username: ${{ vars.SSH_USER }}
+                  host: ${{ vars.SSH_HOST }}
+                  key: ${{ secrets.SERVER_DEPLOYMENT_KEY }}
+                  script: |
+                      echo "Checking if pm2 installed"
+                      if [ ! "$(which pm2 2>/dev/null)" ]; then 
+                          echo "Not found. Installing pm2"
+                          sudo npm i -g pm2
+                      fi
+
+                      echo "Deleting node server if exists"
+                      pm2 delete ${{ vars.WEB_ROOT}}/src/app.js 2> /dev/null
+
+                      echo "Starting node server"
+                      PORT=4000 pm2 start ${{ vars.WEB_ROOT}}/src/app.js
