@@ -18,6 +18,7 @@ const dbFindFunction = (formEmail, formPhone) => {
                 return resolve(mockData[i]);
             }
         }
+        reject(new Error('Appointment not found'));
     })
 
 }
@@ -28,16 +29,21 @@ router.get('/', async (req, res, next) => {
     try {
         const { email, phone } = req.query;
         console.log('from routes', email, phone)
-        if (!email || !phone) throw new Error('Invalid request');
+        if (!email || !phone) {
+            console.log('throwing invalid request error');
+            throw new Error('Invalid request');
+        };
 
         //Async
         const dbData = await dbFindFunction(email, phone);
 
         console.log('from dbData', dbData);
 
-        if (dbData === undefined) throw new Error('Appointment not found');
+        //Now handled from dbFindFunction
+        // if (dbData === undefined) throw new Error('Appointment not found');
         res.status(200).json({message: 'Appointment found', data: dbData});
     } catch (err) {
+        console.log(err);
         err.status = err.message === 'Invalid Request' ? 400 : 404;
         next(err);
     }
