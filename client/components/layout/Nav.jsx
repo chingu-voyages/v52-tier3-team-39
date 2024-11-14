@@ -1,7 +1,7 @@
 "use client";
 
 import { useMediaQuery } from "@mui/material";
-import MobileNav from "./NavElements";
+import { MobileNav, DesktopNav } from "./NavElements";
 
 export default function Nav() {
   const matches = useMediaQuery("(min-width: 768px)");
@@ -10,5 +10,5 @@ export default function Nav() {
     return <MobileNav />;
   }
 
-  return <div>Desktop Nav</div>;
+  return <DesktopNav />;
 }
