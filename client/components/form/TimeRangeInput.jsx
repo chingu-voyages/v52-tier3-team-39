@@ -1,3 +1,4 @@
+import { useState } from "react";
 import dayjs from "dayjs";
 import {
   Box,
@@ -26,7 +27,11 @@ export default function TimeRangeInput({
   setEarlyTime,
   lateTime,
   setLateTime,
+  errorMsg,
+  setDisableBtn,
 }) {
+  const [earlyTimeErr, setEarlyTimeErr] = useState(null);
+  const [lateTimeErr, setLateTimeErr] = useState(null);
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box className="border rounded-lg p-4 mt-4">
@@ -41,9 +46,22 @@ export default function TimeRangeInput({
               maxTime={fourPM}
               timeSteps={{ minutes: 60 }}
               value={earlyTime}
-              onChange={(newValue) => setEarlyTime(newValue.hour())}
+              onError={(err) => {
+                setDisableBtn(err);
+                setEarlyTimeErr(err);
+              }}
+              onChange={(newValue) => {
+                setEarlyTime(newValue);
+              }}
             />
             <FormHelperText>Select a time between 9am and 4pm</FormHelperText>
+            {earlyTimeErr && (
+              <FormHelperText error>
+                {earlyTimeErr === "minTime"
+                  ? "Time cannot be before 9am"
+                  : "Time cannot be after 4pm"}
+              </FormHelperText>
+            )}
           </Stack>
           <Stack direction="column" className="w-full">
             <TimePicker
@@ -52,10 +70,26 @@ export default function TimeRangeInput({
               maxTime={fivePM}
               timeSteps={{ minutes: 60 }}
               value={lateTime}
-              onChange={(newValue) => setLateTime(newValue.hour())}
+              onError={(err) => {
+                setDisableBtn(err);
+                setLateTimeErr(err);
+              }}
+              onChange={(newValue) => {
+                setLateTime(newValue);
+              }}
             />
             <FormHelperText>Select a time between 10am and 5pm</FormHelperText>
+            {lateTimeErr && (
+              <FormHelperText error>
+                {lateTimeErr === "minTime"
+                  ? "Time cannot be before 10am"
+                  : "Time cannot be after 5pm"}
+              </FormHelperText>
+            )}
           </Stack>
+          {errorMsg && (
+            <FormHelperText error>Invalid time range</FormHelperText>
+          )}
         </Stack>
       </Box>
     </LocalizationProvider>

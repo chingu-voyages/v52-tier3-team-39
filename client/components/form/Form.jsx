@@ -30,13 +30,13 @@ const schema = Joi.object({
     .pattern(new RegExp(/^[0-9]*$/))
     .length(10),
   address: Joi.string().required(),
-  earlyTime: Joi.number().min(9).max(16).required(),
-  lateTime: Joi.number()
+  earlyTimeHour: Joi.number().min(9).max(16).required(),
+  lateTimeHour: Joi.number()
     .min(10)
     .max(17)
     .required()
     // check that lateTime > earlyTime
-    .greater(Joi.ref("earlyTime")),
+    .greater(Joi.ref("earlyTimeHour")),
 });
 
 export default function Form() {
@@ -56,6 +56,7 @@ export default function Form() {
   const [errorPath, setErrorPath] = useState("");
   const [toast, setToast] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
+  const [disableBtn, setDisableBtn] = useState(null);
 
   const handleToastClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -67,17 +68,19 @@ export default function Form() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+
+    const earlyTimeHour = earlyTime.hour();
+    const lateTimeHour = lateTime.hour();
     const { error, value } = schema.validate({
       name,
       email,
       phone,
       address,
-      earlyTime,
-      lateTime,
+      earlyTimeHour,
+      lateTimeHour,
     });
 
     if (error) {
-      console.log(error);
       setErrorMsg(error.details[0].message);
       setErrorPath(error.details[0].path[0]);
       return;
@@ -184,10 +187,12 @@ export default function Form() {
           setEarlyTime={setEarlyTime}
           lateTime={lateTime}
           setLateTime={setLateTime}
+          errorMsg={errorMsg}
+          setDisableBtn={setDisableBtn}
         />
 
         <div>
-          <Button variant="contained" type="submit">
+          <Button variant="contained" type="submit" disabled={!!disableBtn}>
             Submit
           </Button>
         </div>
