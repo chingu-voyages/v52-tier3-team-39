@@ -15,7 +15,6 @@ import { Button } from "@mui/material";
 import TimeRangeInput from "./TimeRangeInput";
 import { requestAppt } from "@/actions/form";
 
-// define schema
 const schema = Joi.object({
   name: Joi.string()
     .pattern(new RegExp(/^[A-Za-z]+$/))

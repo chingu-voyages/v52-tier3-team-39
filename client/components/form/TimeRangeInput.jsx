@@ -103,7 +103,10 @@ export default function TimeRangeInput({
             )}
           </Stack>
           {errorMsg && (
-            <FormHelperText error>Invalid time range</FormHelperText>
+            <FormHelperText error>
+              Invalid time range. Please make sure the time range is at least 1
+              hour.
+            </FormHelperText>
           )}
         </Stack>
       </Box>
