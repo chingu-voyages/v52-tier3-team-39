@@ -11,6 +11,7 @@ import {
   Snackbar,
 } from "@mui/material";
 import { Button } from "@mui/material";
+import TimeRangeInput from "./TimeRangeInput";
 import { requestAppt } from "@/actions/form";
 
 // define schema
@@ -91,7 +92,7 @@ export default function Form() {
         </Alert>
       </Snackbar>
       <form
-        className="flex flex-col gap-4 w-1/2 mx-auto mt-12"
+        className="flex flex-col gap-4 w-full md:w-1/2 mx-auto mt-12"
         onSubmit={handleSubmit}
       >
         <FormControl>
@@ -161,6 +162,8 @@ export default function Form() {
             </FormHelperText>
           )}
         </FormControl>
+
+        <TimeRangeInput />
 
         <div>
           <Button variant="contained" type="submit">
