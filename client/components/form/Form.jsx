@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Joi from "joi";
+import dayjs from "dayjs";
 import {
   Alert,
   FormControl,
@@ -29,6 +30,13 @@ const schema = Joi.object({
     .pattern(new RegExp(/^[0-9]*$/))
     .length(10),
   address: Joi.string().required(),
+  earlyTime: Joi.number().min(9).max(16).required(),
+  lateTime: Joi.number()
+    .min(10)
+    .max(17)
+    .required()
+    // check that lateTime > earlyTime
+    .greater(Joi.ref("earlyTime")),
 });
 
 export default function Form() {
@@ -36,6 +44,12 @@ export default function Form() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [earlyTime, setEarlyTime] = useState(
+    dayjs().hour(9).minute(0).second(0)
+  );
+  const [lateTime, setLateTime] = useState(
+    dayjs().hour(10).minute(0).second(0)
+  );
   const [address, setAddress] = useState("");
   // error state
   const [errorMsg, setErrorMsg] = useState("");
@@ -58,6 +72,8 @@ export default function Form() {
       email,
       phone,
       address,
+      earlyTime,
+      lateTime,
     });
 
     if (error) {
@@ -66,7 +82,7 @@ export default function Form() {
       setErrorPath(error.details[0].path[0]);
       return;
     }
-    const res = await requestAppt({ name, email, phone, address });
+    const res = await requestAppt(value);
 
     if (res) {
       setToast(true);
@@ -163,7 +179,12 @@ export default function Form() {
           )}
         </FormControl>
 
-        <TimeRangeInput />
+        <TimeRangeInput
+          earlyTime={earlyTime}
+          setEarlyTime={setEarlyTime}
+          lateTime={lateTime}
+          setLateTime={setLateTime}
+        />
 
         <div>
           <Button variant="contained" type="submit">
