@@ -12,6 +12,7 @@ Server application built with Node.js
 
 ```
 PORT = 4000
+DATABASE_CONNECTION_STRING = <your-mongodb-connection-string-here>
 ```
 
 #### Run the development server:
