@@ -33,22 +33,6 @@ export default function AddressInput() {
     });
   };
 
-  // Fetch data from API
-  // useEffect(() => {
-  //   async function fetchAddresses() {
-  //     try {
-  //       const response = await fetch(
-  //         "https://data.lacity.org/resource/4ca8-mxuh.json?"
-  //       );
-  //       const data = await response.json();
-  //       setAddresses(data);
-  //     } catch (error) {
-  //       console.error("Error fetching addresses:", error);
-  //     }
-  //   }
-  //   fetchAddresses();
-  // }, []);
-
   async function fetchAddresses() {
     try {
       const response = await fetch(

@@ -36,7 +36,7 @@ export default function Form() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState([]);
   // error state
   const [errorMsg, setErrorMsg] = useState("");
   const [errorPath, setErrorPath] = useState("");
@@ -141,23 +141,6 @@ export default function Form() {
           />
           {errorPath && errorPath === "phone" && (
             <FormHelperText id="phone-error-text" error>
-              {errorMsg}
-            </FormHelperText>
-          )}
-        </FormControl>
-
-        <FormControl>
-          <InputLabel htmlFor="address">Address</InputLabel>
-          <Input
-            id="address"
-            aria-describedby="address-error-text"
-            value={address}
-            onChange={(event) => {
-              setAddress(event.currentTarget.value);
-            }}
-          />
-          {errorPath && errorPath === "address" && (
-            <FormHelperText id="address-error-text" error>
               {errorMsg}
             </FormHelperText>
           )}
