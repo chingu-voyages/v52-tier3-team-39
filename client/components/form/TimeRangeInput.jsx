@@ -32,6 +32,7 @@ export default function TimeRangeInput({
 }) {
   const [earlyTimeErr, setEarlyTimeErr] = useState(null);
   const [lateTimeErr, setLateTimeErr] = useState(null);
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box className="border rounded-lg p-4 mt-4">
@@ -49,6 +50,13 @@ export default function TimeRangeInput({
               onError={(err) => {
                 setDisableBtn(err);
                 setEarlyTimeErr(err);
+              }}
+              onSelectedSectionsChange={() => {
+                if (!dayjs(earlyTime).isValid()) {
+                  setEarlyTime(nineAM);
+                } else {
+                  setEarlyTime(earlyTime.minute(0).second(0));
+                }
               }}
               onChange={(newValue) => {
                 setEarlyTime(newValue);
@@ -73,6 +81,13 @@ export default function TimeRangeInput({
               onError={(err) => {
                 setDisableBtn(err);
                 setLateTimeErr(err);
+              }}
+              onSelectedSectionsChange={() => {
+                if (!dayjs(lateTime).isValid()) {
+                  setLateTime(tenAM);
+                } else {
+                  setLateTime(lateTime.minute(0).second(0));
+                }
               }}
               onChange={(newValue) => {
                 setLateTime(newValue);
