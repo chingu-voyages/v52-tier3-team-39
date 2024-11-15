@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Joi from "joi";
+import dayjs from "dayjs";
 import {
   Alert,
   FormControl,
@@ -11,9 +12,9 @@ import {
   Snackbar,
 } from "@mui/material";
 import { Button } from "@mui/material";
+import TimeRangeInput from "./TimeRangeInput";
 import { requestAppt } from "@/actions/form";
 
-// define schema
 const schema = Joi.object({
   name: Joi.string()
     .pattern(new RegExp(/^[A-Za-z]+$/))
@@ -28,6 +29,13 @@ const schema = Joi.object({
     .pattern(new RegExp(/^[0-9]*$/))
     .length(10),
   address: Joi.string().required(),
+  earlyTimeHour: Joi.number().min(9).max(16).required(),
+  lateTimeHour: Joi.number()
+    .min(10)
+    .max(17)
+    .required()
+    // check that lateTime > earlyTime
+    .greater(Joi.ref("earlyTimeHour")),
 });
 
 export default function Form() {
@@ -35,12 +43,19 @@ export default function Form() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [earlyTime, setEarlyTime] = useState(
+    dayjs().hour(9).minute(0).second(0)
+  );
+  const [lateTime, setLateTime] = useState(
+    dayjs().hour(10).minute(0).second(0)
+  );
   const [address, setAddress] = useState("");
   // error state
   const [errorMsg, setErrorMsg] = useState("");
   const [errorPath, setErrorPath] = useState("");
   const [toast, setToast] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
+  const [disableBtn, setDisableBtn] = useState(null);
 
   const handleToastClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -52,20 +67,24 @@ export default function Form() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+
+    const earlyTimeHour = earlyTime.hour();
+    const lateTimeHour = lateTime.hour();
     const { error, value } = schema.validate({
       name,
       email,
       phone,
       address,
+      earlyTimeHour,
+      lateTimeHour,
     });
 
     if (error) {
-      console.log(error);
       setErrorMsg(error.details[0].message);
       setErrorPath(error.details[0].path[0]);
       return;
     }
-    const res = await requestAppt({ name, email, phone, address });
+    const res = await requestAppt(value);
 
     if (res) {
       setToast(true);
@@ -91,7 +110,7 @@ export default function Form() {
         </Alert>
       </Snackbar>
       <form
-        className="flex flex-col gap-4 w-1/2 mx-auto mt-12"
+        className="flex flex-col gap-4 w-full md:w-1/2 mx-auto mt-12"
         onSubmit={handleSubmit}
       >
         <FormControl>
@@ -162,8 +181,17 @@ export default function Form() {
           )}
         </FormControl>
 
+        <TimeRangeInput
+          earlyTime={earlyTime}
+          setEarlyTime={setEarlyTime}
+          lateTime={lateTime}
+          setLateTime={setLateTime}
+          errorMsg={errorMsg}
+          setDisableBtn={setDisableBtn}
+        />
+
         <div>
-          <Button variant="contained" type="submit">
+          <Button variant="contained" type="submit" disabled={!!disableBtn}>
             Submit
           </Button>
         </div>
