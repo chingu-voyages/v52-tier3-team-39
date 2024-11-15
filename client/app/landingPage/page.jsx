@@ -6,7 +6,6 @@ import AutoFixHighRoundedIcon from "@mui/icons-material/AutoFixHighRounded";
 import ConstructionRoundedIcon from "@mui/icons-material/ConstructionRounded";
 import ThumbUpAltRoundedIcon from "@mui/icons-material/ThumbUpAltRounded";
 
-
 //left side page content
 const items = [
   {
@@ -59,7 +58,6 @@ export default function LandingView() {
             <Typography variant="h1">
               <span className="text-yellow-500">Ray</span>Volution
             </Typography>
-            <Box sx={{ display: { xs: "none", md: "flex" } }}></Box>
             {items.map((item, index) => (
               <Stack key={index} direction="row" sx={{ gap: 1 }}>
                 {item.icon}
