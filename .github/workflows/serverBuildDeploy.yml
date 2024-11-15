@@ -25,15 +25,15 @@ jobs:
               with:
                   switches: --verbose --human-readable --archive --delete
                   path: server/
-                  remote_user: ${{ vars.SSH_USER }}
-                  remote_host: ${{ vars.SSH_HOST }}
-                  remote_path: ${{ vars.WEB_ROOT}}
+                  remote_user: ${{ env.SSH_USER }}
+                  remote_host: ${{ env.SSH_HOST }}
+                  remote_path: ${{ env.WEB_ROOT}}
                   remote_key: ${{ secrets.SERVER_DEPLOYMENT_KEY }}
             - name: Execute commands on server
               uses: appleboy/ssh-action@v1.1.0
               with:
-                  username: ${{ vars.SSH_USER }}
-                  host: ${{ vars.SSH_HOST }}
+                  username: ${{ env.SSH_USER }}
+                  host: ${{ env.SSH_HOST }}
                   key: ${{ secrets.SERVER_DEPLOYMENT_KEY }}
                   script: |
                       echo "Checking if pm2 installed"
@@ -43,7 +43,7 @@ jobs:
                       fi
 
                       echo "Deleting node server if exists"
-                      pm2 delete ${{ vars.WEB_ROOT}}/src/app.js 2> /dev/null
+                      pm2 delete ${{ env.WEB_ROOT}}/src/app.js 2> /dev/null
 
                       echo "Starting node server"
-                      PORT=4000 pm2 start ${{ vars.WEB_ROOT}}/src/app.js
+                      PORT=4000 pm2 start ${{ env.WEB_ROOT}}/src/app.js
