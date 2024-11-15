@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Typography } from "@mui/material";
+import Button from "@mui/material/Button";
 
 export default function AdminDashboard() {
   const status_options = ["Requested", "Confirmed", "Pending", "Visited"];
@@ -51,11 +52,11 @@ export default function AdminDashboard() {
       headerName: "Mark as visited",
       width: 150,
       renderCell: (params) => (
-        <input
-          type="checkbox"
-          checked={params.row.visited}
-          onChange={() => handleVisited(params.row.id)}
-        />
+        <Button
+          variant="contained"
+          color={params.row.visited ? "success" : "error"}
+          onClick={() => handleVisited(params.row.id)}
+        ></Button>
       ),
     },
     { field: "status", headerName: "Status", width: 150 },
@@ -74,8 +75,8 @@ export default function AdminDashboard() {
         row.id === id
           ? {
               ...row,
-              col1: !row.col1,
-              col2: !row.col1 ? "Visited" : "Pending",
+              visited: !row.visited,
+              status: !row.visited ? "Visited" : "Pending",
             }
           : row
       )
