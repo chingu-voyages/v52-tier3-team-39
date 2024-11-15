@@ -12,6 +12,9 @@ const theme = createTheme({
   typography: {
     fontFamily: roboto.style.fontFamily,
   },
+  palette: {
+    branding: "#eab308",
+  },
 });
 
 export default theme;

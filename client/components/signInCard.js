@@ -35,9 +35,10 @@ export default function SignInCard() {
             width: "100%",
             fontSize: "2rem",
             textAlign: "center",
+            color: theme => theme.palette.branding,
           }}
         >
-          <span className="text-yellow-500">Sign</span> In
+          Sign In
         </Typography>
       </CardContent>
       <CardActions>
@@ -45,7 +46,7 @@ export default function SignInCard() {
           fullWidth
           variant="outlined"
           color="gray"
-          startIcon={<GoogleIcon sx={{ color: "#eab308" }} />}
+          startIcon={<GoogleIcon sx={{ color: theme => theme.palette.branding }} />}
           //!TODO: Google Auth flow triggers here
           // onClick={() => alert('Sign in with Google')}
         >

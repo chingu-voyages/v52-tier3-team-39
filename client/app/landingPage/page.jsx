@@ -56,7 +56,7 @@ export default function LandingView() {
             }}
           >
             <Typography variant="h1">
-              <span className="text-yellow-500">Ray</span>Volution
+              <Typography variant="h1" component="span" color={theme => theme.palette.branding} >Ray</Typography>Volution
             </Typography>
             {items.map((item, index) => (
               <Stack key={index} direction="row" sx={{ gap: 1 }}>
