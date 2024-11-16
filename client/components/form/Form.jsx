@@ -12,6 +12,7 @@ import {
   Snackbar,
 } from "@mui/material";
 import { Button } from "@mui/material";
+import AddressInput from "./AddressInput";
 import TimeRangeInput from "./TimeRangeInput";
 import { requestAppt } from "@/actions/form";
 
@@ -49,7 +50,7 @@ export default function Form() {
   const [lateTime, setLateTime] = useState(
     dayjs().hour(10).minute(0).second(0)
   );
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState([]);
   // error state
   const [errorMsg, setErrorMsg] = useState("");
   const [errorPath, setErrorPath] = useState("");
@@ -164,22 +165,7 @@ export default function Form() {
           )}
         </FormControl>
 
-        <FormControl>
-          <InputLabel htmlFor="address">Address</InputLabel>
-          <Input
-            id="address"
-            aria-describedby="address-error-text"
-            value={address}
-            onChange={(event) => {
-              setAddress(event.currentTarget.value);
-            }}
-          />
-          {errorPath && errorPath === "address" && (
-            <FormHelperText id="address-error-text" error>
-              {errorMsg}
-            </FormHelperText>
-          )}
-        </FormControl>
+        <AddressInput />
 
         <TimeRangeInput
           earlyTime={earlyTime}
