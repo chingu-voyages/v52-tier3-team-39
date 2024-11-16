@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import formRouter from "./routes/form.js";
+import formRouter from "./routes/form.route.js";
 import mongoose from "mongoose";
 
 // load env vars from .env
