@@ -3,7 +3,7 @@ import Form from "../models/form.model.js";
 
 export async function newAppt(req, res, next) {
   try {
-    const { error, value } = formSchema.validate(req.body);
+    const { error } = formSchema.validate(req.body);
 
     // handle validation errors
     if (error) {
@@ -11,8 +11,8 @@ export async function newAppt(req, res, next) {
       return next({ message: error.details[0].message });
     }
 
+    // send value to db
     const { earlyTimeHour, lateTimeHour, ...rest } = req.body;
-
     const newForm = new Form({
       ...rest,
       timeRange: {
@@ -20,16 +20,16 @@ export async function newAppt(req, res, next) {
         lateTimeHour,
       },
     });
+    await newForm.save();
 
-    // send value to db
-    // const res = await newForm.save();
-
-    // success response
+    // send success response
     res.status(201);
-    res.json({ message: "OK" });
+    res.json({ message: "ok" });
   } catch (error) {
     console.log(error);
     res.status(500);
-    return next({ message: "An unknown server error occurred." });
+    return next({
+      message: "An internal server error occurred.",
+    });
   }
 }
