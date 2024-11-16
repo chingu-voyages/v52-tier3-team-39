@@ -54,7 +54,7 @@ export default function AdminDashboard() {
       renderCell: (params) => (
         <Button
           variant="contained"
-          color={params.row.visited ? "success" : "error"}
+          color={params.row.visited ? "success" : ""}
           onClick={() => handleVisited(params.row.id)}
         ></Button>
       ),
@@ -86,13 +86,9 @@ export default function AdminDashboard() {
   const paginationModel = { page: 0, pageSize: 15 };
 
   return (
-    <div className="bg-green-100 p-8 rounded-lg shadow-lg">
-      <Typography
-        variant="h3"
-        className="text-2xl text-stone-800 font-semibold mb-4"
-      >
-        Reservations:
-      </Typography>
+    // <div className="bg-green-100 p-8 rounded-lg shadow-lg">
+    <div>
+      <Typography variant="h3">Reservations:</Typography>
       <div style={{ height: 300, width: "100%" }}>
         <DataGrid
           rows={rows}
