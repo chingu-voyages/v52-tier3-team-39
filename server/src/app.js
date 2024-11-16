@@ -1,14 +1,14 @@
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import dotenv from "dotenv";
-import formRouter from "./routes/form.js";
 import mongoose from "mongoose";
-
-// load env vars from .env
-dotenv.config();
+import formRouter from "./routes/form.route.js";
+import connectDb from "./config/db.js";
+import { port, dbConnectStr } from "./config/env.js";
 
 const app = express();
+
+connectDb();
 
 // parse incoming request bodies
 app.use(bodyParser.json());
@@ -20,7 +20,7 @@ app.use("/form", formRouter);
 
 app.use("/database-health", async (_, res) => {
   try {
-    await mongoose.connect(process.env.DATABASE_CONNECTION_STRING);
+    await mongoose.connect(dbConnectStr);
     return res.json({ status: "connected" });
   } catch (e) {
     return res.json({ status: "error", error: e });
@@ -38,9 +38,6 @@ app.use((error, req, res, next) => {
 });
 
 // init server
-app.listen(process.env.PORT, () => {
-  console.log(
-    "Rayvolution node/express server is listening on port",
-    process.env.PORT
-  );
+app.listen(port, () => {
+  console.log("Rayvolution node/express server is listening on port", port);
 });

