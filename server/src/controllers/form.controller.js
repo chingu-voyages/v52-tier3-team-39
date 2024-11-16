@@ -16,7 +16,7 @@ export async function newAppt(req, res, next) {
     const newForm = new Form({
       ...rest,
       timeRange: {
-        earlyTimeHour,
+        earlyTimeHour: "hello",
         lateTimeHour,
       },
     });
@@ -27,9 +27,16 @@ export async function newAppt(req, res, next) {
     res.json({ message: "ok" });
   } catch (error) {
     console.log(error);
+    // Mongo validation error
+    if (error.name === "ValidationError") {
+      res.status(400);
+      return next({
+        message: "Invalid request",
+      });
+    }
     res.status(500);
     return next({
-      message: "An internal server error occurred.",
+      message: "An internal server error occurred",
     });
   }
 }

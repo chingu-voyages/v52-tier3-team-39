@@ -85,7 +85,7 @@ POST base_url + '/form'
 
 Request object:
 
-{ name, email, phone, address, earlyTimeHour, lateTimeHour}
+{ name, email, phone, address, earlyTimeHour, lateTimeHour }
 ```
 
 Validation
@@ -97,10 +97,10 @@ Validation
 - `earlyTimeHour`: Required. Integer. Min: 9, max: 16.
 - `lateTimeHour`: Required. Integer: Min: 10, max: 17.
 
-Behavior: A new row is added to the `forms` collection.
+Behavior: A new row is added to the `forms` collection with default "Pending" status.
 
 Response object
 
 ```
-{ message: "ok" }
+{ message }
 ```
