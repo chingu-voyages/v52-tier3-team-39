@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { dbConnectStr, myTestDb } from "./config/env.js";
+import { dbConnectStr, myTestDb } from "./env.js";
 
 export default async function connectDb() {
   try {

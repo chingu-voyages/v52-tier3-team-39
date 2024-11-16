@@ -3,7 +3,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import formRouter from "./routes/form.route.js";
-import connectDb from "./db.js";
+import connectDb from "./config/db.js";
 import { port, dbConnectStr } from "./config/env.js";
 
 const app = express();
