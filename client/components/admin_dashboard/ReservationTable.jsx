@@ -1,48 +1,50 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 
-export default function AdminDashboard( { appointments, setAppointments } ) {
+export default function AdminDashboard({ appointments, setAppointments }) {
   const status_options = ["Requested", "Confirmed", "Pending", "Visited"];
 
-  const dummyVar = {
-    id: 1,
-    visited: false,
-    status: "Confirmed",
-    date: "11/15/24",
-    time: "6a-8a",
-    lastname: "Targaryen",
-    firstname: "Daenerys",
-    phone: "333-333-3333",
-    email: "iConquor@westeros.com",
-    address: "333 Dothraki Valley, Free City of Penthos, Valerya 33333",
-  },
-  {
-    id: 2,
-    visited: false,
-    status: "Pending",
-    date: "12/3/24",
-    time: "2p-4p",
-    lastname: "Lannister",
-    firstname: "Tyrion",
-    phone: "031-294-4822",
-    email: "iDrink@andKnowThings.com",
-    address: "699 Hand of the King Row, Here and There, Seven Kingdoms 00000",
-  },
-  {
-    id: 3,
-    visited: false,
-    status: "Requested",
-    date: "12/24/24",
-    time: "11a-1p",
-    lastname: "Stark",
-    firstname: "Arya",
-    phone: "909-485-3822",
-    email: "aGirl@IsNoOne.com",
-    address: "39842 Northern Way, Many Faced God, Esos 10101",
-  },
+  const dummyVar = [
+    {
+      id: 1,
+      visited: false,
+      status: "Confirmed",
+      date: "11/15/24",
+      time: "6a-8a",
+      lastname: "Targaryen",
+      firstname: "Daenerys",
+      phone: "333-333-3333",
+      email: "iConquor@westeros.com",
+      address: "333 Dothraki Valley, Free City of Penthos, Valerya 33333",
+    },
+    {
+      id: 2,
+      visited: false,
+      status: "Pending",
+      date: "12/3/24",
+      time: "2p-4p",
+      lastname: "Lannister",
+      firstname: "Tyrion",
+      phone: "031-294-4822",
+      email: "iDrink@andKnowThings.com",
+      address: "699 Hand of the King Row, Here and There, Seven Kingdoms 00000",
+    },
+    {
+      id: 3,
+      visited: false,
+      status: "Requested",
+      date: "12/24/24",
+      time: "11a-1p",
+      lastname: "Stark",
+      firstname: "Arya",
+      phone: "909-485-3822",
+      email: "aGirl@IsNoOne.com",
+      address: "39842 Northern Way, Many Faced God, Esos 10101",
+    },
+  ];
 
   const [rows, setRows] = useState([
     {
@@ -55,16 +57,16 @@ export default function AdminDashboard( { appointments, setAppointments } ) {
       firstname: appointments.firstname,
       phone: appointments.phone,
       email: appointments.email,
-      address: appointments.address
-    }
+      address: appointments.address,
+    },
   ]);
 
   useEffect(async () => {
     const getAppts = async () => {
       try {
-        const response = await fetch(`${SERVER_URL}admin-dashboard`, {
-          method: 'GET',
-        })
+        const response = await fetch(`${SERVER_URL} admin-dashboard`, {
+          method: "GET",
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch appointments");
         }
@@ -77,6 +79,22 @@ export default function AdminDashboard( { appointments, setAppointments } ) {
 
     await getAppts();
   }, []);
+
+  // useEffect(()=> {
+  //   const updateVisited = async (id) => {
+  //     try {
+  //       const resp = await.fetch("/admin_dashboard", {
+  //         method: 'POST'
+  //       })
+  //       const data = await resp.json()
+  //       setReservations(data)
+  //     } catch (error) {
+  //       console.log("Error updating reservations:" error)
+  //     }
+  //   }
+  //   updateVisited()
+
+  // }, [rows.visited])
 
   const columns = [
     {
