@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { Button } from "@mui/material";
 import { requestAppt } from "@/actions/form";
-import AddressInput from "./AddressInput";
+import AutocompleteAddress from "./AutocompleteAddress";
 
 // define schema
 const schema = Joi.object({
@@ -146,7 +146,7 @@ export default function Form() {
           )}
         </FormControl>
 
-        <AddressInput />
+        <AutocompleteAddress address={address} setAddress={setAddress} />
 
         <div>
           <Button variant="contained" type="submit">
