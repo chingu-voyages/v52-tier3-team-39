@@ -64,7 +64,7 @@ export default function AdminDashboard({ appointments, setAppointments }) {
   useEffect(async () => {
     const getAppts = async () => {
       try {
-        const response = await fetch(`${SERVER_URL} admin-dashboard`, {
+        const response = await fetch(`${SERVER_URL}admin-dashboard`, {
           method: "GET",
         });
         if (!response.ok) {
@@ -80,10 +80,10 @@ export default function AdminDashboard({ appointments, setAppointments }) {
     await getAppts();
   }, []);
 
-  // useEffect(()=> {
+  // useEffect(async ()=> {
   //   const updateVisited = async (id) => {
   //     try {
-  //       const resp = await.fetch("/admin_dashboard", {
+  //       const resp = await.fetch(`${SERVER_URL}admin-dashboard`, {
   //         method: 'POST'
   //       })
   //       const data = await resp.json()
