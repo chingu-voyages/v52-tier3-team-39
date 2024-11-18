@@ -3,32 +3,31 @@
 import { useEffect, useState } from "react";
 import autoComplete from "@tarekraafat/autocomplete.js";
 import { FormControl, InputLabel, Input } from "@mui/material";
-import { laCityKey } from "@/constants";
+import { laCityKey, LA_CITY_API_BASE_URL } from "@/constants";
 
 export default function Autocomplete({ address, setAddress }) {
   const [addresses, setAddresses] = useState([]);
-  console.log(addresses);
 
   useEffect(() => {
     async function fetchAddresses() {
-      const response = await fetch(
-        "https://data.lacity.org/resource/4ca8-mxuh.json?$limit=500",
-        {
-          method: "GET",
-          headers: {
-            "X-App-Token": laCityKey,
-          },
-        }
-      );
+      const response = await fetch(`${LA_CITY_API_BASE_URL}?$limit=500`, {
+        headers: { "X-App-Token": laCityKey },
+      });
+
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
+
       const data = await response.json();
+
       const combinedAddresses = data.map((address) => {
-        return `${address.hse_nbr} ${address.hse_dir_cd} ${address.str_nm} ${
-          address.str_sfx_cd ? address.str_sfx_cd : ""
-        } ${address.zip_cd}`;
+        const combineAddressParts = `${address.hse_nbr} ${address.hse_dir_cd} ${
+          address.str_nm
+        } ${address.str_sfx_cd || ""} ${address.zip_cd}`;
+        return combineAddressParts;
       });
+
+      console.log(combinedAddresses.slice(0, 10));
       setAddresses(combinedAddresses);
     }
     fetchAddresses();

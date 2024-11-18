@@ -49,9 +49,7 @@ export default function Form() {
   const [lateTime, setLateTime] = useState(
     dayjs().hour(10).minute(0).second(0)
   );
-  //! Adding default fake address to pass validation only
-  //! Update this once the address validator is fully functional
-  const [address, setAddress] = useState("123 Main St, Los Angeles, CA 90012");
+  const [address, setAddress] = useState("");
   // error state
   const [errorMsg, setErrorMsg] = useState("");
   const [errorPath, setErrorPath] = useState("");
@@ -166,7 +164,7 @@ export default function Form() {
           )}
         </FormControl>
 
-        <AutocompleteAddress address={address} setAddress={setAddress} />
+        <AutocompleteAddress setAddress={setAddress} />
 
         <TimeRangeInput
           earlyTime={earlyTime}
@@ -174,6 +172,7 @@ export default function Form() {
           lateTime={lateTime}
           setLateTime={setLateTime}
           errorMsg={errorMsg}
+          errorPath={errorPath}
           setDisableBtn={setDisableBtn}
         />
 
