@@ -58,11 +58,13 @@ export default function AdminDashboard({ appointments, setAppointments }) {
         const data = await response.json();
         const formattedData = data.map((item, index) => ({
           id: item.id || index + 1,
-          name: item.name,
+          name: formatName(item.name),
           status: item.status || "Requested",
-          dateCreated: item.dateCreated,
-          timeRange: item.timeRange,
-          phone: item.phone,
+          dateCreated: formatDateCreated(item.dateCreated),
+          timeRange: `${formatTime(
+            item.timeRange?.earlyTimeHour
+          )} - ${formatTime(item.timeRange?.lateTimeHour)}`,
+          phone: formatPhone(item.phone),
           email: item.email,
           address: item.address,
         }));
@@ -77,6 +79,31 @@ export default function AdminDashboard({ appointments, setAppointments }) {
   }, [setAppointments]);
   console.log("serverUrl", serverUrl);
 
+  const formatName = (name) => {
+    const [firstName, ...rest] = name.split(" ");
+    const lastName = rest.join(" ");
+    return `${lastName}, ${firstName}`;
+  };
+
+  const formatTime = (hour) => {
+    if (hour === null || hour === undefined) return "Unavailable";
+    return hour <= 12 ? `${hour}a` : `${hour - 12}p`;
+  };
+
+  const formatDateCreated = (dateString) => {
+    const date = new Date(dateString);
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    })}`;
+  };
+
+  const formatPhone = (phone) => {
+    const cleaned = ("" + phone).replace(/\D/g, "");
+    const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+    return match ? `(${match[1]}) ${match[2]}-${match[3]}` : phone;
+  };
+
   const columns = [
     { field: "status", headerName: "Status", width: 190 },
     { field: "name", headerName: "Name", width: 190 },
@@ -86,33 +113,6 @@ export default function AdminDashboard({ appointments, setAppointments }) {
     { field: "email", headerName: "Email", width: 190 },
     { field: "address", headerName: "Address", width: 190 },
   ];
-
-  const handleVisited = async (id) => {
-    setRows((prev) =>
-      prev.map((row) =>
-        row.id === id
-          ? {
-              ...row,
-              visited: !row.visited,
-              status: !row.visited ? "Visited" : "Pending",
-            }
-          : row
-      )
-    );
-    // try {
-    //   const updatedRow = rows.find((row) => row.id === id);
-    //   await fetch(`http://localhost:4000/appointments/${id}`, {
-    //     method: "PUT",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify({
-    //       visited: !updatedRow.visited,
-    //       status: !updatedRow.visited ? "Visited" : "Pending",
-    //     }),
-    //   });
-    // } catch (error) {
-    //   console.error("Error updating visited status:", error);
-    // }
-  };
 
   const paginationModel = { page: 0, pageSize: 15 };
 
