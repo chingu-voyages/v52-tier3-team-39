@@ -5,3 +5,5 @@ dotenv.config(); // load env vars from .env
 export const port = process.env.PORT;
 export const dbConnectStr = process.env.DATABASE_CONNECTION_STRING;
 export const myTestDb = process.env.MY_TEST_DB;
+
+console.log("conn-string", dbConnectStr);

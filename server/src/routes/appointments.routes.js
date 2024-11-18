@@ -3,12 +3,12 @@ import mongoose from "mongoose";
 // import { newAppt } from "../controllers/form.controller.js";
 import {
   getAllAppointments,
-  updateAppointment,
-} from "../controllers/admin_dashboard.controller.js";
+  // updateAppointment,
+} from "../controllers/appointments.controller.js";
 
 const router = Router();
 
-router.get("/admin-dashboard", getAllAppointments);
+router.get("/", getAllAppointments);
 
 // router.post("/admin-dashboard", updateAppointment);
 

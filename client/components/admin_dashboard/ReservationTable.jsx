@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Typography } from "@mui/material";
 import Button from "@mui/material/Button";
+import { serverUrl } from "../../constants";
 
 export default function AdminDashboard({ appointments, setAppointments }) {
   const status_options = ["Requested", "Confirmed", "Pending", "Visited"];
@@ -61,29 +62,29 @@ export default function AdminDashboard({ appointments, setAppointments }) {
     },
   ]);
 
-  useEffect(async () => {
+  useEffect(() => {
     const getAppts = async () => {
       try {
-        const response = await fetch(`${SERVER_URL}admin-dashboard`, {
-          method: "GET",
-        });
+        const response = await fetch("http://localhost:4000/appointments");
         if (!response.ok) {
           throw new Error("Failed to fetch appointments");
         }
         const data = await response.json();
+        console.log("data", data);
         setAppointments(data);
       } catch (error) {
         console.error("Error fetching appointments:", error);
       }
     };
 
-    await getAppts();
+    getAppts();
   }, []);
+  console.log("serverUrl", serverUrl);
 
   // useEffect(async ()=> {
   //   const updateVisited = async (id) => {
   //     try {
-  //       const resp = await.fetch(`${SERVER_URL}admin-dashboard`, {
+  //       const resp = await.fetch(`${SERVER_URL}appointments`, {
   //         method: 'POST'
   //       })
   //       const data = await resp.json()
