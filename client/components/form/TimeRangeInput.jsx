@@ -21,7 +21,7 @@ export default function TimeRangeInput({
   setEarlyTime,
   lateTime,
   setLateTime,
-  errorMsg,
+  errorPath,
   setDisableBtn,
 }) {
   const [earlyTimeErr, setEarlyTimeErr] = useState(null);
@@ -96,7 +96,7 @@ export default function TimeRangeInput({
               </FormHelperText>
             )}
           </Stack>
-          {errorMsg && (
+          {errorPath && errorPath === "lateTimeHour" && (
             <FormHelperText error>
               Invalid time range. Please make sure the time range is at least 1
               hour.
