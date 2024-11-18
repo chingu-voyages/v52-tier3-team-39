@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Joi from "joi";
+import dayjs from "dayjs";
 import {
   Alert,
   FormControl,
@@ -11,24 +12,30 @@ import {
   Snackbar,
 } from "@mui/material";
 import { Button } from "@mui/material";
+import AddressInput from "./AddressInput";
+import TimeRangeInput from "./TimeRangeInput";
 import { requestAppt } from "@/actions/form";
-import AutocompleteAddress from "./AutocompleteAddress";
 
-// define schema
 const schema = Joi.object({
-  name: Joi.string()
-    .pattern(new RegExp(/^[A-Za-z]+$/))
-    .min(2)
-    .max(30)
-    .required(),
-  email: Joi.string().email({
-    minDomainSegments: 2,
-    tlds: { allow: false },
-  }),
+  name: Joi.string().min(2).max(255).required().trim(),
+  email: Joi.string()
+    .email({
+      minDomainSegments: 2,
+      tlds: { allow: false },
+    })
+    .trim(),
   phone: Joi.string()
     .pattern(new RegExp(/^[0-9]*$/))
-    .length(10),
+    .length(10)
+    .trim(),
   address: Joi.string().required(),
+  earlyTimeHour: Joi.number().min(9).max(16).required(),
+  lateTimeHour: Joi.number()
+    .min(10)
+    .max(17)
+    .required()
+    // check that lateTime > earlyTime
+    .greater(Joi.ref("earlyTimeHour")),
 });
 
 export default function Form() {
@@ -36,12 +43,21 @@ export default function Form() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState([]);
+  const [earlyTime, setEarlyTime] = useState(
+    dayjs().hour(9).minute(0).second(0)
+  );
+  const [lateTime, setLateTime] = useState(
+    dayjs().hour(10).minute(0).second(0)
+  );
+  //! Adding default fake address to pass validation only
+  //! Update this once the address validator is fully functional
+  const [address, setAddress] = useState("123 Main St, Los Angeles, CA 90012");
   // error state
   const [errorMsg, setErrorMsg] = useState("");
   const [errorPath, setErrorPath] = useState("");
   const [toast, setToast] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
+  const [disableBtn, setDisableBtn] = useState(null);
 
   const handleToastClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -53,20 +69,24 @@ export default function Form() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+
+    const earlyTimeHour = earlyTime.hour();
+    const lateTimeHour = lateTime.hour();
     const { error, value } = schema.validate({
       name,
       email,
       phone,
       address,
+      earlyTimeHour,
+      lateTimeHour,
     });
 
     if (error) {
-      console.log(error);
       setErrorMsg(error.details[0].message);
       setErrorPath(error.details[0].path[0]);
       return;
     }
-    const res = await requestAppt({ name, email, phone, address });
+    const res = await requestAppt(value);
 
     if (res) {
       setToast(true);
@@ -92,7 +112,7 @@ export default function Form() {
         </Alert>
       </Snackbar>
       <form
-        className="flex flex-col gap-4 w-1/2 mx-auto mt-12"
+        className="flex flex-col gap-4 w-full md:w-1/2 mx-auto mt-12"
         onSubmit={handleSubmit}
       >
         <FormControl>
@@ -146,10 +166,19 @@ export default function Form() {
           )}
         </FormControl>
 
-        <AutocompleteAddress address={address} setAddress={setAddress} />
+        <AddressInput />
+
+        <TimeRangeInput
+          earlyTime={earlyTime}
+          setEarlyTime={setEarlyTime}
+          lateTime={lateTime}
+          setLateTime={setLateTime}
+          errorMsg={errorMsg}
+          setDisableBtn={setDisableBtn}
+        />
 
         <div>
-          <Button variant="contained" type="submit">
+          <Button variant="contained" type="submit" disabled={!!disableBtn}>
             Submit
           </Button>
         </div>
