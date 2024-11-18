@@ -47,20 +47,7 @@ export default function AdminDashboard({ appointments, setAppointments }) {
     },
   ];
 
-  const [rows, setRows] = useState([
-    {
-      id: appointments.id,
-      visited: appointments.visited,
-      status: appointments.status,
-      date: appointments.date,
-      time: appointments.time,
-      lastname: appointments.lastname,
-      firstname: appointments.firstname,
-      phone: appointments.phone,
-      email: appointments.email,
-      address: appointments.address,
-    },
-  ]);
+  const [rows, setRows] = useState([]);
 
   useEffect(() => {
     const getAppts = async () => {
@@ -70,32 +57,28 @@ export default function AdminDashboard({ appointments, setAppointments }) {
           throw new Error("Failed to fetch appointments");
         }
         const data = await response.json();
-        console.log("data", data);
+        const formattedData = data.map((item, index) => ({
+          id: item.id || index + 1,
+          visited: item.visited,
+          status: item.status || "Pending",
+          date: item.date,
+          time: item.time,
+          lastname: item.lastname,
+          firstname: item.firstname,
+          phone: item.phone,
+          email: item.email,
+          address: item.address,
+        }));
         setAppointments(data);
+        setRows(formattedData);
       } catch (error) {
-        console.error("Error fetching appointments:", error);
+        // console.error("Error fetching appointments:", error);
       }
     };
 
     getAppts();
-  }, []);
+  }, [setAppointments]);
   console.log("serverUrl", serverUrl);
-
-  // useEffect(async ()=> {
-  //   const updateVisited = async (id) => {
-  //     try {
-  //       const resp = await.fetch(`${SERVER_URL}appointments`, {
-  //         method: 'POST'
-  //       })
-  //       const data = await resp.json()
-  //       setReservations(data)
-  //     } catch (error) {
-  //       console.log("Error updating reservations:" error)
-  //     }
-  //   }
-  //   updateVisited()
-
-  // }, [rows.visited])
 
   const columns = [
     {
@@ -120,7 +103,7 @@ export default function AdminDashboard({ appointments, setAppointments }) {
     { field: "address", headerName: "Address", width: 150 },
   ];
 
-  const handleVisited = (id) => {
+  const handleVisited = async (id) => {
     setRows((prev) =>
       prev.map((row) =>
         row.id === id
@@ -132,6 +115,19 @@ export default function AdminDashboard({ appointments, setAppointments }) {
           : row
       )
     );
+    try {
+      const updatedRow = rows.find((row) => row.id === id);
+      await fetch(`http://localhost:4000/appointments/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          visited: !updatedRow.visited,
+          status: !updatedRow.visited ? "Visited" : "Pending",
+        }),
+      });
+    } catch (error) {
+      console.error("Error updating visited status:", error);
+    }
   };
 
   const paginationModel = { page: 0, pageSize: 15 };
@@ -142,7 +138,7 @@ export default function AdminDashboard({ appointments, setAppointments }) {
       <Typography variant="h3">Reservations:</Typography>
       <div style={{ height: 300, width: "100%" }}>
         <DataGrid
-          rows={appointments}
+          rows={rows}
           columns={columns}
           initialState={{ pagination: { paginationModel } }}
           pageSizeOptions={[15, 10]}
