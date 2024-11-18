@@ -16,7 +16,7 @@ export async function newAppt(req, res, next) {
     const newForm = new Form({
       ...rest,
       timeRange: {
-        earlyTimeHour: "hello",
+        earlyTimeHour,
         lateTimeHour,
       },
     });
