@@ -15,6 +15,7 @@ import { Button } from "@mui/material";
 import AddressInput from "./AddressInput";
 import TimeRangeInput from "./TimeRangeInput";
 import { requestAppt } from "@/actions/form";
+import AutocompleteAddress from "./AutocompleteAddress";
 
 const schema = Joi.object({
   name: Joi.string().min(2).max(255).required().trim(),
@@ -166,7 +167,7 @@ export default function Form() {
           )}
         </FormControl>
 
-        <AddressInput />
+        <AutocompleteAddress address={address} setAddress={setAddress} />
 
         <TimeRangeInput
           earlyTime={earlyTime}
