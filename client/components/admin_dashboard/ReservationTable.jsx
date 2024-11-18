@@ -58,9 +58,8 @@ export default function AdminDashboard({ appointments, setAppointments }) {
         const data = await response.json();
         const formattedData = data.map((item, index) => ({
           id: item.id || index + 1,
-          visited: item.visited,
           name: item.name,
-          status: item.status || "Pending",
+          status: item.status || "Requested",
           dateCreated: item.dateCreated,
           timeRange: item.timeRange,
           phone: item.phone,
@@ -79,18 +78,6 @@ export default function AdminDashboard({ appointments, setAppointments }) {
   console.log("serverUrl", serverUrl);
 
   const columns = [
-    {
-      field: "visited",
-      headerName: "Mark as visited",
-      width: 150,
-      renderCell: (params) => (
-        <Button
-          variant="contained"
-          color={params.row.visited ? "success" : ""}
-          onClick={() => handleVisited(params.row.id)}
-        ></Button>
-      ),
-    },
     { field: "status", headerName: "Status", width: 190 },
     { field: "name", headerName: "Name", width: 190 },
     { field: "dateCreated", headerName: "Requested on", width: 190 },
@@ -112,19 +99,19 @@ export default function AdminDashboard({ appointments, setAppointments }) {
           : row
       )
     );
-    try {
-      const updatedRow = rows.find((row) => row.id === id);
-      await fetch(`http://localhost:4000/appointments/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          visited: !updatedRow.visited,
-          status: !updatedRow.visited ? "Visited" : "Pending",
-        }),
-      });
-    } catch (error) {
-      console.error("Error updating visited status:", error);
-    }
+    // try {
+    //   const updatedRow = rows.find((row) => row.id === id);
+    //   await fetch(`http://localhost:4000/appointments/${id}`, {
+    //     method: "PUT",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify({
+    //       visited: !updatedRow.visited,
+    //       status: !updatedRow.visited ? "Visited" : "Pending",
+    //     }),
+    //   });
+    // } catch (error) {
+    //   console.error("Error updating visited status:", error);
+    // }
   };
 
   const paginationModel = { page: 0, pageSize: 15 };
