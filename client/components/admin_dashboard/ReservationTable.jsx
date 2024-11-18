@@ -4,6 +4,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import { serverUrl } from "../../constants";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
 
 export default function AdminDashboard({ appointments, setAppointments }) {
   const status_options = ["Requested", "Confirmed", "Pending", "Visited"];
@@ -113,7 +115,7 @@ export default function AdminDashboard({ appointments, setAppointments }) {
     try {
       const updatedRow = rows.find((row) => row.id === id);
       await fetch(`http://localhost:4000/appointments/${id}`, {
-        method: "PATCH",
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           visited: !updatedRow.visited,
@@ -128,18 +130,19 @@ export default function AdminDashboard({ appointments, setAppointments }) {
   const paginationModel = { page: 0, pageSize: 15 };
 
   return (
-    // <div className="bg-green-100 p-8 rounded-lg shadow-lg">
-    <div>
-      <Typography variant="h3">Reservations:</Typography>
-      <div style={{ height: 300, width: "100%" }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          initialState={{ pagination: { paginationModel } }}
-          pageSizeOptions={[15, 10]}
-          sx={{ border: 0 }}
-        />
+    <Box sx={{ height: 400, width: "100%" }}>
+      <div>
+        <Typography variant="h3">Reservations:</Typography>
+        <Paper elevation={24}>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            initialState={{ pagination: { paginationModel } }}
+            pageSizeOptions={[15, 10]}
+            sx={{ border: 0 }}
+          />
+        </Paper>
       </div>
-    </div>
+    </Box>
   );
 }
