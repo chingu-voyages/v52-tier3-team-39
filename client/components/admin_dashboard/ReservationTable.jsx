@@ -13,10 +13,9 @@ export default function AdminDashboard({ appointments, setAppointments }) {
       id: 1,
       visited: false,
       status: "Confirmed",
-      date: "11/15/24",
-      time: "6a-8a",
-      lastname: "Targaryen",
-      firstname: "Daenerys",
+      dateCreated: "11/15/24",
+      timeRange: "6a-8a",
+      name: "Daenerys Targaryen",
       phone: "333-333-3333",
       email: "iConquor@westeros.com",
       address: "333 Dothraki Valley, Free City of Penthos, Valerya 33333",
@@ -25,10 +24,9 @@ export default function AdminDashboard({ appointments, setAppointments }) {
       id: 2,
       visited: false,
       status: "Pending",
-      date: "12/3/24",
-      time: "2p-4p",
-      lastname: "Lannister",
-      firstname: "Tyrion",
+      dateCreated: "12/3/24",
+      timeRange: "2p-4p",
+      name: "Tyrion Lannister",
       phone: "031-294-4822",
       email: "iDrink@andKnowThings.com",
       address: "699 Hand of the King Row, Here and There, Seven Kingdoms 00000",
@@ -37,10 +35,9 @@ export default function AdminDashboard({ appointments, setAppointments }) {
       id: 3,
       visited: false,
       status: "Requested",
-      date: "12/24/24",
-      time: "11a-1p",
-      lastname: "Stark",
-      firstname: "Arya",
+      dateCreated: "12/24/24",
+      timeRange: "11a-1p",
+      name: "Arya Stark",
       phone: "909-485-3822",
       email: "aGirl@IsNoOne.com",
       address: "39842 Northern Way, Many Faced God, Esos 10101",
@@ -60,11 +57,10 @@ export default function AdminDashboard({ appointments, setAppointments }) {
         const formattedData = data.map((item, index) => ({
           id: item.id || index + 1,
           visited: item.visited,
+          name: item.name,
           status: item.status || "Pending",
-          date: item.date,
-          time: item.time,
-          lastname: item.lastname,
-          firstname: item.firstname,
+          dateCreated: item.dateCreated,
+          timeRange: item.timeRange,
           phone: item.phone,
           email: item.email,
           address: item.address,
@@ -72,7 +68,7 @@ export default function AdminDashboard({ appointments, setAppointments }) {
         setAppointments(data);
         setRows(formattedData);
       } catch (error) {
-        // console.error("Error fetching appointments:", error);
+        console.error("Error fetching appointments:", error);
       }
     };
 
@@ -93,14 +89,13 @@ export default function AdminDashboard({ appointments, setAppointments }) {
         ></Button>
       ),
     },
-    { field: "status", headerName: "Status", width: 150 },
-    { field: "date", headerName: "Date", width: 150 },
-    { field: "time", headerName: "Timeslot", width: 150 },
-    { field: "lastname", headerName: "Last Name", width: 150 },
-    { field: "firstname", headerName: "First Name", width: 150 },
-    { field: "phone", headerName: "Phone", width: 150 },
-    { field: "email", headerName: "Email", width: 150 },
-    { field: "address", headerName: "Address", width: 150 },
+    { field: "status", headerName: "Status", width: 190 },
+    { field: "name", headerName: "Name", width: 190 },
+    { field: "dateCreated", headerName: "Requested on", width: 190 },
+    { field: "timeRange", headerName: "Timeslot", width: 190 },
+    { field: "phone", headerName: "Phone", width: 190 },
+    { field: "email", headerName: "Email", width: 190 },
+    { field: "address", headerName: "Address", width: 190 },
   ];
 
   const handleVisited = async (id) => {
