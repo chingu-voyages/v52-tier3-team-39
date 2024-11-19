@@ -59,7 +59,7 @@ export default function AdminDashboard({ appointments, setAppointments }) {
         const formattedData = data.map((item, index) => ({
           id: item.id || index + 1,
           name: formatName(item.name),
-          status: item.status || "Requested",
+          status: item.status ? item.status : "Requested",
           dateCreated: formatDateCreated(item.dateCreated),
           timeRange: `${formatTime(
             item.timeRange?.earlyTimeHour
