@@ -4,8 +4,6 @@ import { dbConnectStr, myTestDb } from "./env.js";
 export default async function connectDb() {
   try {
     await mongoose.connect(dbConnectStr, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
       dbName: myTestDb,
     });
     console.log("Successfully connected to MongoDB");
