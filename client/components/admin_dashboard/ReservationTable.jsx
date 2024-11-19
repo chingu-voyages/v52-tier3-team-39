@@ -66,7 +66,7 @@ export default function AdminDashboard({ appointments, setAppointments }) {
           )} - ${formatTime(item.timeRange?.lateTimeHour)}`,
           phone: formatPhone(item.phone),
           email: item.email,
-          address: item.address,
+          address: formatAddress(item.address),
         }));
         setAppointments(data);
         setRows(formattedData);
@@ -86,7 +86,6 @@ export default function AdminDashboard({ appointments, setAppointments }) {
   };
 
   const formatTime = (hour) => {
-    if (hour === null || hour === undefined) return "Unavailable";
     return hour <= 12 ? `${hour}a` : `${hour - 12}p`;
   };
 
@@ -102,6 +101,12 @@ export default function AdminDashboard({ appointments, setAppointments }) {
     const cleaned = ("" + phone).replace(/\D/g, "");
     const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
     return match ? `(${match[1]}) ${match[2]}-${match[3]}` : phone;
+  };
+
+  const formatAddress = (address) => {
+    const [firstPart, ...rest] = address.split(",");
+    const secondPart = rest.join(",").trim();
+    return `${firstPart}\n${secondPart}`;
   };
 
   const columns = [
@@ -127,6 +132,7 @@ export default function AdminDashboard({ appointments, setAppointments }) {
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[15, 10]}
             sx={{ border: 0 }}
+            getRowHeight={() => "auto"}
           />
         </Paper>
       </div>
