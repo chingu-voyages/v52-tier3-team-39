@@ -1,16 +1,13 @@
-"use client";
-import { useState, useEffect } from "react";
+"use server";
 import ReservationTable from "../../components/admin_dashboard/ReservationTable";
+import { fetchAppointments } from "../../components/admin_dashboard/lib/fetchAppointments";
 
-export default function AdminDashboardView() {
-  const [appointments, setAppointments] = useState([]);
+export default async function AdminDashboardView() {
+  const rows = await fetchAppointments();
 
   return (
     <div>
-      <ReservationTable
-        appointments={appointments}
-        setAppointments={setAppointments}
-      />
+      <ReservationTable rows={rows} />
     </div>
   );
 }
