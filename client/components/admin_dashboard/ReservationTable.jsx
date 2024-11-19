@@ -82,6 +82,9 @@ export default function AdminDashboard({ appointments, setAppointments }) {
   const formatName = (name) => {
     const [firstName, ...rest] = name.split(" ");
     const lastName = rest.join(" ");
+    if (!lastName) {
+      return firstName;
+    }
     return `${lastName}, ${firstName}`;
   };
 
