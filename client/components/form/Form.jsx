@@ -182,15 +182,11 @@ export default function Form() {
           setDisableBtn={setDisableBtn}
         />
 
-        <Stack direction={{ sm: "column", lg: "row" }}>
-          <Button
-            variant="contained"
-            size="large"
-            type="submit"
-            disabled={!!disableBtn}
-          >
-            Submit
-          </Button>
+        <Stack
+          direction={{ sm: "column", lg: "row" }}
+          gap={2}
+          justifyContent="flex-end"
+        >
           <Button
             variant="outlined"
             color="warning"
@@ -198,6 +194,14 @@ export default function Form() {
             onClick={handleCancel}
           >
             Cancel
+          </Button>
+          <Button
+            variant="contained"
+            size="large"
+            type="submit"
+            disabled={!!disableBtn}
+          >
+            Submit
           </Button>
         </Stack>
       </form>
