@@ -1,13 +1,14 @@
-"use server";
+import { Suspense } from "react";
+import { Typography } from "@mui/material";
 import ReservationTable from "../../components/admin_dashboard/ReservationTable";
-import { fetchAppointments } from "../../components/admin_dashboard/lib/fetchAppointments";
 
 export default async function AdminDashboardView() {
-  const rows = await fetchAppointments();
-
   return (
     <div>
-      <ReservationTable rows={rows} />
+      <Typography variant="h1">Reservations:</Typography>
+      <Suspense fallback={<p>Loading...</p>}>
+        <ReservationTable />
+      </Suspense>
     </div>
   );
 }
