@@ -1,4 +1,3 @@
-"use server";
 import ReservationTable from "../../components/admin_dashboard/ReservationTable";
 import { fetchAppointments } from "../../components/admin_dashboard/lib/fetchAppointments";
 
