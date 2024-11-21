@@ -1,14 +1,10 @@
 "use client";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import { googleApiKey } from "@/constants";
-import React from "react";
+import React, { useRef } from "react";
 
 export default function Map() {
-  const [map, setMap] = React.useState(null);
-
-  const onLoad = (mapInstance) => {
-    setMap(mapInstance);
-  };
+  const mapRef = useRef(null);
 
   const containerStyle = {
     width: "100%",
@@ -48,18 +44,34 @@ export default function Map() {
     },
   ];
 
+  const onLoad = (mapInstance) => {
+    mapRef.current = mapInstance;
+    if (google?.maps?.marker?.AdvancedMarkerElement) {
+      startCoords.forEach((address) => {
+        new google.maps.marker.AdvancedMarkerElement({
+          position: address,
+          map: mapInstance,
+        });
+      });
+    } else {
+      console.error("AdvancedMarkerEle not available. Using default Marker.");
+      startCoords.forEach((address) => {
+        new google.maps.Marker({
+          map: mapInstance,
+          position: address,
+        });
+      });
+    }
+  };
+
   return (
-    <LoadScript googleMapsApiKey={googleApiKey}>
+    <LoadScript googleMapsApiKey={`${googleApiKey}&v=beta`}>
       <GoogleMap
         mapContainerStyle={containerStyle}
-        center={startCoords[4]}
+        center={startCoords[0]}
         zoom={15}
         onLoad={onLoad}
-      >
-        {startCoords.map((address, index) => (
-          <Marker key={index} position={address.position} />
-        ))}
-      </GoogleMap>
+      ></GoogleMap>
     </LoadScript>
   );
 }
