@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import formRouter from "./routes/form.route.js";
 import connectDb from "./config/db.js";
 import { port, dbConnectStr } from "./config/env.js";
+import appointmentsRouter from "./routes/appointments.routes.js";
 
 const app = express();
 
@@ -17,7 +18,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use("/form", formRouter);
-
+app.use("/appointments", appointmentsRouter);
 app.use("/database-health", async (_, res) => {
   try {
     await mongoose.connect(dbConnectStr);
