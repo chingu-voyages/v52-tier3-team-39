@@ -4,6 +4,12 @@ import { googleApiKey } from "@/constants";
 import React from "react";
 
 export default function Map() {
+  const [map, setMap] = React.useState(null);
+
+  const onLoad = (mapInstance) => {
+    setMap(mapInstance);
+  };
+
   const containerStyle = {
     width: "100%",
     height: "400px",
@@ -48,9 +54,10 @@ export default function Map() {
         mapContainerStyle={containerStyle}
         center={startCoords[4]}
         zoom={15}
+        onLoad={onLoad}
       >
         {startCoords.map((address, index) => (
-          <Marker key={index} position={address} />
+          <Marker key={index} position={address.position} />
         ))}
       </GoogleMap>
     </LoadScript>
