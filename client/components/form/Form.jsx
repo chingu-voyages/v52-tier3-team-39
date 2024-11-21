@@ -1,17 +1,19 @@
 "use client";
 
 import { useState } from "react";
+import { redirect } from "next/navigation";
 import Joi from "joi";
 import dayjs from "dayjs";
 import {
   Alert,
+  Button,
   FormControl,
   InputLabel,
   Input,
   FormHelperText,
   Snackbar,
+  Stack,
 } from "@mui/material";
-import { Button } from "@mui/material";
 import TimeRangeInput from "./TimeRangeInput";
 import { requestAppt } from "@/actions/form";
 import AutocompleteAddress from "./AutocompleteAddress";
@@ -64,6 +66,10 @@ export default function Form() {
     setToast(false);
     setToastMsg("");
   };
+
+  function handleCancel() {
+    redirect("/form/cancel");
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -176,11 +182,28 @@ export default function Form() {
           setDisableBtn={setDisableBtn}
         />
 
-        <div>
-          <Button variant="contained" type="submit" disabled={!!disableBtn}>
+        <Stack
+          direction={{ sm: "column", lg: "row" }}
+          gap={2}
+          justifyContent="flex-end"
+        >
+          <Button
+            variant="outlined"
+            color="warning"
+            size="large"
+            onClick={handleCancel}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            size="large"
+            type="submit"
+            disabled={!!disableBtn}
+          >
             Submit
           </Button>
-        </div>
+        </Stack>
       </form>
     </>
   );
