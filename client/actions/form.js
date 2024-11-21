@@ -22,7 +22,7 @@ export async function requestAppt(formValues) {
     return { message: data.message };
   }
 
-  redirect("/success");
+  redirect("/form/success");
 }
 
 export async function fetchAppointments() {
