@@ -68,7 +68,7 @@ export default function Form() {
   };
 
   function handleCancel() {
-    redirect("/form/cancel");
+    redirect("/new-appointment/cancel");
   }
 
   async function handleSubmit(e) {

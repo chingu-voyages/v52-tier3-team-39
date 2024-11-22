@@ -12,7 +12,7 @@ const navLinks = [
   },
   {
     label: "Request Service",
-    href: "/form",
+    href: "/new-appointment",
     protected: false,
   },
   {

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const formSchema = new mongoose.Schema({
+const appointmentSchema = new mongoose.Schema({
   name: String,
   email: String,
   phone: String,
@@ -17,6 +17,10 @@ const formSchema = new mongoose.Schema({
   },
 });
 
-const Form = mongoose.model("Form", formSchema, "forms");
+const Appointment = mongoose.model(
+  "Appointment",
+  appointmentSchema,
+  "appointments"
+);
 
-export default Form;
+export default Appointment;

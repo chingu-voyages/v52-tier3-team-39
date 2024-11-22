@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { serverUrl } from "@/constants";
 
 export async function requestAppt(formValues) {
-  const response = await fetch(serverUrl + "form", {
+  const response = await fetch(serverUrl + "appointments", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(formValues),
@@ -15,7 +15,7 @@ export async function requestAppt(formValues) {
     return { message: data.message };
   }
 
-  redirect("/form/success");
+  redirect("/new-appointment/success");
 }
 
 export async function fetchAppointments() {
