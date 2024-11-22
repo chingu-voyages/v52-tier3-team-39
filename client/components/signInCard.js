@@ -9,10 +9,12 @@ import {
   Typography,
 } from "@mui/material/";
 import GoogleIcon from "@mui/icons-material/Google";
-import { signIn } from 'next-auth/react';
+import { signIn } from "next-auth/react";
 
 export default function SignInCard() {
-
+  const handleSubmit = () => {
+    const profile = signIn("google")
+  } 
   return (
     <Card variant="outlined" sx={{ minWidth: 375, p: 2 }}>
       <CardMedia
@@ -27,7 +29,7 @@ export default function SignInCard() {
             width: "100%",
             fontSize: "2rem",
             textAlign: "center",
-            color: theme => theme.palette.branding,
+            color: (theme) => theme.palette.branding,
           }}
         >
           Sign In
@@ -38,8 +40,10 @@ export default function SignInCard() {
           fullWidth
           variant="outlined"
           color="gray"
-          startIcon={<GoogleIcon sx={{ color: theme => theme.palette.branding }} />}
-          onClick={() => signIn('google')}
+          startIcon={
+            <GoogleIcon sx={{ color: (theme) => theme.palette.branding }} />
+          }
+          onClick={handleSubmit}
         >
           Sign in with Google
         </Button>

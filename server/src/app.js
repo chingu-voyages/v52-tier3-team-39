@@ -16,6 +16,10 @@ app.use(bodyParser.json());
 //! enable all CORS requests
 app.use(cors());
 
+app.use("/user", (req, res) => {
+  return res.json({ role: "admin" });
+});
+
 app.use("/form", formRouter);
 
 app.use("/database-health", async (_, res) => {
