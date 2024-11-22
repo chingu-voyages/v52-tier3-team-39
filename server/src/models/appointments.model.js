@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const appointmentSchema = new mongoose.Schema({
   name: String,
+  userId: String, // relation: User.googleId
   email: String,
   phone: String,
   address: String,

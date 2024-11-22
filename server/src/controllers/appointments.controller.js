@@ -15,6 +15,7 @@ export async function newAppointment(req, res, next) {
     const { earlyTimeHour, lateTimeHour, ...rest } = req.body;
     const newAppt = new Appointment({
       ...rest,
+      userId: "Insert Id Here",
       timeRange: {
         earlyTimeHour,
         lateTimeHour,
@@ -45,6 +46,20 @@ export async function getAllAppointments(req, res, next) {
   try {
     const appointments = await Appointment.find();
     res.status(200).json(appointments);
+  } catch (error) {
+    console.error("Error fetching appointments:", error);
+    res.status(500);
+    return next({ message: "An internal server error occurred" });
+  }
+}
+
+export async function getSingleAppointment(req, res, next) {
+  const { id } = req.params;
+  try {
+    // get appointment with relation to user id in params
+    const appointment = await Appointment.findOne({ userId: id });
+    res.status(200);
+    res.json(appointment);
   } catch (error) {
     console.error("Error fetching appointments:", error);
     res.status(500);
