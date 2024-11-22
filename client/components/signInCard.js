@@ -1,26 +1,20 @@
 "use client";
 
 import {
-  Box,
   Button,
   Card,
   CardContent,
   CardActions,
   CardMedia,
-  Divider,
-  FormControl,
-  FormLabel,
-  Link,
-  TextField,
   Typography,
 } from "@mui/material/";
 import GoogleIcon from "@mui/icons-material/Google";
+import { signIn } from "next-auth/react";
 
 export default function SignInCard() {
-  async function handleSubmit(e) {
-    //!TODO: eventual code to authenticate login
-  }
-
+  const handleSubmit = () => {
+    const profile = signIn("google")
+  } 
   return (
     <Card variant="outlined" sx={{ minWidth: 375, p: 2 }}>
       <CardMedia
@@ -35,7 +29,7 @@ export default function SignInCard() {
             width: "100%",
             fontSize: "2rem",
             textAlign: "center",
-            color: theme => theme.palette.branding,
+            color: (theme) => theme.palette.branding,
           }}
         >
           Sign In
@@ -46,9 +40,10 @@ export default function SignInCard() {
           fullWidth
           variant="outlined"
           color="gray"
-          startIcon={<GoogleIcon sx={{ color: theme => theme.palette.branding }} />}
-          //!TODO: Google Auth flow triggers here
-          // onClick={() => alert('Sign in with Google')}
+          startIcon={
+            <GoogleIcon sx={{ color: (theme) => theme.palette.branding }} />
+          }
+          onClick={handleSubmit}
         >
           Sign in with Google
         </Button>
