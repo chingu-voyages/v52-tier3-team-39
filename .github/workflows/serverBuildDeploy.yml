@@ -10,7 +10,7 @@ jobs:
         runs-on: ubuntu-latest
         env:
             SSH_USER: ec2-user
-            SSH_HOST: ec2-54-177-26-87.us-west-1.compute.amazonaws.com
+            SSH_HOST: ec2-52-53-202-98.us-west-1.compute.amazonaws.com
             WEB_ROOT: /home/www
 
         steps:
