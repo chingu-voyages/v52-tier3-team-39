@@ -54,10 +54,10 @@ export async function getAllAppointments(req, res, next) {
 }
 
 export async function getSingleAppointment(req, res, next) {
-  const { id } = req.params;
+  const { email } = req.params;
   try {
     // get appointment with relation to user id in params
-    const appointment = await Appointment.findOne({ userId: id });
+    const appointment = await Appointment.findOne({ email });
     res.status(200);
     res.json(appointment);
   } catch (error) {
