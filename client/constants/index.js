@@ -1,6 +1,7 @@
 // Environment variables
 export const serverUrl = process.env.SERVER_URL;
 export const laCityKey = process.env.NEXT_PUBLIC_LACITY_KEY;
+export const googleApiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
 
 // External API Endpoints
 export const LA_CITY_API_BASE_URL =
