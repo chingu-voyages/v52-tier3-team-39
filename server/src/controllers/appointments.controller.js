@@ -56,7 +56,6 @@ export async function getAllAppointments(req, res, next) {
 export async function getSingleAppointment(req, res, next) {
   const { email } = req.params;
   try {
-    // get appointment with relation to user id in params
     const appointment = await Appointment.findOne({ email });
     res.status(200);
     res.json(appointment);

@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { serverUrl } from "@/constants";
 
+// CREATE NEW APPT
 export async function requestAppt(formValues) {
   const response = await fetch(serverUrl + "appointments", {
     method: "POST",
@@ -18,6 +19,7 @@ export async function requestAppt(formValues) {
   redirect("/new-appointment/success");
 }
 
+// GET ALL APPTS
 export async function fetchAppointments() {
   const response = await fetch(serverUrl + "appointments", {
     cache: "no-store",
@@ -74,4 +76,17 @@ export async function fetchAppointments() {
     email: item.email,
     address: formatAddress(item.address),
   }));
+}
+
+// GET SINGLE APPT
+//! switch email to google id
+export async function fetchSingleAppointment(email) {
+  const response = await fetch(serverUrl + `appointments/${email}`);
+  const data = await response.json();
+
+  if (!response.ok) {
+    return { message: data.message };
+  }
+
+  return data;
 }

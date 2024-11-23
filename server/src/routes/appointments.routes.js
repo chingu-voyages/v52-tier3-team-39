@@ -14,6 +14,7 @@ router.post("/", newAppointment);
 router.get("/", getAllAppointments);
 
 // GET "/appointments/:id"
-router.get("/:id", getSingleAppointment);
+//! update param to googleid
+router.get("/:email", getSingleAppointment);
 
 export default router;
