@@ -9,6 +9,10 @@ const formSchema = new mongoose.Schema({
     earlyTimeHour: Number,
     lateTimeHour: Number,
   },
+  location: {
+    lat: Number,
+    lng: Number,
+  },
   dateCreated: { type: Date, default: Date.now },
   status: {
     type: String,
