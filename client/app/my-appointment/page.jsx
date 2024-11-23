@@ -7,12 +7,25 @@
 // null response state
 // form data state
 
+import { Suspense } from "react";
+import { Box, Stack, Typography } from "@mui/material";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth";
-import { fetchSingleAppointment } from "@/actions/form";
+import MyAppointment from "@/components/appointment/MyAppointment";
 
 export default async function MyAppointmentView() {
   const { user } = await getServerSession(authOptions);
-  const fetchResponse = await fetchSingleAppointment(user.email);
-  return <h1>My Appointment</h1>;
+
+  return (
+    <Box>
+      <Stack direction="column">
+        <Typography component="h1" variant="h2">
+          My Appointment
+        </Typography>
+        <Suspense fallback={<p>Loading...</p>}>
+          <MyAppointment email={user.email} />
+        </Suspense>
+      </Stack>
+    </Box>
+  );
 }
