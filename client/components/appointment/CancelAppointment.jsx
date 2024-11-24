@@ -21,11 +21,12 @@ export default function CancelAppointment({ email }) {
   const handleClose = () => setOpen(false);
   const handleClick = () => handleOpen();
   const handleConfirm = async () => {
-    const res = await cancelAppointment(email);
-    if (res) {
+    const err = await cancelAppointment(email);
+    if (err) {
       setToast(true);
-      setToastMsg(res.message);
+      setToastMsg(err.message);
     }
+    handleClose();
   };
   const handleToastClose = (event, reason) => {
     if (reason === "clickaway") {

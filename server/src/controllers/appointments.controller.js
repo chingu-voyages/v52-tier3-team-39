@@ -69,8 +69,21 @@ export async function getSingleAppointment(req, res, next) {
 export async function cancelAppointment(req, res, next) {
   const { email } = req.body;
   try {
+    const response = await Appointment.updateOne(
+      {
+        email,
+        status: { $in: ["Pending", "Confirmed"] },
+      },
+      { status: "Cancelled" }
+    );
+
+    if (!response.modifiedCount) {
+      res.status(400);
+      return next({ message: "Invalid request" });
+    }
+
     res.status(200);
-    res.json(email);
+    res.json({ message: "ok" });
   } catch (error) {
     console.error(error);
     res.status(500);

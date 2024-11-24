@@ -92,7 +92,7 @@ export async function cancelAppointment(email) {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     //! include token in request
-    body: JSON.stringify(email),
+    body: JSON.stringify({ email }),
   });
   const data = await response.json();
 
@@ -100,5 +100,5 @@ export async function cancelAppointment(email) {
     return { message: data.message };
   }
 
-  return data;
+  return;
 }
