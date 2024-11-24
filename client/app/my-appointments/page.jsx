@@ -8,10 +8,20 @@ export default async function MyAppointmentView() {
   const { user } = await getServerSession(authOptions);
 
   return (
-    <Box>
+    <Box
+      sx={{
+        width: { xs: 1, sm: 4 / 5, md: 3 / 4, lg: 3 / 5 },
+        marginY: { xs: 2, lg: 4 },
+        marginX: "auto",
+      }}
+    >
       <Stack direction="column">
-        <Typography component="h1" variant="h2">
-          My Appointment
+        <Typography
+          component="h1"
+          variant="h1"
+          sx={{ fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" } }}
+        >
+          My Appointments
         </Typography>
         <Suspense fallback={<p>Loading...</p>}>
           <MyAppointment email={user.email} />
