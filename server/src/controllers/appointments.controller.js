@@ -60,7 +60,19 @@ export async function getSingleAppointment(req, res, next) {
     res.status(200);
     res.json(appointment);
   } catch (error) {
-    console.error("Error fetching appointments:", error);
+    console.error(error);
+    res.status(500);
+    return next({ message: "An internal server error occurred" });
+  }
+}
+
+export async function cancelAppointment(req, res, next) {
+  const { email } = req.body;
+  try {
+    res.status(200);
+    res.json(email);
+  } catch (error) {
+    console.error(error);
     res.status(500);
     return next({ message: "An internal server error occurred" });
   }

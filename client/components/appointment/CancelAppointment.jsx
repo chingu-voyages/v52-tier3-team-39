@@ -1,19 +1,56 @@
 "use client";
 import { useState } from "react";
-import { Box, Button, Modal, Stack, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Modal,
+  Snackbar,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { cancelAppointment } from "@/actions/form";
 
 export default function CancelAppointment({ email }) {
+  // state
   const [open, setOpen] = useState(false);
+  const [toast, setToast] = useState(false);
+  const [toastMsg, setToastMsg] = useState("");
+  // handlers
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleClick = () => handleOpen();
   const handleConfirm = async () => {
     const res = await cancelAppointment(email);
-    console.log("🚀 ~ handleConfirm ~ res:", res);
+    if (res) {
+      setToast(true);
+      setToastMsg(res.message);
+    }
+  };
+  const handleToastClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setToast(false);
+    setToastMsg("");
   };
   return (
     <>
+      <Snackbar
+        open={toast}
+        autoHideDuration={6000}
+        onClose={handleToastClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        <Alert
+          onClose={handleToastClose}
+          severity="error"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {toastMsg}
+        </Alert>
+      </Snackbar>
       <Modal open={open} onClose={handleClose}>
         <Box
           sx={{
