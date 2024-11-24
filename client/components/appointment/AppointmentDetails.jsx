@@ -87,7 +87,7 @@ export default function AppointmentDetails({ formData }) {
           </Stack>
         </List>
       </CardContent>
-      <CancelAppointment />
+      <CancelAppointment email={email} />
     </Card>
   );
 }

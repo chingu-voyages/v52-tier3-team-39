@@ -84,3 +84,21 @@ export async function fetchSingleAppointment(email) {
   const response = await fetch(serverUrl + `appointments/${email}`);
   return response.json();
 }
+
+// UPDATE SINGLE APPT STATUS
+//! switch email to google id
+export async function cancelAppointment(email) {
+  const response = await fetch(serverUrl + "appointments/cancel", {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    //! include token in request
+    body: JSON.stringify(email),
+  });
+  const data = await response.json();
+
+  if (!response.ok) {
+    return { message: data.message };
+  }
+
+  return data;
+}
