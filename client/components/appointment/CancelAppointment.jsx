@@ -1,58 +1,36 @@
 "use client";
 import { useState } from "react";
-import {
-  Alert,
-  Box,
-  Button,
-  Modal,
-  Snackbar,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Modal, Stack, Typography } from "@mui/material";
 import { cancelAppointment } from "@/actions/form";
+import ErrorToast from "../errors/ErrorToast";
 
 export default function CancelAppointment({ email }) {
   // state
-  const [open, setOpen] = useState(false);
+  const [modal, setModal] = useState(false);
   const [toast, setToast] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
-  // handlers
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const handleClick = () => handleOpen();
+
   const handleConfirm = async () => {
     const err = await cancelAppointment(email);
     if (err) {
       setToast(true);
       setToastMsg(err.message);
     }
-    handleClose();
+    setModal(false);
   };
-  const handleToastClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setToast(false);
-    setToastMsg("");
-  };
+
   return (
     <>
-      <Snackbar
-        open={toast}
-        autoHideDuration={6000}
-        onClose={handleToastClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert
-          onClose={handleToastClose}
-          severity="error"
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {toastMsg}
-        </Alert>
-      </Snackbar>
-      <Modal open={open} onClose={handleClose}>
+      {/* ERROR TOAST */}
+      <ErrorToast
+        toast={toast}
+        setToast={setToast}
+        toastMsg={toastMsg}
+        setToastMsg={setToastMsg}
+      />
+
+      {/* CONFIRMATION MODAL */}
+      <Modal open={modal} onClose={() => setModal(false)}>
         <Box
           sx={{
             position: "absolute",
@@ -78,7 +56,7 @@ export default function CancelAppointment({ email }) {
               variant="outlined"
               color="warning"
               sx={{ width: { xs: 1, sm: 1 / 2 } }}
-              onClick={handleClose}
+              onClick={() => setModal(false)}
             >
               Cancel
             </Button>
@@ -92,8 +70,14 @@ export default function CancelAppointment({ email }) {
           </Stack>
         </Box>
       </Modal>
+
+      {/* CANCEL BUTTON */}
       <Box>
-        <Button variant="outlined" color="warning" onClick={handleClick}>
+        <Button
+          variant="outlined"
+          color="warning"
+          onClick={() => setModal(true)}
+        >
           Cancel Appointment
         </Button>
       </Box>

@@ -5,18 +5,17 @@ import { redirect } from "next/navigation";
 import Joi from "joi";
 import dayjs from "dayjs";
 import {
-  Alert,
   Button,
   FormControl,
   InputLabel,
   Input,
   FormHelperText,
-  Snackbar,
   Stack,
 } from "@mui/material";
 import TimeRangeInput from "./TimeRangeInput";
 import { requestAppt } from "@/actions/form";
 import AutocompleteAddress from "./AutocompleteAddress";
+import ErrorToast from "../errors/ErrorToast";
 
 const schema = Joi.object({
   name: Joi.string().min(2).max(255).required().trim(),
@@ -59,14 +58,6 @@ export default function Form() {
   const [toastMsg, setToastMsg] = useState("");
   const [disableBtn, setDisableBtn] = useState(null);
 
-  const handleToastClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setToast(false);
-    setToastMsg("");
-  };
-
   function handleCancel() {
     redirect("/new-appointment/cancel");
   }
@@ -90,31 +81,22 @@ export default function Form() {
       setErrorPath(error.details[0].path[0]);
       return;
     }
-    const res = await requestAppt(value);
+    const err = await requestAppt(value);
 
-    if (res) {
+    if (err) {
       setToast(true);
-      setToastMsg(res.message);
+      setToastMsg(err.message);
     }
   }
 
   return (
     <>
-      <Snackbar
-        open={toast}
-        autoHideDuration={6000}
-        onClose={handleToastClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert
-          onClose={handleToastClose}
-          severity="error"
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {toastMsg}
-        </Alert>
-      </Snackbar>
+      <ErrorToast
+        toast={toast}
+        setToast={setToast}
+        toastMsg={toastMsg}
+        setToastMsg={setToastMsg}
+      />
       <form
         className="flex flex-col gap-4 w-full md:w-1/2 mx-auto mt-12"
         onSubmit={handleSubmit}
