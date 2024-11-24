@@ -3,11 +3,11 @@ import {
   CardContent,
   Divider,
   List,
-  ListItem,
   Stack,
   Typography,
 } from "@mui/material";
 import AppointmentListItem from "./AppointmentListItem";
+import CancelAppointment from "./CancelAppointment";
 
 function convertHourTo12HourTime(hour) {
   const period = hour >= 12 ? "PM" : "AM";
@@ -87,6 +87,7 @@ export default function AppointmentDetails({ formData }) {
           </Stack>
         </List>
       </CardContent>
+      <CancelAppointment />
     </Card>
   );
 }

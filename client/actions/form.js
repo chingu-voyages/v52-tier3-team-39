@@ -82,11 +82,5 @@ export async function fetchAppointments() {
 //! switch email to google id
 export async function fetchSingleAppointment(email) {
   const response = await fetch(serverUrl + `appointments/${email}`);
-  const data = await response.json();
-
-  if (!response.ok) {
-    return { message: data.message };
-  }
-
-  return data;
+  return response.json();
 }
