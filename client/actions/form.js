@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { serverUrl } from "@/constants";
 
 // CREATE NEW APPT
@@ -100,5 +101,5 @@ export async function cancelAppointment(email) {
     return { message: data.message };
   }
 
-  return;
+  revalidatePath("/my-appointments");
 }
