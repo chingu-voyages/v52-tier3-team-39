@@ -28,6 +28,7 @@ export default function AppointmentDetails({ formData }) {
   const earlyTime = convertHourTo12HourTime(earlyTimeHour);
   const lateTime = convertHourTo12HourTime(lateTimeHour);
   const preferredTime = `${earlyTime} - ${lateTime}`;
+  const showCancelBtn = status === "Pending" || status === "Confirmed";
 
   return (
     <Card sx={{ mt: 4, padding: 2 }}>
@@ -87,7 +88,7 @@ export default function AppointmentDetails({ formData }) {
           </Stack>
         </List>
       </CardContent>
-      <CancelAppointment email={email} />
+      {showCancelBtn && <CancelAppointment email={email} />}
     </Card>
   );
 }
