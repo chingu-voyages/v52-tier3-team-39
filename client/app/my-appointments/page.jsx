@@ -5,7 +5,11 @@ import { authOptions } from "@/auth";
 import MyAppointment from "@/components/appointment/MyAppointment";
 
 export default async function MyAppointmentView() {
-  const { user } = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return <p>You must be signed in to make an appointment</p>;
+  }
 
   return (
     <Box
@@ -24,7 +28,7 @@ export default async function MyAppointmentView() {
           My Appointments
         </Typography>
         <Suspense fallback={<p>Loading...</p>}>
-          <MyAppointment email={user.email} />
+          <MyAppointment email={session.user.email} />
         </Suspense>
       </Stack>
     </Box>

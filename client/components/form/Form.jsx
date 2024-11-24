@@ -5,12 +5,14 @@ import { redirect } from "next/navigation";
 import Joi from "joi";
 import dayjs from "dayjs";
 import {
+  Box,
   Button,
   FormControl,
   InputLabel,
   Input,
   FormHelperText,
   Stack,
+  Typography,
 } from "@mui/material";
 import TimeRangeInput from "./TimeRangeInput";
 import { requestAppt } from "@/actions/form";
@@ -39,10 +41,9 @@ const schema = Joi.object({
     .greater(Joi.ref("earlyTimeHour")),
 });
 
-export default function Form() {
+export default function Form({ email }) {
   // capture state
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [earlyTime, setEarlyTime] = useState(
     dayjs().hour(9).minute(0).second(0)
@@ -97,96 +98,86 @@ export default function Form() {
         toastMsg={toastMsg}
         setToastMsg={setToastMsg}
       />
-      <form
-        className="flex flex-col gap-4 w-full md:w-1/2 mx-auto mt-12"
-        onSubmit={handleSubmit}
+      <Stack
+        gap={2}
+        sx={{ width: { xs: 1, md: 1 / 2 }, marginX: "auto", marginY: 8 }}
       >
-        <FormControl>
-          <InputLabel htmlFor="name">Name</InputLabel>
-          <Input
-            id="name"
-            aria-describedby="name-error-text"
-            value={name}
-            onChange={(event) => {
-              setName(event.currentTarget.value);
-            }}
-          />
-          {errorPath && errorPath === "name" && (
-            <FormHelperText id="name-error-text" error>
-              {errorMsg}
-            </FormHelperText>
-          )}
-        </FormControl>
+        <Box>
+          <Typography color="textSecondary">Email: {email}</Typography>
+        </Box>
+        <form onSubmit={handleSubmit}>
+          <Stack direction="column" gap={4}>
+            <FormControl>
+              <InputLabel htmlFor="name">Name</InputLabel>
+              <Input
+                id="name"
+                aria-describedby="name-error-text"
+                value={name}
+                onChange={(event) => {
+                  setName(event.currentTarget.value);
+                }}
+              />
+              {errorPath && errorPath === "name" && (
+                <FormHelperText id="name-error-text" error>
+                  {errorMsg}
+                </FormHelperText>
+              )}
+            </FormControl>
 
-        <FormControl>
-          <InputLabel htmlFor="email">Email</InputLabel>
-          <Input
-            id="email"
-            aria-describedby="email-error-text"
-            value={email}
-            onChange={(event) => {
-              setEmail(event.currentTarget.value);
-            }}
-          />
-          {errorPath && errorPath === "email" && (
-            <FormHelperText id="email-error-text" error>
-              {errorMsg}
-            </FormHelperText>
-          )}
-        </FormControl>
+            <FormControl>
+              <InputLabel htmlFor="phone">Phone Number</InputLabel>
+              <Input
+                id="phone"
+                aria-describedby="phone-error-text"
+                value={phone}
+                onChange={(event) => {
+                  setPhone(event.currentTarget.value);
+                }}
+              />
+              {errorPath && errorPath === "phone" && (
+                <FormHelperText id="phone-error-text" error>
+                  {errorMsg}
+                </FormHelperText>
+              )}
+            </FormControl>
 
-        <FormControl>
-          <InputLabel htmlFor="phone">Phone Number</InputLabel>
-          <Input
-            id="phone"
-            aria-describedby="phone-error-text"
-            value={phone}
-            onChange={(event) => {
-              setPhone(event.currentTarget.value);
-            }}
-          />
-          {errorPath && errorPath === "phone" && (
-            <FormHelperText id="phone-error-text" error>
-              {errorMsg}
-            </FormHelperText>
-          )}
-        </FormControl>
+            <AutocompleteAddress setAddress={setAddress} />
 
-        <AutocompleteAddress setAddress={setAddress} />
+            <TimeRangeInput
+              earlyTime={earlyTime}
+              setEarlyTime={setEarlyTime}
+              lateTime={lateTime}
+              setLateTime={setLateTime}
+              errorMsg={errorMsg}
+              errorPath={errorPath}
+              setDisableBtn={setDisableBtn}
+            />
 
-        <TimeRangeInput
-          earlyTime={earlyTime}
-          setEarlyTime={setEarlyTime}
-          lateTime={lateTime}
-          setLateTime={setLateTime}
-          errorMsg={errorMsg}
-          errorPath={errorPath}
-          setDisableBtn={setDisableBtn}
-        />
-
-        <Stack
-          direction={{ sm: "column", lg: "row" }}
-          gap={2}
-          justifyContent="flex-end"
-        >
-          <Button
-            variant="outlined"
-            color="warning"
-            size="large"
-            onClick={handleCancel}
-          >
-            Cancel
-          </Button>
-          <Button
-            variant="contained"
-            size="large"
-            type="submit"
-            disabled={!!disableBtn}
-          >
-            Submit
-          </Button>
-        </Stack>
-      </form>
+            <Stack
+              direction={{ sm: "column", lg: "row" }}
+              gap={2}
+              justifyContent="flex-end"
+            >
+              <Button
+                variant="outlined"
+                color="warning"
+                size="large"
+                onClick={handleCancel}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                size="large"
+                type="submit"
+                disabled={!!disableBtn}
+              >
+                Submit
+              </Button>
+            </Stack>
+          </Stack>
+        </form>
+      </Stack>
     </>
   );
 }

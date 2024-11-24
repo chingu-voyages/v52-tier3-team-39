@@ -16,6 +16,11 @@ const navLinks = [
     protected: false,
   },
   {
+    label: "My Appointments",
+    href: "/my-appointments",
+    protected: false,
+  },
+  {
     label: "Dashboard",
     href: "/admin-dashboard",
     protected: true,
