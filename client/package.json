@@ -19,6 +19,7 @@
     "@mui/material-nextjs": "^6.1.6",
     "@mui/x-data-grid": "^7.22.2",
     "@mui/x-date-pickers": "^7.22.2",
+    "@react-google-maps/api": "^2.20.3",
     "@tarekraafat/autocomplete.js": "^10.2.9",
     "dayjs": "^1.11.13",
     "joi": "^17.13.3",

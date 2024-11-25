@@ -46,7 +46,7 @@ export default function FormCancelView() {
           <ListItem>
             <Box
               component={Link}
-              href="/form"
+              href="/new-appointment"
               sx={(theme) => ({ ":hover": { color: theme.palette.branding } })}
             >
               <Stack direction="row" gap={2} alignItems="center">

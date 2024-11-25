@@ -5,18 +5,19 @@ import { redirect } from "next/navigation";
 import Joi from "joi";
 import dayjs from "dayjs";
 import {
-  Alert,
+  Box,
   Button,
   FormControl,
   InputLabel,
   Input,
   FormHelperText,
-  Snackbar,
   Stack,
+  Typography,
 } from "@mui/material";
 import TimeRangeInput from "./TimeRangeInput";
 import { requestAppt } from "@/actions/form";
 import AutocompleteAddress from "./AutocompleteAddress";
+import ErrorToast from "../errors/ErrorToast";
 
 const schema = Joi.object({
   name: Joi.string().min(2).max(255).required().trim(),
@@ -40,10 +41,9 @@ const schema = Joi.object({
     .greater(Joi.ref("earlyTimeHour")),
 });
 
-export default function Form() {
+export default function Form({ email }) {
   // capture state
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [earlyTime, setEarlyTime] = useState(
     dayjs().hour(9).minute(0).second(0)
@@ -59,16 +59,8 @@ export default function Form() {
   const [toastMsg, setToastMsg] = useState("");
   const [disableBtn, setDisableBtn] = useState(null);
 
-  const handleToastClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setToast(false);
-    setToastMsg("");
-  };
-
   function handleCancel() {
-    redirect("/form/cancel");
+    redirect("/new-appointment/cancel");
   }
 
   async function handleSubmit(e) {
@@ -90,121 +82,102 @@ export default function Form() {
       setErrorPath(error.details[0].path[0]);
       return;
     }
-    const res = await requestAppt(value);
+    const err = await requestAppt(value);
 
-    if (res) {
+    if (err) {
       setToast(true);
-      setToastMsg(res.message);
+      setToastMsg(err.message);
     }
   }
 
   return (
     <>
-      <Snackbar
-        open={toast}
-        autoHideDuration={6000}
-        onClose={handleToastClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      <ErrorToast
+        toast={toast}
+        setToast={setToast}
+        toastMsg={toastMsg}
+        setToastMsg={setToastMsg}
+      />
+      <Stack
+        gap={2}
+        sx={{ width: { xs: 1, md: 1 / 2 }, marginX: "auto", marginY: 8 }}
       >
-        <Alert
-          onClose={handleToastClose}
-          severity="error"
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {toastMsg}
-        </Alert>
-      </Snackbar>
-      <form
-        className="flex flex-col gap-4 w-full md:w-1/2 mx-auto mt-12"
-        onSubmit={handleSubmit}
-      >
-        <FormControl>
-          <InputLabel htmlFor="name">Name</InputLabel>
-          <Input
-            id="name"
-            aria-describedby="name-error-text"
-            value={name}
-            onChange={(event) => {
-              setName(event.currentTarget.value);
-            }}
-          />
-          {errorPath && errorPath === "name" && (
-            <FormHelperText id="name-error-text" error>
-              {errorMsg}
-            </FormHelperText>
-          )}
-        </FormControl>
+        <Box>
+          <Typography color="textSecondary">Email: {email}</Typography>
+        </Box>
+        <form onSubmit={handleSubmit}>
+          <Stack direction="column" gap={4}>
+            <FormControl>
+              <InputLabel htmlFor="name">Name</InputLabel>
+              <Input
+                id="name"
+                aria-describedby="name-error-text"
+                value={name}
+                onChange={(event) => {
+                  setName(event.currentTarget.value);
+                }}
+              />
+              {errorPath && errorPath === "name" && (
+                <FormHelperText id="name-error-text" error>
+                  {errorMsg}
+                </FormHelperText>
+              )}
+            </FormControl>
 
-        <FormControl>
-          <InputLabel htmlFor="email">Email</InputLabel>
-          <Input
-            id="email"
-            aria-describedby="email-error-text"
-            value={email}
-            onChange={(event) => {
-              setEmail(event.currentTarget.value);
-            }}
-          />
-          {errorPath && errorPath === "email" && (
-            <FormHelperText id="email-error-text" error>
-              {errorMsg}
-            </FormHelperText>
-          )}
-        </FormControl>
+            <FormControl>
+              <InputLabel htmlFor="phone">Phone Number</InputLabel>
+              <Input
+                id="phone"
+                aria-describedby="phone-error-text"
+                value={phone}
+                onChange={(event) => {
+                  setPhone(event.currentTarget.value);
+                }}
+              />
+              {errorPath && errorPath === "phone" && (
+                <FormHelperText id="phone-error-text" error>
+                  {errorMsg}
+                </FormHelperText>
+              )}
+            </FormControl>
 
-        <FormControl>
-          <InputLabel htmlFor="phone">Phone Number</InputLabel>
-          <Input
-            id="phone"
-            aria-describedby="phone-error-text"
-            value={phone}
-            onChange={(event) => {
-              setPhone(event.currentTarget.value);
-            }}
-          />
-          {errorPath && errorPath === "phone" && (
-            <FormHelperText id="phone-error-text" error>
-              {errorMsg}
-            </FormHelperText>
-          )}
-        </FormControl>
+            <AutocompleteAddress setAddress={setAddress} />
 
-        <AutocompleteAddress setAddress={setAddress} />
+            <TimeRangeInput
+              earlyTime={earlyTime}
+              setEarlyTime={setEarlyTime}
+              lateTime={lateTime}
+              setLateTime={setLateTime}
+              errorMsg={errorMsg}
+              errorPath={errorPath}
+              setDisableBtn={setDisableBtn}
+            />
 
-        <TimeRangeInput
-          earlyTime={earlyTime}
-          setEarlyTime={setEarlyTime}
-          lateTime={lateTime}
-          setLateTime={setLateTime}
-          errorMsg={errorMsg}
-          errorPath={errorPath}
-          setDisableBtn={setDisableBtn}
-        />
-
-        <Stack
-          direction={{ sm: "column", lg: "row" }}
-          gap={2}
-          justifyContent="flex-end"
-        >
-          <Button
-            variant="outlined"
-            color="warning"
-            size="large"
-            onClick={handleCancel}
-          >
-            Cancel
-          </Button>
-          <Button
-            variant="contained"
-            size="large"
-            type="submit"
-            disabled={!!disableBtn}
-          >
-            Submit
-          </Button>
-        </Stack>
-      </form>
+            <Stack
+              direction={{ sm: "column", lg: "row" }}
+              gap={2}
+              justifyContent="flex-end"
+            >
+              <Button
+                variant="outlined"
+                color="warning"
+                size="large"
+                onClick={handleCancel}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                size="large"
+                type="submit"
+                disabled={!!disableBtn}
+              >
+                Submit
+              </Button>
+            </Stack>
+          </Stack>
+        </form>
+      </Stack>
     </>
   );
 }
