@@ -11,10 +11,12 @@ import {
 import GoogleIcon from "@mui/icons-material/Google";
 import { signIn } from "next-auth/react";
 
-export default function SignInCard() {
+export default async function SignInCard() {
+
   const handleSubmit = () => {
-    const profile = signIn("google")
+    signIn("google")
   } 
+
   return (
     <Card variant="outlined" sx={{ minWidth: 375, p: 2 }}>
       <CardMedia
