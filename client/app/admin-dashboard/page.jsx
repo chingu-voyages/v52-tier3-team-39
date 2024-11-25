@@ -10,7 +10,7 @@ export default async function AdminDashboardView() {
   if (!session) {
     return <p>You must be an admin to view this page.</p>;
   }
-  if (session.user.role == "admin") {
+  if (session.user.role === "admin") {
     return (
       <div>
         <Typography variant="h1">Reservations:</Typography>

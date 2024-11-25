@@ -14,7 +14,7 @@ export async function checkRole(req, res) {
     }
   }
   else {
-    res.json({ role: "resident" })
+    res.json({ role: "user" })
   }
 
 }
