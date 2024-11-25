@@ -6,6 +6,7 @@ import formRouter from "./routes/form.route.js";
 import connectDb from "./config/db.js";
 import { port, dbConnectStr } from "./config/env.js";
 import appointmentsRouter from "./routes/appointments.routes.js";
+import userRouter from "./routes/user.route.js";
 
 const app = express();
 
@@ -17,10 +18,7 @@ app.use(bodyParser.json());
 //! enable all CORS requests
 app.use(cors());
 
-app.use("/user", (req, res) => {
-  return res.json({ role: "admin" });
-});
-
+app.use("/user", userRouter);
 app.use("/form", formRouter);
 app.use("/appointments", appointmentsRouter);
 app.use("/database-health", async (_, res) => {
