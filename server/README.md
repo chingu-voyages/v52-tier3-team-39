@@ -81,7 +81,7 @@ Response object
 #### Create new appointment request
 
 ```
-POST base_url + '/form'
+POST base_url + '/appointments'
 
 Request object:
 
