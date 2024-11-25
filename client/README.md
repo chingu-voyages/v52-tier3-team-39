@@ -18,6 +18,9 @@ Create a `.env` file in the root of the `client` directory:
 ```
 SERVER_URL=http://localhost:4000/
 NEXT_PUBLIC_LACITY_KEY=[key]
+GOOGLE_CLIENT_ID=[key]
+GOOGLE_CLIENT_SECRET=[key]
+AUTH_SECRET=[key]
 ```
 
 Note: `NEXT_PUBLIC_` is a necessary prefix for any environment variable exposed to the browser.
