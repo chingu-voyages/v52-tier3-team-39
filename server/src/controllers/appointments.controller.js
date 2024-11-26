@@ -1,6 +1,9 @@
 import Appointment from "../models/appointments.model.js";
 import appointmentSchema from "../validators/appointments.validator.js";
-import emailHelper from "../utils/emailHelper.js";
+import emailHelper, {
+  apptRequestConfirmationHtml,
+  apptRequestConfirmationText,
+} from "../utils/emailHelper.js";
 
 export async function newAppointment(req, res, next) {
   try {
@@ -28,7 +31,12 @@ export async function newAppointment(req, res, next) {
     // await newAppt.save();
 
     // send mock appt confirmation email
-    emailHelper(email, earlyTimeHour, lateTimeHour);
+    const emailPreviewUrl = await emailHelper({
+      email,
+      subject: "Appointment Request Received",
+      text: apptRequestConfirmationText(req.body),
+      html: apptRequestConfirmationHtml(req.body),
+    });
 
     // send success response
     res.status(201);

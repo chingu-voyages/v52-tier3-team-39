@@ -1,33 +1,69 @@
 import nodemailer from "nodemailer";
 import { mockEmailPass, mockEmailUser } from "../config/env.js";
+import { convertTimeRange } from "./dateTimeHelper.js";
 
-const emailHelper = (email, earlyTime, lateTime) => {
-  const transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    secure: false,
-    auth: {
-      user: mockEmailUser,
-      pass: mockEmailPass,
-    },
-  });
+export const apptRequestConfirmationText = (formData) => {
+  const timeRange = convertTimeRange(
+    formData.earlyTimeHour,
+    formData.lateTimeHour
+  );
 
-  const message = {
-    from: "Sender Name donotreply.rayvolution.com",
-    to: `Recipient ${email}`,
-    subject: "Appointment Request Confirmation",
-    text: `Your preferred time range is ${earlyTime} to ${lateTime}`,
-    html: `<p><b>Hello ${email}</b>, your preferred time range is ${earlyTime} to ${lateTime}`,
-  };
+  return `Hi ${formData.name}. Thank you for scheduling an appointment with us! We’ve received your request for an appointment between ${timeRange.early} and ${timeRange.late} at ${formData.address}. Please note the date and time have not yet been finalized. We’ll confirm these details and notify you the night before your visit. If you have any questions or need assistance, feel free to contact us. We look forward to seeing you soon! Best regards, RayVolution.`;
+};
 
-  transporter.sendMail(message, (err, info) => {
-    if (err) {
-      console.log("Error occurred. " + err.message);
-      return process.exit(1);
-    }
-    console.log("Message sent: %s", info.messageId);
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-  });
+export const apptRequestConfirmationHtml = (formData) => {
+  const timeRange = convertTimeRange(
+    formData.earlyTimeHour,
+    formData.lateTimeHour
+  );
+
+  return `
+    <div>
+      <div>
+        <h1>RayVolution</h1>
+      </div>
+      <div>
+        <h2>Your Appointment Request</h2>
+      </div>
+      <div>
+        <p>Hi ${formData.name},</p>
+        <p>Thank you for scheduling an appointment with us!</p>
+        <p>
+          We’ve received your request for an appointment between ${timeRange.early} and ${timeRange.late} at ${formData.address}. Please note the date and time have not yet been finalized. We’ll confirm these details and notify you the night before your visit.
+        </p>
+        <p>If you have any questions or need assistance, feel free to contact us.</p><p>We look forward to seeing you soon!</p>
+        <p>Best regards,<br>RayVolution</p>
+      </div>
+    </div>
+  `;
+};
+
+const emailHelper = async ({ email, subject, text, html }) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      host: "smtp.ethereal.email",
+      port: 587,
+      secure: false,
+      auth: {
+        user: mockEmailUser,
+        pass: mockEmailPass,
+      },
+    });
+
+    const message = {
+      from: "Sender Name nxtwd4cqgh2i3sze@ethereal.email",
+      to: `Recipient ${email}`,
+      subject,
+      text,
+      html,
+    };
+
+    const result = await transporter.sendMail(message);
+    return nodemailer.getTestMessageUrl(result);
+  } catch (error) {
+    console.log(error.message);
+    return next({ message: "Error sending mock email" });
+  }
 };
 
 export default emailHelper;
