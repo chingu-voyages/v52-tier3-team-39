@@ -1,5 +1,7 @@
+import nodemailer from "nodemailer";
 import Appointment from "../models/appointments.model.js";
 import appointmentSchema from "../validators/appointments.validator.js";
+import { mockEmailPass, mockEmailUser } from "../config/env.js";
 
 export async function newAppointment(req, res, next) {
   try {
@@ -12,16 +14,47 @@ export async function newAppointment(req, res, next) {
     }
 
     // send value to db
-    const { earlyTimeHour, lateTimeHour, ...rest } = req.body;
+    const { earlyTimeHour, lateTimeHour, email, ...rest } = req.body;
+
     const newAppt = new Appointment({
       ...rest,
+      email,
       userId: "Insert Id Here",
       timeRange: {
         earlyTimeHour,
         lateTimeHour,
       },
     });
-    await newAppt.save();
+
+    // await newAppt.save();
+
+    // create fake SMTP email
+    const transporter = nodemailer.createTransport({
+      host: "smtp.ethereal.email",
+      port: 587,
+      secure: false,
+      auth: {
+        user: mockEmailUser,
+        pass: mockEmailPass,
+      },
+    });
+
+    const message = {
+      from: "Sender Name nxtwd4cqgh2i3sze@ethereal.email",
+      to: `Recipient ${email}`,
+      subject: "Nodemailer is unicode friendly ✔",
+      text: "Hello to myself!",
+      html: "<p><b>Hello</b> to myself!</p>",
+    };
+
+    transporter.sendMail(message, (err, info) => {
+      if (err) {
+        console.log("Error occurred. " + err.message);
+        return process.exit(1);
+      }
+      console.log("Message sent: %s", info.messageId);
+      console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    });
 
     // send success response
     res.status(201);
