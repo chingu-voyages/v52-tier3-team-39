@@ -35,8 +35,8 @@ export const authOptions = {
       return session;
     },
     async redirect({ url, baseUrl }) {
-        return baseUrl + '/login-redirect'
-      }
+      return baseUrl + '/login-redirect'
+    }
   },
   secret: process.env.AUTH_SECRET,
 };

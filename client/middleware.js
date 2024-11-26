@@ -6,7 +6,7 @@ export default withAuth(
   function middleware(req) {
     const adminPaths = ['/admin-dashboard']
     if (adminPaths.includes(req.nextUrl.pathname)) {
-        return NextResponse.redirect(new URL("/unauthorized", req.nextUrl));
+      return NextResponse.redirect(new URL("/unauthorized", req.nextUrl));
     }
   },
   {
