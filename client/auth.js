@@ -34,6 +34,9 @@ export const authOptions = {
       session.user.role = token.role;
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      return baseUrl + '/login-redirect'
+    }
   },
   secret: process.env.AUTH_SECRET,
 };

@@ -4,18 +4,17 @@ import { withAuth } from "next-auth/middleware";
 export default withAuth(
   // `withAuth` augments your `Request` with the user's token.
   function middleware(req) {
-    if (req.nextauth.token.role === "admin"){
-      return NextResponse.redirect(new URL("/admin-dashboard", req.nextUrl));
-    }
-    else {
-      return NextResponse.redirect(new URL("/form", req.nextUrl));
+    const adminPaths = ['/admin-dashboard']
+    if (adminPaths.includes(req.nextUrl.pathname)) {
+      return NextResponse.redirect(new URL("/unauthorized", req.nextUrl));
     }
   },
   {
     callbacks: {
-      authorized: ({ token }) => token.id !== null,
+      authorized({ token }) {
+        if (token) return true;
+      },
     },
   }
 );
 
-export const config = { matcher: ["/landingPage"] };
