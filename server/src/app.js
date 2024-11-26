@@ -18,7 +18,6 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use("/user", userRouter);
-app.use("/form", formRouter);
 app.use("/appointments", appointmentsRouter);
 
 app.use("/database-health", async (_, res) => {
