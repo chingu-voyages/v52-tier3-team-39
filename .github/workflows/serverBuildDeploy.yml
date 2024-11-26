@@ -46,4 +46,4 @@ jobs:
                       pm2 delete ${{ env.WEB_ROOT}}/src/app.js 2> /dev/null
 
                       echo "Starting node server"
-                      PORT=4000 DATABASE_CONNECTION_STRING='${{ secrets.DATABASE_CONNECTION_STRING }}' pm2 start ${{ env.WEB_ROOT}}/src/app.js
+                      PORT=4000 DATABASE_CONNECTION_STRING='${{ secrets.DATABASE_CONNECTION_STRING }}' MY_TEST_DB=test pm2 start ${{ env.WEB_ROOT}}/src/app.js
