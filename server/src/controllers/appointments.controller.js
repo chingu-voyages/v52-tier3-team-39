@@ -4,20 +4,16 @@ import appointmentSchema from "../validators/appointments.validator.js";
 export async function geocodeAddress(address) {
   const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.GOOGLE_API_KEY}`;
 
-  try {
-    const resp = await fetch(geocodeUrl);
-    const data = await resp.json();
-    console.log(data);
-    if (data.status === "OK") {
-      const geodata = data.results[0].geometry.location;
-      console.log("geodata", geodata);
+  const resp = await fetch(geocodeUrl);
+  const data = await resp.json();
+  console.log(data);
+  if (data.status === "OK") {
+    const geodata = data.results[0].geometry.location;
+    console.log("geodata", geodata);
 
-      return geodata;
-    }
-  } catch (error) {
-    console.log("Geocoding error", error.message);
-    throw error;
+    return geodata;
   }
+  throw new Error(`Geocoding issue: ${data.status}`);
 }
 
 export async function newAppointment(req, res, next) {
@@ -43,6 +39,7 @@ export async function newAppointment(req, res, next) {
         lateTimeHour,
       },
       location: coords,
+      address,
     });
     await newAppt.save();
 
