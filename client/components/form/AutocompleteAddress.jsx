@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import autoComplete from "@tarekraafat/autocomplete.js";
-import { FormControl, InputLabel, Input } from "@mui/material";
+import { FormControl, InputLabel, Input, FormHelperText } from "@mui/material";
 import { laCityKey, LA_CITY_API_BASE_URL } from "@/constants";
 
-export default function Autocomplete({ address, setAddress }) {
+export default function Autocomplete({ address, setAddress, errorMsg }) {
   const [addresses, setAddresses] = useState([]);
 
   useEffect(() => {
@@ -59,6 +59,11 @@ export default function Autocomplete({ address, setAddress }) {
     <FormControl>
       <InputLabel htmlFor="address">Address</InputLabel>
       <Input id="autoComplete" aria-describedby="phone-error-text" />
+      {errorMsg && (
+        <FormHelperText id="name-error-text" error>
+          {errorMsg}
+        </FormHelperText>
+      )}
     </FormControl>
   );
 }

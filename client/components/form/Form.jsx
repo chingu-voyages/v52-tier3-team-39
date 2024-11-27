@@ -52,7 +52,6 @@ export default function Form({ email }) {
     dayjs().hour(10).minute(0).second(0)
   );
   const [address, setAddress] = useState("");
-  // error state
   const [errorMsg, setErrorMsg] = useState("");
   const [errorPath, setErrorPath] = useState("");
   const [toast, setToast] = useState(false);
@@ -140,8 +139,10 @@ export default function Form({ email }) {
                 </FormHelperText>
               )}
             </FormControl>
-
-            <AutocompleteAddress setAddress={setAddress} />
+            <AutocompleteAddress
+              setAddress={setAddress}
+              errorMsg={errorPath === "address" ? errorMsg : undefined}
+            />
 
             <TimeRangeInput
               earlyTime={earlyTime}
