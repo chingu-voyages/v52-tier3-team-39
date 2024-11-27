@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 
-const formSchema = new mongoose.Schema({
+const appointmentSchema = new mongoose.Schema({
   name: String,
+  userId: String, // relation: User.googleId
   email: String,
   phone: String,
   address: String,
@@ -21,6 +22,10 @@ const formSchema = new mongoose.Schema({
   },
 });
 
-const Form = mongoose.model("Form", formSchema, "forms");
+const Appointment = mongoose.model(
+  "Appointment",
+  appointmentSchema,
+  "appointments"
+);
 
-export default Form;
+export default Appointment;

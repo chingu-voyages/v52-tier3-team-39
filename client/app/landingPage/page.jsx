@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { Stack, Typography } from "@mui/material/";
 import SignInCard from "@/components/signInCard";

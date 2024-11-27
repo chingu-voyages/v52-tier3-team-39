@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-const formSchema = Joi.object({
+const appointmentSchema = Joi.object({
   name: Joi.string().min(2).max(255).required().trim(),
   email: Joi.string()
     .email({
@@ -22,4 +22,4 @@ const formSchema = Joi.object({
     .greater(Joi.ref("earlyTimeHour")),
 });
 
-export default formSchema;
+export default appointmentSchema;
