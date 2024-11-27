@@ -10,7 +10,7 @@ export default async function AdminDashboardView() {
     <div>
       <Typography variant="h1">Reservations:</Typography>
       <Suspense fallback={<CircularProgress />}>
-        <ReservationTable />
+        <ReservationTable appointments={appointments} />
         <Map appointments={appointments} />
       </Suspense>
     </div>

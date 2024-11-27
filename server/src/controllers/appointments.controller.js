@@ -13,8 +13,6 @@ export async function geocodeAddress(address) {
       console.log("geodata", geodata);
 
       return geodata;
-    } else {
-      throw new Error(`Geocoding issue: ${data.status}`);
     }
   } catch (error) {
     console.log("Geocoding error", error.message);
