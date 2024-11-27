@@ -35,12 +35,6 @@ const formatPhone = (phone) => {
   return match ? `(${match[1]}) ${match[2]}-${match[3]}` : phone;
 };
 
-const formatAddress = (address) => {
-  const [firstPart, ...rest] = address.split(",");
-  const secondPart = rest.join(",").trim();
-  return `${firstPart}\n${secondPart}`;
-};
-
 const columns = [
   { field: "status", headerName: "Status", width: 190 },
   { valueFormatter: formatName, field: "name", headerName: "Name", width: 190 },
@@ -64,7 +58,6 @@ const columns = [
   },
   { field: "email", headerName: "Email", width: 190 },
   {
-    valueFormatter: formatAddress,
     field: "address",
     headerName: "Address",
     width: 190,
