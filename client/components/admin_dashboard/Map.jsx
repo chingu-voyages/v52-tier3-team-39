@@ -11,6 +11,8 @@ export default function Map({ appointments }) {
     height: "400px",
   };
 
+  const startCoords = appointments.map((item) => item.location);
+
   const onLoad = (mapInstance) => {
     mapRef.current = mapInstance;
     const markerEle =
@@ -22,16 +24,17 @@ export default function Map({ appointments }) {
         map: mapInstance,
       });
     });
-
-    return (
-      <LoadScript googleMapsApiKey={`${googleApiKey}&v=beta`}>
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={startCoords[0]}
-          zoom={15}
-          onLoad={onLoad}
-        />
-      </LoadScript>
-    );
   };
+  console.log(appointments[0]);
+
+  return (
+    <LoadScript googleMapsApiKey={`${googleApiKey}&v=beta`}>
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={startCoords[0]}
+        zoom={15}
+        onLoad={onLoad}
+      />
+    </LoadScript>
+  );
 }

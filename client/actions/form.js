@@ -39,6 +39,7 @@ export async function fetchAppointments() {
     phone: item.phone,
     email: item.email,
     address: item.address,
+    location: item.location,
   }));
 }
 
