@@ -7,18 +7,18 @@ import emailHelper, {
 
 export async function newAppointment(req, res, next) {
   try {
+    // handle validation errors
     const { error } = appointmentSchema.validate(req.body);
 
-    // handle validation errors
     if (error) {
       res.status(422);
       return next({ message: error.details[0].message });
     }
 
-    // send value to db
     const { earlyTimeHour, lateTimeHour, email, ...rest } = req.body;
 
-    const newAppt = new Appointment({
+    // add request data to the database
+    const appt = new Appointment({
       ...rest,
       email,
       userId: "Insert Id Here",
@@ -28,9 +28,9 @@ export async function newAppointment(req, res, next) {
       },
     });
 
-    // await newAppt.save();
+    const newAppt = await appt.save();
 
-    // send mock appt confirmation email
+    // send mock appt request email, add url to the database
     const emailPreviewUrl = await emailHelper({
       email,
       subject: "Appointment Request Received",
@@ -38,7 +38,13 @@ export async function newAppointment(req, res, next) {
       html: apptRequestConfirmationHtml(req.body),
     });
 
-    // send success response
+    if (emailPreviewUrl) {
+      await Appointment.updateOne(
+        { _id: newAppt._id },
+        { apptRequestEmail: emailPreviewUrl }
+      );
+    }
+
     res.status(201);
     res.json({ message: "ok" });
   } catch (error) {
