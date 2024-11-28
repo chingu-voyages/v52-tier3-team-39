@@ -11,17 +11,19 @@ export default function Map({ appointments }) {
     height: "400px",
   };
 
-  const startCoords = appointments.map((item) => item.location);
+  const startCoords = appointments.map((item) => ({ location: item.location, visitOrder: item.schedule.order, customerName: item.name }));
 
   const onLoad = (mapInstance) => {
     mapRef.current = mapInstance;
     const markerEle =
       google.maps.marker?.AdvancedMarkerElement ?? google.maps.Marker;
 
-    startCoords.forEach((location) => {
+    startCoords.forEach(({ location, visitOrder, customerName }) => {
       new markerEle({
         position: location,
         map: mapInstance,
+        title: customerName,
+        label: visitOrder.toString(),
       });
     });
   };
@@ -31,7 +33,7 @@ export default function Map({ appointments }) {
     <LoadScript googleMapsApiKey={`${googleApiKey}&v=beta`}>
       <GoogleMap
         mapContainerStyle={containerStyle}
-        center={startCoords[0]}
+        center={startCoords[0].location}
         zoom={15}
         onLoad={onLoad}
       />
