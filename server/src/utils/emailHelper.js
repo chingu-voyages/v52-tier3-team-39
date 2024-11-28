@@ -2,6 +2,8 @@ import nodemailer from "nodemailer";
 import { mockEmailPass, mockEmailUser } from "../config/env.js";
 import { convertTimeRange } from "./dateTimeHelper.js";
 
+const MOCK_EMAIL_ADDRESS = "nxtwd4cqgh2i3sze@ethereal.email";
+
 export const apptRequestConfirmationText = (formData) => {
   const timeRange = convertTimeRange(
     formData.earlyTimeHour,
@@ -51,7 +53,7 @@ const emailHelper = async ({ email, subject, text, html }) => {
     });
 
     const message = {
-      from: "Sender Name nxtwd4cqgh2i3sze@ethereal.email",
+      from: "Sender Name " + MOCK_EMAIL_ADDRESS,
       to: `Recipient ${email}`,
       subject,
       text,

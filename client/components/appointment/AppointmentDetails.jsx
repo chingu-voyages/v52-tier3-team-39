@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   Card,
   CardContent,
@@ -83,6 +84,25 @@ export default function AppointmentDetails({ formData }) {
                   label="Preferred Time"
                   value={preferredTime}
                 />
+              </Stack>
+            </Stack>
+            <Stack gap={1}>
+              <Typography
+                variant="subtitle2"
+                sx={{ fontSize: { xs: "0.9rem", lg: "1rem" } }}
+              >
+                Additional Information
+              </Typography>
+              <Stack gap={1 / 2}>
+                <Link
+                  href={formData.apptRequestEmail}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <AppointmentListItem
+                    value={"View Mock Request Received Email"}
+                  />
+                </Link>
               </Stack>
             </Stack>
           </Stack>

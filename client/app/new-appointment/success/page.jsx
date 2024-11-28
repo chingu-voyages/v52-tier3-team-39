@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Box, Divider, List, ListItem, Stack, Typography } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import EmailIcon from "@mui/icons-material/Email";
-import ArticleIcon from "@mui/icons-material/Article";
+import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth";
 import { fetchSingleAppointment } from "@/actions/form";
@@ -53,8 +53,8 @@ export default async function SuccessView() {
               rel="noreferrer"
             >
               <Stack direction="row" gap={2} alignItems="center">
-                <EmailIcon fontSize="small" />
-                <Typography variant="subtitle2">
+                <EmailOutlinedIcon fontSize="small" />
+                <Typography sx={{ fontSize: "0.9rem" }}>
                   View Mock <q>Request Received</q> Email
                 </Typography>
               </Stack>
@@ -63,8 +63,8 @@ export default async function SuccessView() {
           <ListItem disableGutters>
             <Box component={Link} href="/my-appointments">
               <Stack direction="row" gap={2} alignItems="center">
-                <ArticleIcon fontSize="small" />
-                <Typography variant="subtitle2">
+                <ArticleOutlinedIcon fontSize="small" />
+                <Typography sx={{ fontSize: "0.9rem" }}>
                   View Appointment Details
                 </Typography>
               </Stack>
@@ -72,6 +72,12 @@ export default async function SuccessView() {
           </ListItem>
         </List>
       </Stack>
+      <Typography
+        fontStyle="italic"
+        sx={{ "&::before": { content: '"* "' }, fontSize: "0.8rem" }}
+      >
+        Mock email expires after a few hours
+      </Typography>
     </Stack>
   );
 }
