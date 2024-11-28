@@ -1,4 +1,5 @@
 import Appointment from "../models/appointments.model.js";
+import { appendSchedule } from "../scheduling/scheduler.js";
 import appointmentSchema from "../validators/appointments.validator.js";
 
 export async function geocodeAddress(address) {
@@ -65,7 +66,8 @@ export async function newAppointment(req, res, next) {
 export async function getAllAppointments(req, res, next) {
   try {
     const appointments = await Appointment.find();
-    res.status(200).json(appointments);
+    const withScheduling = appendSchedule(appointments.map(a => a.toObject()));
+    res.status(200).json(withScheduling);
   } catch (error) {
     console.error("Error fetching appointments:", error);
     res.status(500);
