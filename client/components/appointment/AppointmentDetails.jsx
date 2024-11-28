@@ -107,6 +107,12 @@ export default function AppointmentDetails({ formData }) {
             </Stack>
           </Stack>
         </List>
+        <Typography
+          fontStyle="italic"
+          sx={{ "&::before": { content: '"* "' }, fontSize: "0.8rem" }}
+        >
+          Mock email expires after a few hours
+        </Typography>
       </CardContent>
       {showCancelBtn && <CancelAppointment email={email} />}
     </Card>
