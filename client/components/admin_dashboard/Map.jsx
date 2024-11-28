@@ -1,6 +1,6 @@
 "use client";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
-import { googleApiKey } from "@/constants";
+import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import { googleApiKey, appointmentsMapId } from "@/constants";
 import React, { useRef } from "react";
 
 export default function Map({ appointments }) {
@@ -11,31 +11,46 @@ export default function Map({ appointments }) {
     height: "400px",
   };
 
-  const startCoords = appointments.map((item) => ({ location: item.location, visitOrder: item.schedule.order, customerName: item.name }));
+  const startCoords = appointments.map(item => ({
+    location: item.location,
+    visitOrder: item.schedule.order,
+    customerName: item.name,
+  }));
 
-  const onLoad = (mapInstance) => {
+  const onLoad = async mapInstance => {
     mapRef.current = mapInstance;
-    const markerEle =
-      google.maps.marker?.AdvancedMarkerElement ?? google.maps.Marker;
+
+    const { AdvancedMarkerElement } = await google.maps.importLibrary(
+      "marker",
+    );
 
     startCoords.forEach(({ location, visitOrder, customerName }) => {
-      new markerEle({
+      const pin = new google.maps.marker.PinElement({
+        glyph: visitOrder.toString(),
+        glyphColor: "white",
+      });
+      new AdvancedMarkerElement({
         position: location,
         map: mapInstance,
         title: customerName,
-        label: visitOrder.toString(),
+        content: pin.element,
+        zIndex: 100000 - visitOrder, // Keeps earlier markers visible above later overlapping ones
       });
     });
   };
   console.log(appointments[0]);
 
   return (
-    <LoadScript googleMapsApiKey={`${googleApiKey}&v=beta`}>
+    <LoadScript
+      googleMapsApiKey={`${googleApiKey}`}
+      mapIds={[appointmentsMapId]}
+    >
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={startCoords[0].location}
         zoom={15}
         onLoad={onLoad}
+        options={{ mapId: appointmentsMapId }}
       />
     </LoadScript>
   );
