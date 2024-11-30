@@ -36,7 +36,7 @@ export default function Autocomplete({ address, setAddress, errorMsg }) {
   useEffect(() => {
     const autoCompleteJS = new autoComplete({
       selector: "#autoComplete",
-      placeHolder: "Search for Addresses...",
+      placeHolder: "Search for Los Angeles Addresses...",
       data: {
         src: addresses,
       },
@@ -57,8 +57,7 @@ export default function Autocomplete({ address, setAddress, errorMsg }) {
 
   return (
     <FormControl>
-      <InputLabel htmlFor="address">Address</InputLabel>
-      <Input id="autoComplete" aria-describedby="phone-error-text" />
+      <Input id="autoComplete" aria-describedby="address-autocomplete" />
       {errorMsg && (
         <FormHelperText id="name-error-text" error>
           {errorMsg}
