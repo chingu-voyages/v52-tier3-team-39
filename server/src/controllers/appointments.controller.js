@@ -5,6 +5,21 @@ import sendEmail, {
   apptRequestConfirmationText,
 } from "../utils/emailHelper.js";
 
+export async function geocodeAddress(address) {
+  const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.GOOGLE_API_KEY}`;
+
+  const resp = await fetch(geocodeUrl);
+  const data = await resp.json();
+  console.log(data);
+  if (data.status === "OK") {
+    const geodata = data.results[0].geometry.location;
+    console.log("geodata", geodata);
+
+    return geodata;
+  }
+  throw new Error(`Geocoding issue: ${data.status}`);
+}
+
 export async function newAppointment(req, res, next) {
   try {
     // handle validation errors
@@ -15,7 +30,8 @@ export async function newAppointment(req, res, next) {
       return next({ message: error.details[0].message });
     }
 
-    const { earlyTimeHour, lateTimeHour, email, ...rest } = req.body;
+    const { earlyTimeHour, lateTimeHour, address, email, ...rest } = req.body;
+    const coords = await geocodeAddress(address);
 
     // add request data to the database
     const appt = new Appointment({
@@ -26,6 +42,8 @@ export async function newAppointment(req, res, next) {
         earlyTimeHour,
         lateTimeHour,
       },
+      location: coords,
+      address,
     });
 
     const newAppt = await appt.save();
