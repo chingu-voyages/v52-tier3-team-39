@@ -1,6 +1,10 @@
 "use client";
 
-import { DataGrid, GridToolbarExport, GridToolbarContainer } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridToolbarExport,
+  GridToolbarContainer,
+} from "@mui/x-data-grid";
 import { Paper } from "@mui/material";
 
 const formatName = (name) => {
@@ -17,8 +21,8 @@ const formatTime = (hour) => {
 };
 
 const formatTimeRange = (timeRange) => {
-  return `${formatTime(timeRange?.earlyTimeHour)} - ${formatTime(
-    timeRange?.lateTimeHour
+  return `${formatTime(timeRange?.preferredEarlyTime)} - ${formatTime(
+    timeRange?.preferredLateTime
   )}`;
 };
 
@@ -67,10 +71,10 @@ const columns = [
 const paginationModel = { page: 0, pageSize: 15 };
 
 const Toolbar = () => (
-  <GridToolbarContainer sx={{justifyContent: "flex-end"}}>
+  <GridToolbarContainer sx={{ justifyContent: "flex-end" }}>
     <GridToolbarExport />
   </GridToolbarContainer>
-)
+);
 
 export default function Grid({ rows }) {
   return (

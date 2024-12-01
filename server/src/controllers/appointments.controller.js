@@ -39,8 +39,8 @@ export async function newAppointment(req, res, next) {
       email,
       userId: "Insert Id Here",
       preferredTimeRange: {
-        earlyTimeHour,
-        lateTimeHour,
+        preferredEarlyTime: earlyTimeHour,
+        preferredLateTime: lateTimeHour,
       },
       location: { ...coords, address },
     });
@@ -64,15 +64,16 @@ export async function newAppointment(req, res, next) {
 
     // update appointment details with dummy date and preferred time range
     const dateCreated = new Date(newAppt.dateCreated);
-    const dummyDate = new Date(dateCreated.getTime() + 1000 * 60 * 60 * 24);
+    const dummyDate = new Date(dateCreated.getTime() + 1000 * 60 * 60 * 24); // +1 day
     await Appointment.updateOne(
       { _id: newAppt._id },
       {
         confirmedAppointmentDetails: {
-          date: dummyDate,
-          timeEarly: earlyTimeHour,
-          timeLate: lateTimeHour,
+          confirmedDate: dummyDate,
+          confirmedEarlyTime: earlyTimeHour,
+          confirmedLateTime: lateTimeHour,
         },
+        status: "Confirmed",
       }
     );
 

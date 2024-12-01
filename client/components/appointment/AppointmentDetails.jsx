@@ -23,13 +23,16 @@ export default function AppointmentDetails({ formData }) {
     phone,
     location: { address },
     status,
-    date,
-    preferredTimeRange: { earlyTimeHour, lateTimeHour },
     notifications: { apptRequestEmailUrl },
+    confirmedAppointmentDetails: {
+      confirmedDate,
+      confirmedEarlyTime,
+      confirmedLateTime,
+    },
   } = formData;
-  const earlyTime = convertHourTo12HourTime(earlyTimeHour);
-  const lateTime = convertHourTo12HourTime(lateTimeHour);
-  const preferredTime = `${earlyTime} - ${lateTime}`;
+  const confirmedTime = `${convertHourTo12HourTime(
+    confirmedEarlyTime
+  )} - ${convertHourTo12HourTime(confirmedLateTime)}`;
   const showCancelBtn = status === "Pending" || status === "Confirmed";
 
   return (
@@ -80,10 +83,13 @@ export default function AppointmentDetails({ formData }) {
               </Typography>
               <Stack gap={1 / 2}>
                 <AppointmentListItem label="Status" value={status} />
-                <AppointmentListItem label="Date" value={date || "N/A"} />
                 <AppointmentListItem
-                  label="Preferred Time"
-                  value={preferredTime}
+                  label="Apppointment Date"
+                  value={confirmedDate || "N/A"}
+                />
+                <AppointmentListItem
+                  label="Appointment Time Range"
+                  value={confirmedTime}
                 />
               </Stack>
             </Stack>

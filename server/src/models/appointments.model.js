@@ -6,8 +6,8 @@ const appointmentSchema = new mongoose.Schema({
   email: String,
   phone: String,
   preferredTimeRange: {
-    earlyTimeHour: Number,
-    lateTimeHour: Number,
+    preferredEarlyTime: Number,
+    preferredLateTime: Number,
   },
   location: {
     address: String,
@@ -24,9 +24,9 @@ const appointmentSchema = new mongoose.Schema({
     apptConfirmationEmailUrl: String,
   },
   confirmedAppointmentDetails: {
-    date: Date,
-    timeEarly: Number,
-    timeLate: Number,
+    confirmedDate: Date,
+    confirmedEarlyTime: Number,
+    confirmedLateTime: Number,
   },
   dateCreated: { type: Date, default: Date.now },
 });
