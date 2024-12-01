@@ -40,8 +40,19 @@ const formatPhone = (phone) => {
 };
 
 const columns = [
+  {
+    field: "visitOrder",
+    headerName: "Visit Order",
+    width: 190,
+    valueGetter: (_, row) => row.schedule.order,
+  },
   { field: "status", headerName: "Status", width: 190 },
-  { valueFormatter: formatName, field: "name", headerName: "Name", width: 190 },
+  {
+    valueFormatter: formatName,
+    field: "name",
+    headerName: "Name",
+    width: 190,
+  },
   {
     valueFormatter: formatDateCreated,
     field: "dateCreated",
@@ -82,7 +93,17 @@ export default function Grid({ rows }) {
       <DataGrid
         rows={rows}
         columns={columns}
-        initialState={{ pagination: { paginationModel } }}
+        initialState={{
+          pagination: { paginationModel },
+          sorting: {
+            sortModel: [
+              {
+                field: "visitOrder",
+                sort: "asc",
+              },
+            ],
+          },
+        }}
         pageSizeOptions={[15, 10]}
         sx={{ border: 0 }}
         getRowHeight={() => "auto"}
