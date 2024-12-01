@@ -1,6 +1,6 @@
 import Appointment from "../models/appointments.model.js";
 import appointmentSchema from "../validators/appointments.validator.js";
-import emailHelper, {
+import sendEmail, {
   apptRequestConfirmationHtml,
   apptRequestConfirmationText,
 } from "../utils/emailHelper.js";
@@ -31,7 +31,7 @@ export async function newAppointment(req, res, next) {
     const newAppt = await appt.save();
 
     // send mock appt request email, add url to the database
-    const emailPreviewUrl = await emailHelper({
+    const emailPreviewUrl = await sendEmail({
       email,
       subject: "Appointment Request Received",
       text: apptRequestConfirmationText(req.body),
@@ -77,7 +77,10 @@ export async function getAllAppointments(req, res, next) {
 export async function getSingleAppointment(req, res, next) {
   const { email } = req.params;
   try {
-    const appointment = await Appointment.findOne({ email });
+    const [appointment] = await Appointment.find({ email })
+      .sort({ dateCreated: -1 }) // sort descending order
+      .limit(1)
+      .exec();
     res.status(200);
     res.json(appointment);
   } catch (error) {

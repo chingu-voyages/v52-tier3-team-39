@@ -40,7 +40,7 @@ export const apptRequestConfirmationHtml = (formData) => {
   `;
 };
 
-const emailHelper = async ({ email, subject, text, html }) => {
+const sendEmail = async ({ toAddress, subject, text, html }) => {
   try {
     const transporter = nodemailer.createTransport({
       host: "smtp.ethereal.email",
@@ -54,7 +54,7 @@ const emailHelper = async ({ email, subject, text, html }) => {
 
     const message = {
       from: "Sender Name " + MOCK_EMAIL_ADDRESS,
-      to: `Recipient ${email}`,
+      to: `Recipient ${toAddress}`,
       subject,
       text,
       html,
@@ -68,4 +68,4 @@ const emailHelper = async ({ email, subject, text, html }) => {
   }
 };
 
-export default emailHelper;
+export default sendEmail;
