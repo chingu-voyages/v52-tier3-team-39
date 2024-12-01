@@ -24,9 +24,9 @@ const appointmentSchema = new mongoose.Schema({
     apptConfirmationEmailUrl: String,
   },
   confirmedAppointmentDetails: {
-    confirmedDate: Date,
-    confirmedTimeEarly: Number,
-    confirmedTimeLate: Number,
+    date: Date,
+    timeEarly: Number,
+    timeLate: Number,
   },
   dateCreated: { type: Date, default: Date.now },
 });

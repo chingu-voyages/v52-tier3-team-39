@@ -62,6 +62,20 @@ export async function newAppointment(req, res, next) {
       );
     }
 
+    // update appointment details with dummy date and preferred time range
+    const dateCreated = new Date(newAppt.dateCreated);
+    const dummyDate = new Date(dateCreated.getTime() + 1000 * 60 * 60 * 24);
+    await Appointment.updateOne(
+      { _id: newAppt._id },
+      {
+        confirmedAppointmentDetails: {
+          date: dummyDate,
+          timeEarly: earlyTimeHour,
+          timeLate: lateTimeHour,
+        },
+      }
+    );
+
     res.status(201);
     res.json({ message: "ok" });
   } catch (error) {
