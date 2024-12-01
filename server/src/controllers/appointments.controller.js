@@ -2,8 +2,10 @@ import Appointment from "../models/appointments.model.js";
 import { appendSchedule } from "../scheduling/scheduler.js";
 import appointmentSchema from "../validators/appointments.validator.js";
 import sendEmail, {
-  apptRequestConfirmationHtml,
-  apptRequestConfirmationText,
+  apptConfirmationEmailHtml,
+  apptConfirmationEmailText,
+  apptRequestEmailHtml,
+  apptRequestEmailText,
 } from "../utils/emailHelper.js";
 
 export async function geocodeAddress(address) {
@@ -49,24 +51,24 @@ export async function newAppointment(req, res, next) {
     const newAppt = await appt.save();
 
     // send mock appt request email, add url to the database
-    const emailPreviewUrl = await sendEmail({
+    const requestEmailUrl = await sendEmail({
       toAddress: email,
       subject: "Appointment Request Received",
       text: apptRequestConfirmationText(req.body),
       html: apptRequestConfirmationHtml(req.body),
     });
 
-    if (emailPreviewUrl) {
+    if (requestEmailUrl) {
       await Appointment.updateOne(
         { _id: newAppt._id },
-        { notifications: { apptRequestEmailUrl: emailPreviewUrl } }
+        { notifications: { apptRequestEmailUrl: requestEmailUrl } }
       );
     }
 
     // update appointment details with dummy date and preferred time range
     const dateCreated = new Date(newAppt.dateCreated);
     const dummyDate = new Date(dateCreated.getTime() + 1000 * 60 * 60 * 24); // +1 day
-    await Appointment.updateOne(
+    const updatedAppt = await Appointment.updateOne(
       { _id: newAppt._id },
       {
         confirmedAppointmentDetails: {
@@ -77,6 +79,21 @@ export async function newAppointment(req, res, next) {
         status: "Confirmed",
       }
     );
+
+    // send mock appt confirmation email, add url to the database
+    const confirmationEmailUrl = await sendEmail({
+      toAddress: email,
+      subject: "Your Appointment Has Been Confirmed",
+      text: apptRequestConfirmationText(updatedAppt),
+      html: apptRequestConfirmationHtml(updatedAppt),
+    });
+
+    if (confirmationEmailUrl) {
+      await Appointment.updateOne(
+        { _id: newAppt._id },
+        { notifications: { apptConfirmationEmailUrl: confirmationEmailUrl } }
+      );
+    }
 
     res.status(201);
     res.json({ message: "ok" });
@@ -99,7 +116,9 @@ export async function newAppointment(req, res, next) {
 export async function getAllAppointments(req, res, next) {
   try {
     const appointments = await Appointment.find();
-    const withScheduling = appendSchedule(appointments.map(a => a.toObject()));
+    const withScheduling = appendSchedule(
+      appointments.map((a) => a.toObject())
+    );
     res.status(200).json(withScheduling);
   } catch (error) {
     console.error("Error fetching appointments:", error);
