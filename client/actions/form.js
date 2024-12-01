@@ -40,6 +40,7 @@ export async function fetchAppointments() {
     email: item.email,
     address: item.address,
     location: item.location,
+    schedule: item.schedule,
   }));
 }
 
