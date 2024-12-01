@@ -22,7 +22,35 @@ export const apptConfirmationEmailText = (apptData) => {
   return `Hi ${apptData.name}. Your appointment has been confirmed! We’re pleased to let you know that your appointment is scheduled for: Date: ${apptData.confirmedAppointmentDetails.confirmedDate}. Time: ${timeRange.early} - ${timeRange.late}. If you have any questions or need to reschedule, please don’t hesitate to contact us. We look forward to seeing you! Best regards, RayVolution.`;
 };
 
-export const apptRequestEmailHtml = (apptData) => {
+export const apptRequestEmailHtml = (formData) => {
+  const timeRange = convertTimeRange(
+    formData.earlyTimeHour,
+    formData.lateTimeHour
+  );
+
+  return `
+    <div>
+      <div>
+        <h1>RayVolution</h1>
+      </div>
+      <div>
+        <h2>Your Appointment Request</h2>
+      </div>
+      <div>
+        <p>Hi ${formData.name},</p>
+        <p>Thank you for scheduling an appointment with us!</p>
+        <p>
+          We’ve received your request for an appointment between ${timeRange.early} and ${timeRange.late} at ${formData.address}. Please note the date and time have not yet been finalized. We’ll confirm these details and notify you the night before your visit.
+        </p>
+        <p>If you have any questions or need assistance, feel free to contact us.</p><p>We look forward to seeing you soon!</p>
+        <p>Best regards,<br>RayVolution</p>
+      </div>
+    </div>
+  `;
+};
+
+export const apptConfirmationEmailHtml = (apptData) => {
+  console.log("🚀 ~ apptConfirmationEmailHtml ~ apptData:", apptData);
   const timeRange = convertTimeRange(
     apptData.confirmedAppointmentDetails.confirmedEarlyTime,
     apptData.confirmedAppointmentDetails.confirmedLateTime
@@ -44,33 +72,6 @@ export const apptRequestEmailHtml = (apptData) => {
         <p>Time: ${timeRange.early} - ${timeRange.late}</p>
         <p>If you have any questions or need to reschedule, please don’t hesitate to contact us.</p> 
         <p>We look forward to seeing you!</p>
-        <p>Best regards,<br>RayVolution</p>
-      </div>
-    </div>
-  `;
-};
-
-export const apptConfirmationEmailHtml = (formData) => {
-  const timeRange = convertTimeRange(
-    formData.earlyTimeHour,
-    formData.lateTimeHour
-  );
-
-  return `
-    <div>
-      <div>
-        <h1>RayVolution</h1>
-      </div>
-      <div>
-        <h2>Your Appointment Request</h2>
-      </div>
-      <div>
-        <p>Hi ${formData.name},</p>
-        <p>Thank you for scheduling an appointment with us!</p>
-        <p>
-          We’ve received your request for an appointment between ${timeRange.early} and ${timeRange.late} at ${formData.address}. Please note the date and time have not yet been finalized. We’ll confirm these details and notify you the night before your visit.
-        </p>
-        <p>If you have any questions or need assistance, feel free to contact us.</p><p>We look forward to seeing you soon!</p>
         <p>Best regards,<br>RayVolution</p>
       </div>
     </div>

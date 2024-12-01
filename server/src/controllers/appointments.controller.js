@@ -50,48 +50,47 @@ export async function newAppointment(req, res, next) {
 
     const newAppt = await appt.save();
 
-    // send mock appt request email, add url to the database
+    // send mock appt request email
     const requestEmailUrl = await sendEmail({
       toAddress: email,
       subject: "Appointment Request Received",
-      text: apptRequestConfirmationText(req.body),
-      html: apptRequestConfirmationHtml(req.body),
+      text: apptRequestEmailText(req.body),
+      html: apptRequestEmailHtml(req.body),
     });
-
-    if (requestEmailUrl) {
-      await Appointment.updateOne(
-        { _id: newAppt._id },
-        { notifications: { apptRequestEmailUrl: requestEmailUrl } }
-      );
-    }
 
     // update appointment details with dummy date and preferred time range
     const dateCreated = new Date(newAppt.dateCreated);
     const dummyDate = new Date(dateCreated.getTime() + 1000 * 60 * 60 * 24); // +1 day
-    const updatedAppt = await Appointment.updateOne(
+    const updatedAppt = await Appointment.findByIdAndUpdate(
       { _id: newAppt._id },
       {
-        confirmedAppointmentDetails: {
-          confirmedDate: dummyDate,
-          confirmedEarlyTime: earlyTimeHour,
-          confirmedLateTime: lateTimeHour,
+        schedule: {
+          scheduledDate: dummyDate,
+          scheduledEarlyTime: earlyTimeHour,
+          scheduledLateTime: lateTimeHour,
         },
         status: "Confirmed",
-      }
+      },
+      { new: true }
     );
 
-    // send mock appt confirmation email, add url to the database
+    // send mock appt confirmation email
     const confirmationEmailUrl = await sendEmail({
       toAddress: email,
       subject: "Your Appointment Has Been Confirmed",
-      text: apptRequestConfirmationText(updatedAppt),
-      html: apptRequestConfirmationHtml(updatedAppt),
+      text: apptConfirmationEmailText(updatedAppt),
+      html: apptConfirmationEmailHtml(updatedAppt),
     });
 
-    if (confirmationEmailUrl) {
+    if (requestEmailUrl && confirmationEmailUrl) {
       await Appointment.updateOne(
         { _id: newAppt._id },
-        { notifications: { apptConfirmationEmailUrl: confirmationEmailUrl } }
+        {
+          notifications: {
+            apptRequestEmailUrl: requestEmailUrl,
+            apptConfirmationEmailUrl: confirmationEmailUrl,
+          },
+        }
       );
     }
 
