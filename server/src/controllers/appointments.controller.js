@@ -50,7 +50,7 @@ export async function newAppointment(req, res, next) {
 
     // send mock appt request email, add url to the database
     const emailPreviewUrl = await sendEmail({
-      email,
+      toAddress: email,
       subject: "Appointment Request Received",
       text: apptRequestConfirmationText(req.body),
       html: apptRequestConfirmationHtml(req.body),
