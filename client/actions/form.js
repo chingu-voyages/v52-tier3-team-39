@@ -40,8 +40,6 @@ export async function fetchAppointments() {
     email: item.email,
     address: item.location.address,
     location: { lat: item.location.lat, lng: item.location.lng },
-    address: item.address,
-    location: item.location,
     schedule: item.schedule,
   }));
 }

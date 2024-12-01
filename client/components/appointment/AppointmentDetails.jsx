@@ -23,16 +23,12 @@ export default function AppointmentDetails({ formData }) {
     phone,
     location: { address },
     status,
-    notifications: { apptRequestEmailUrl },
-    confirmedAppointmentDetails: {
-      confirmedDate,
-      confirmedEarlyTime,
-      confirmedLateTime,
-    },
+    notifications: { apptRequestEmailUrl, apptConfirmationEmailUrl },
+    schedule: { scheduledDate, scheduledEarlyTime, scheduledLateTime },
   } = formData;
-  const confirmedTime = `${convertHourTo12HourTime(
-    confirmedEarlyTime
-  )} - ${convertHourTo12HourTime(confirmedLateTime)}`;
+  const scheduledTime = `${convertHourTo12HourTime(
+    scheduledEarlyTime
+  )} - ${convertHourTo12HourTime(scheduledLateTime)}`;
   const showCancelBtn = status === "Pending" || status === "Confirmed";
 
   return (
@@ -85,11 +81,11 @@ export default function AppointmentDetails({ formData }) {
                 <AppointmentListItem label="Status" value={status} />
                 <AppointmentListItem
                   label="Apppointment Date"
-                  value={confirmedDate || "N/A"}
+                  value={scheduledDate || "N/A"}
                 />
                 <AppointmentListItem
                   label="Appointment Time Range"
-                  value={confirmedTime}
+                  value={scheduledTime}
                 />
               </Stack>
             </Stack>
@@ -108,6 +104,17 @@ export default function AppointmentDetails({ formData }) {
                 >
                   <AppointmentListItem
                     value={"View Mock Request Received Email"}
+                  />
+                </Link>
+              </Stack>
+              <Stack gap={1 / 2}>
+                <Link
+                  href={apptConfirmationEmailUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <AppointmentListItem
+                    value={"View Mock Schedule Confirmation Email"}
                   />
                 </Link>
               </Stack>
