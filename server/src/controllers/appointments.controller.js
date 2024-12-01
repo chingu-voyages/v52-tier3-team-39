@@ -134,7 +134,7 @@ export async function getSingleAppointment(req, res, next) {
       .limit(1)
       .exec();
     res.status(200);
-    res.json(appointment);
+    res.json(appointment || null);
   } catch (error) {
     console.error(error);
     res.status(500);
