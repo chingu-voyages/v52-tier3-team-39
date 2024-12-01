@@ -26,6 +26,7 @@ export default function AppointmentDetails({ formData }) {
     notifications: { apptRequestEmailUrl, apptConfirmationEmailUrl },
     schedule: { scheduledDate, scheduledEarlyTime, scheduledLateTime },
   } = formData;
+  const scheduledDateString = new Date(scheduledDate).toDateString();
   const scheduledTime = `${convertHourTo12HourTime(
     scheduledEarlyTime
   )} - ${convertHourTo12HourTime(scheduledLateTime)}`;
@@ -81,7 +82,7 @@ export default function AppointmentDetails({ formData }) {
                 <AppointmentListItem label="Status" value={status} />
                 <AppointmentListItem
                   label="Apppointment Date"
-                  value={scheduledDate || "N/A"}
+                  value={scheduledDateString || "N/A"}
                 />
                 <AppointmentListItem
                   label="Appointment Time Range"

@@ -18,8 +18,9 @@ export const apptConfirmationEmailText = (apptData) => {
     apptData.schedule.scheduledEarlyTime,
     apptData.schedule.scheduledLateTime
   );
+  const dateString = new Date(apptData.schedule.scheduledDate).toDateString();
 
-  return `Hi ${apptData.name}. Your appointment has been confirmed! We’re pleased to let you know that your appointment is scheduled for: Date: ${apptData.schedule.scheduledDate}. Time: ${timeRange.early} - ${timeRange.late}. If you have any questions or need to reschedule, please don’t hesitate to contact us. We look forward to seeing you! Best regards, RayVolution.`;
+  return `Hi ${apptData.name}. Your appointment has been confirmed! We’re pleased to let you know that your appointment is scheduled for: Address: ${apptData.location.address}, Date: ${dateString}, Time: ${timeRange.early} - ${timeRange.late}. If you have any questions or need to reschedule, please don’t hesitate to contact us. We look forward to seeing you! Best regards, RayVolution.`;
 };
 
 export const apptRequestEmailHtml = (formData) => {
@@ -54,6 +55,7 @@ export const apptConfirmationEmailHtml = (apptData) => {
     apptData.schedule.scheduledEarlyTime,
     apptData.schedule.scheduledLateTime
   );
+  const dateString = new Date(apptData.schedule.scheduledDate).toDateString();
 
   return `
     <div>
@@ -67,7 +69,8 @@ export const apptConfirmationEmailHtml = (apptData) => {
         <p>Hi ${apptData.name},</p>
         <p>Your appointment has been confirmed!</p>
         <p>We’re pleased to let you know that your appointment is scheduled for:</p>
-        <p>Date: ${apptData.schedule.scheduledDate}</p>
+        <p>Address: ${apptData.location.address}</p>
+        <p>Date: ${dateString}</p>
         <p>Time: ${timeRange.early} - ${timeRange.late}</p>
         <p>If you have any questions or need to reschedule, please don’t hesitate to contact us.</p> 
         <p>We look forward to seeing you!</p>
