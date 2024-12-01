@@ -38,12 +38,11 @@ export async function newAppointment(req, res, next) {
       ...rest,
       email,
       userId: "Insert Id Here",
-      timeRange: {
+      preferredTimeRange: {
         earlyTimeHour,
         lateTimeHour,
       },
-      location: coords,
-      address,
+      location: { ...coords, address },
     });
 
     const newAppt = await appt.save();
@@ -59,7 +58,7 @@ export async function newAppointment(req, res, next) {
     if (emailPreviewUrl) {
       await Appointment.updateOne(
         { _id: newAppt._id },
-        { apptRequestEmail: emailPreviewUrl }
+        { notifications: { apptRequestEmailUrl: emailPreviewUrl } }
       );
     }
 

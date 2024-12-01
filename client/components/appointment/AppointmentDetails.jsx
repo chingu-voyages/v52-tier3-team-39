@@ -21,10 +21,11 @@ export default function AppointmentDetails({ formData }) {
     name,
     email,
     phone,
-    address,
+    location: { address },
     status,
     date,
-    timeRange: { earlyTimeHour, lateTimeHour },
+    preferredTimeRange: { earlyTimeHour, lateTimeHour },
+    notifications: { apptRequestEmailUrl },
   } = formData;
   const earlyTime = convertHourTo12HourTime(earlyTimeHour);
   const lateTime = convertHourTo12HourTime(lateTimeHour);
@@ -95,7 +96,7 @@ export default function AppointmentDetails({ formData }) {
               </Typography>
               <Stack gap={1 / 2}>
                 <Link
-                  href={formData.apptRequestEmail}
+                  href={apptRequestEmailUrl}
                   target="_blank"
                   rel="noreferrer"
                 >

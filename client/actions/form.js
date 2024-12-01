@@ -35,11 +35,11 @@ export async function fetchAppointments() {
     name: item.name,
     status: item.status ? item.status : "Requested",
     dateCreated: new Date(item.dateCreated),
-    timeRange: item.timeRange,
+    timeRange: item.preferredTimeRange,
     phone: item.phone,
     email: item.email,
-    address: item.address,
-    location: item.location,
+    address: item.location.address,
+    location: { lat: item.location.lat, lng: item.location.lng },
   }));
 }
 

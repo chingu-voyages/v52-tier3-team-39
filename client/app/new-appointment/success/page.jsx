@@ -15,7 +15,6 @@ export default async function SuccessView() {
   }
 
   const response = await fetchSingleAppointment(session.user.email);
-  console.log("🚀 ~ SuccessView ~ response:", response);
 
   return (
     <Stack
@@ -48,7 +47,7 @@ export default async function SuccessView() {
           <ListItem disableGutters>
             <Box
               component={Link}
-              href={response.apptRequestEmail}
+              href={response?.notifications?.apptRequestEmailUrl}
               target="_blank"
               rel="noreferrer"
             >

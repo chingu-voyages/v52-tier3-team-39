@@ -5,23 +5,30 @@ const appointmentSchema = new mongoose.Schema({
   userId: String, // relation: User.googleId
   email: String,
   phone: String,
-  address: String,
-  timeRange: {
+  preferredTimeRange: {
     earlyTimeHour: Number,
     lateTimeHour: Number,
   },
   location: {
+    address: String,
     lat: Number,
     lng: Number,
   },
-  dateCreated: { type: Date, default: Date.now },
   status: {
     type: String,
     enum: ["Pending", "Confirmed", "Cancelled", "Visited"],
     default: "Pending",
   },
-  apptRequestEmail: String,
-  apptConfirmationEmail: String,
+  notifications: {
+    apptRequestEmailUrl: String,
+    apptConfirmationEmailUrl: String,
+  },
+  confirmedAppointmentDetails: {
+    confirmedDate: Date,
+    confirmedTimeEarly: Number,
+    confirmedTimeLate: Number,
+  },
+  dateCreated: { type: Date, default: Date.now },
 });
 
 const Appointment = mongoose.model(
