@@ -72,7 +72,7 @@ export default function CancelAppointment({ email }) {
       </Modal>
 
       {/* CANCEL BUTTON */}
-      <Box>
+      <Box sx={{ marginY: 2 }}>
         <Button
           variant="outlined"
           color="warning"

@@ -20,6 +20,8 @@ const appointmentSchema = new mongoose.Schema({
     enum: ["Pending", "Confirmed", "Cancelled", "Visited"],
     default: "Pending",
   },
+  apptRequestEmail: String,
+  apptConfirmationEmail: String,
 });
 
 const Appointment = mongoose.model(

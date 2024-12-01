@@ -1,6 +1,10 @@
 import Appointment from "../models/appointments.model.js";
 import { appendSchedule } from "../scheduling/scheduler.js";
 import appointmentSchema from "../validators/appointments.validator.js";
+import sendEmail, {
+  apptRequestConfirmationHtml,
+  apptRequestConfirmationText,
+} from "../utils/emailHelper.js";
 
 export async function geocodeAddress(address) {
   const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.GOOGLE_API_KEY}`;
@@ -19,21 +23,21 @@ export async function geocodeAddress(address) {
 
 export async function newAppointment(req, res, next) {
   try {
+    // handle validation errors
     const { error } = appointmentSchema.validate(req.body);
 
-    // handle validation errors
     if (error) {
       res.status(422);
       return next({ message: error.details[0].message });
     }
 
-    // send value to db
-    const { earlyTimeHour, lateTimeHour, address, ...rest } = req.body;
-
+    const { earlyTimeHour, lateTimeHour, address, email, ...rest } = req.body;
     const coords = await geocodeAddress(address);
-    console.log("coords", coords);
-    const newAppt = new Appointment({
+
+    // add request data to the database
+    const appt = new Appointment({
       ...rest,
+      email,
       userId: "Insert Id Here",
       timeRange: {
         earlyTimeHour,
@@ -42,9 +46,24 @@ export async function newAppointment(req, res, next) {
       location: coords,
       address,
     });
-    await newAppt.save();
 
-    // send success response
+    const newAppt = await appt.save();
+
+    // send mock appt request email, add url to the database
+    const emailPreviewUrl = await sendEmail({
+      toAddress: email,
+      subject: "Appointment Request Received",
+      text: apptRequestConfirmationText(req.body),
+      html: apptRequestConfirmationHtml(req.body),
+    });
+
+    if (emailPreviewUrl) {
+      await Appointment.updateOne(
+        { _id: newAppt._id },
+        { apptRequestEmail: emailPreviewUrl }
+      );
+    }
+
     res.status(201);
     res.json({ message: "ok" });
   } catch (error) {
@@ -78,7 +97,10 @@ export async function getAllAppointments(req, res, next) {
 export async function getSingleAppointment(req, res, next) {
   const { email } = req.params;
   try {
-    const appointment = await Appointment.findOne({ email });
+    const [appointment] = await Appointment.find({ email })
+      .sort({ dateCreated: -1 }) // sort descending order
+      .limit(1)
+      .exec();
     res.status(200);
     res.json(appointment);
   } catch (error) {
