@@ -1,6 +1,6 @@
 "use client";
 
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarExport, GridToolbarContainer } from "@mui/x-data-grid";
 import { Paper } from "@mui/material";
 
 const formatName = (name) => {
@@ -66,6 +66,12 @@ const columns = [
 
 const paginationModel = { page: 0, pageSize: 15 };
 
+const Toolbar = () => (
+  <GridToolbarContainer sx={{justifyContent: "flex-end"}}>
+    <GridToolbarExport />
+  </GridToolbarContainer>
+)
+
 export default function Grid({ rows }) {
   return (
     <Paper elevation={24}>
@@ -76,6 +82,7 @@ export default function Grid({ rows }) {
         pageSizeOptions={[15, 10]}
         sx={{ border: 0 }}
         getRowHeight={() => "auto"}
+        slots={{ toolbar: Toolbar }}
       />
     </Paper>
   );
