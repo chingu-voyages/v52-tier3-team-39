@@ -34,6 +34,21 @@ export async function newAppointment(req, res, next) {
     }
 
     const { earlyTimeHour, lateTimeHour, address, email, ...rest } = req.body;
+
+    // return error if doc with matching address and "Pending" or "Confirmed" status exists
+    const checkAddress = await Appointment.findOne({
+      "location.address": address,
+      status: { $in: ["Pending", "Confirmed"] },
+    });
+
+    if (checkAddress) {
+      res.status(409); // Conflict
+      return next({
+        message:
+          "An appointment for this address has already been scheduled. Please modify the existing appointment or choose a different address.",
+      });
+    }
+
     const coords = await geocodeAddress(address);
 
     // add request data to the database
