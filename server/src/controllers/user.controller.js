@@ -2,9 +2,7 @@ import User from "../models/user.model.js";
 
 export async function checkRole(req, res) {
   // grab currently logged in user's profile data from results
-  console.log(JSON.stringify(req.headers))
   const email = req.headers["x-user-email"];
-  console.log("email:", email)
   const user = await User.findOne({
     email: email,
   });
@@ -14,7 +12,8 @@ export async function checkRole(req, res) {
     }
   }
   else {
-    res.json({ role: "user" })
+    // add new non-admin user to DB?
+    res.json("user")
   }
 
 }
