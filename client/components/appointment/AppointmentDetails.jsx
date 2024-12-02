@@ -21,14 +21,15 @@ export default function AppointmentDetails({ formData }) {
     name,
     email,
     phone,
-    address,
+    location: { address },
     status,
-    date,
-    timeRange: { earlyTimeHour, lateTimeHour },
+    notifications: { apptRequestEmailUrl, apptConfirmationEmailUrl },
+    schedule: { scheduledDate, scheduledEarlyTime, scheduledLateTime },
   } = formData;
-  const earlyTime = convertHourTo12HourTime(earlyTimeHour);
-  const lateTime = convertHourTo12HourTime(lateTimeHour);
-  const preferredTime = `${earlyTime} - ${lateTime}`;
+  const scheduledDateString = new Date(scheduledDate).toDateString();
+  const scheduledTime = `${convertHourTo12HourTime(
+    scheduledEarlyTime
+  )} - ${convertHourTo12HourTime(scheduledLateTime)}`;
   const showCancelBtn = status === "Pending" || status === "Confirmed";
 
   return (
@@ -79,10 +80,13 @@ export default function AppointmentDetails({ formData }) {
               </Typography>
               <Stack gap={1 / 2}>
                 <AppointmentListItem label="Status" value={status} />
-                <AppointmentListItem label="Date" value={date || "N/A"} />
                 <AppointmentListItem
-                  label="Preferred Time"
-                  value={preferredTime}
+                  label="Apppointment Date"
+                  value={scheduledDateString || "N/A"}
+                />
+                <AppointmentListItem
+                  label="Appointment Time Range"
+                  value={scheduledTime}
                 />
               </Stack>
             </Stack>
@@ -95,12 +99,23 @@ export default function AppointmentDetails({ formData }) {
               </Typography>
               <Stack gap={1 / 2}>
                 <Link
-                  href={formData.apptRequestEmail}
+                  href={apptRequestEmailUrl}
                   target="_blank"
                   rel="noreferrer"
                 >
                   <AppointmentListItem
                     value={"View Mock Request Received Email"}
+                  />
+                </Link>
+              </Stack>
+              <Stack gap={1 / 2}>
+                <Link
+                  href={apptConfirmationEmailUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <AppointmentListItem
+                    value={"View Mock Schedule Confirmation Email"}
                   />
                 </Link>
               </Stack>

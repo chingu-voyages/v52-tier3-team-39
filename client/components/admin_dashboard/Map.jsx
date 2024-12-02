@@ -4,6 +4,10 @@ import { googleApiKey, appointmentsMapId } from "@/constants";
 import React, { useRef } from "react";
 
 export default function Map({ appointments }) {
+  if (!appointments.length) {
+    return <p>No map data available</p>;
+  }
+
   const mapRef = useRef(null);
 
   const containerStyle = {
@@ -11,18 +15,16 @@ export default function Map({ appointments }) {
     height: "400px",
   };
 
-  const startCoords = appointments.map(item => ({
+  const startCoords = appointments.map((item) => ({
     location: item.location,
     visitOrder: item.schedule.order,
     customerName: item.name,
   }));
 
-  const onLoad = async mapInstance => {
+  const onLoad = async (mapInstance) => {
     mapRef.current = mapInstance;
 
-    const { AdvancedMarkerElement } = await google.maps.importLibrary(
-      "marker",
-    );
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
     startCoords.forEach(({ location, visitOrder, customerName }) => {
       const pin = new google.maps.marker.PinElement({

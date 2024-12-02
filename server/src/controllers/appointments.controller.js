@@ -2,8 +2,10 @@ import Appointment from "../models/appointments.model.js";
 import { appendSchedule } from "../scheduling/scheduler.js";
 import appointmentSchema from "../validators/appointments.validator.js";
 import sendEmail, {
-  apptRequestConfirmationHtml,
-  apptRequestConfirmationText,
+  apptConfirmationEmailHtml,
+  apptConfirmationEmailText,
+  apptRequestEmailHtml,
+  apptRequestEmailText,
 } from "../utils/emailHelper.js";
 
 export async function geocodeAddress(address) {
@@ -39,28 +41,56 @@ export async function newAppointment(req, res, next) {
       ...rest,
       email,
       userId: "Insert Id Here",
-      timeRange: {
-        earlyTimeHour,
-        lateTimeHour,
+      preferredTimeRange: {
+        preferredEarlyTime: earlyTimeHour,
+        preferredLateTime: lateTimeHour,
       },
-      location: coords,
-      address,
+      location: { ...coords, address },
     });
 
     const newAppt = await appt.save();
 
-    // send mock appt request email, add url to the database
-    const emailPreviewUrl = await sendEmail({
+    // send mock appt request email
+    const requestEmailUrl = await sendEmail({
       toAddress: email,
       subject: "Appointment Request Received",
-      text: apptRequestConfirmationText(req.body),
-      html: apptRequestConfirmationHtml(req.body),
+      text: apptRequestEmailText(req.body),
+      html: apptRequestEmailHtml(req.body),
     });
 
-    if (emailPreviewUrl) {
+    // update appointment details with dummy date and preferred time range
+    const dateCreated = new Date(newAppt.dateCreated);
+    const dummyDate = new Date(dateCreated.getTime() + 1000 * 60 * 60 * 24); // +1 day
+    const updatedAppt = await Appointment.findByIdAndUpdate(
+      { _id: newAppt._id },
+      {
+        schedule: {
+          scheduledDate: dummyDate,
+          scheduledEarlyTime: earlyTimeHour,
+          scheduledLateTime: lateTimeHour,
+        },
+        status: "Confirmed",
+      },
+      { new: true }
+    );
+
+    // send mock appt confirmation email
+    const confirmationEmailUrl = await sendEmail({
+      toAddress: email,
+      subject: "Your Appointment Has Been Confirmed",
+      text: apptConfirmationEmailText(updatedAppt),
+      html: apptConfirmationEmailHtml(updatedAppt),
+    });
+
+    if (requestEmailUrl && confirmationEmailUrl) {
       await Appointment.updateOne(
         { _id: newAppt._id },
-        { apptRequestEmail: emailPreviewUrl }
+        {
+          notifications: {
+            apptRequestEmailUrl: requestEmailUrl,
+            apptConfirmationEmailUrl: confirmationEmailUrl,
+          },
+        }
       );
     }
 
@@ -85,7 +115,9 @@ export async function newAppointment(req, res, next) {
 export async function getAllAppointments(req, res, next) {
   try {
     const appointments = await Appointment.find();
-    const withScheduling = appendSchedule(appointments.map(a => a.toObject()));
+    const withScheduling = appendSchedule(
+      appointments.map((a) => a.toObject())
+    );
     res.status(200).json(withScheduling);
   } catch (error) {
     console.error("Error fetching appointments:", error);
@@ -102,7 +134,7 @@ export async function getSingleAppointment(req, res, next) {
       .limit(1)
       .exec();
     res.status(200);
-    res.json(appointment);
+    res.json(appointment || null);
   } catch (error) {
     console.error(error);
     res.status(500);
