@@ -28,7 +28,7 @@ export async function newAppointment(req, res, next) {
     }
 
     const { earlyTimeHour, lateTimeHour, address, email, ...rest } = req.body;
-    const geocodeData = await geocodeAddress("invalid address");
+    const geocodeData = await geocodeAddress(address);
 
     if (geocodeData.status === "ZERO_RESULTS") {
       res.status(404);
