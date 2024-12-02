@@ -35,6 +35,13 @@ export async function newAppointment(req, res, next) {
       return next({ message: "The address submitted is not valid." });
     }
 
+    if (!geocodeData.results.length) {
+      res.status(404);
+      return next({
+        message: "Unable to locate the address. Please verify and try again.",
+      });
+    }
+
     // add request data to the database
     const appt = new Appointment({
       ...rest,
