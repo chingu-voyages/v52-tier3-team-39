@@ -1,6 +1,10 @@
 "use client";
 
-import { DataGrid } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridToolbarExport,
+  GridToolbarContainer,
+} from "@mui/x-data-grid";
 import { Paper } from "@mui/material";
 
 const formatName = (name) => {
@@ -17,8 +21,8 @@ const formatTime = (hour) => {
 };
 
 const formatTimeRange = (timeRange) => {
-  return `${formatTime(timeRange?.earlyTimeHour)} - ${formatTime(
-    timeRange?.lateTimeHour
+  return `${formatTime(timeRange?.preferredEarlyTime)} - ${formatTime(
+    timeRange?.preferredLateTime
   )}`;
 };
 
@@ -36,8 +40,19 @@ const formatPhone = (phone) => {
 };
 
 const columns = [
+  {
+    field: "visitOrder",
+    headerName: "Visit Order",
+    width: 190,
+    valueGetter: (_, row) => row.schedule.order,
+  },
   { field: "status", headerName: "Status", width: 190 },
-  { valueFormatter: formatName, field: "name", headerName: "Name", width: 190 },
+  {
+    valueFormatter: formatName,
+    field: "name",
+    headerName: "Name",
+    width: 190,
+  },
   {
     valueFormatter: formatDateCreated,
     field: "dateCreated",
@@ -66,16 +81,33 @@ const columns = [
 
 const paginationModel = { page: 0, pageSize: 15 };
 
+const Toolbar = () => (
+  <GridToolbarContainer sx={{ justifyContent: "flex-end" }}>
+    <GridToolbarExport />
+  </GridToolbarContainer>
+);
+
 export default function Grid({ rows }) {
   return (
     <Paper elevation={24}>
       <DataGrid
         rows={rows}
         columns={columns}
-        initialState={{ pagination: { paginationModel } }}
+        initialState={{
+          pagination: { paginationModel },
+          sorting: {
+            sortModel: [
+              {
+                field: "visitOrder",
+                sort: "asc",
+              },
+            ],
+          },
+        }}
         pageSizeOptions={[15, 10]}
         sx={{ border: 0 }}
         getRowHeight={() => "auto"}
+        slots={{ toolbar: Toolbar }}
       />
     </Paper>
   );

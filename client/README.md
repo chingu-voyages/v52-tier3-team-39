@@ -21,6 +21,8 @@ NEXT_PUBLIC_LACITY_KEY=[key]
 GOOGLE_CLIENT_ID=[key]
 GOOGLE_CLIENT_SECRET=[key]
 AUTH_SECRET=[key]
+NEXT_PUBLIC_GOOGLE_API_KEY=[key]
+NEXT_PUBLIC_GOOGLE_APPOINTMENTS_MAP_ID=[id]
 ```
 
 Note: `NEXT_PUBLIC_` is a necessary prefix for any environment variable exposed to the browser.
