@@ -7,5 +7,12 @@ export default async function MyAppointment({ email }) {
   if (!fetchResponse.length) {
     return <NoAppointment />;
   }
-  return <AppointmentDetails formData={fetchResponse} />;
+
+  return (
+    <>
+      {fetchResponse.map((appt) => (
+        <AppointmentDetails formData={appt} />
+      ))}
+    </>
+  );
 }
