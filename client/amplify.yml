@@ -6,6 +6,7 @@ applications:
               build:
                   commands:
                       - npm ci
+                      - echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> .env
                       - npm run build
           artifacts:
               baseDirectory: .next
