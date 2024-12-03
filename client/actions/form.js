@@ -52,6 +52,12 @@ export async function fetchSingleAppointment(email) {
   return data;
 }
 
+export async function fetchUsersAppointments(email) {
+  const response = await fetch(serverUrl + `appointments/${email}/all`);
+  const data = await response.json();
+  return data;
+}
+
 // UPDATE SINGLE APPT STATUS
 //! switch email to google id
 export async function cancelAppointment(email) {

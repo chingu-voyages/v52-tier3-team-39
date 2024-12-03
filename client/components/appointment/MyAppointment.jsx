@@ -1,10 +1,10 @@
-import { fetchSingleAppointment } from "@/actions/form";
+import { fetchUsersAppointments } from "@/actions/form";
 import NoAppointment from "./NoAppointment";
 import AppointmentDetails from "./AppointmentDetails";
 
 export default async function MyAppointment({ email }) {
-  const fetchResponse = await fetchSingleAppointment(email);
-  if (!fetchResponse) {
+  const fetchResponse = await fetchUsersAppointments(email);
+  if (!fetchResponse.length) {
     return <NoAppointment />;
   }
   return <AppointmentDetails formData={fetchResponse} />;
