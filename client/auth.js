@@ -37,7 +37,6 @@ export const authOptions = {
       return baseUrl + '/login-redirect'
     }
   },
-  secret: process.env.AUTH_SECRET,
 };
 
 export default NextAuth(authOptions);
