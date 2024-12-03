@@ -23,7 +23,7 @@ jobs:
             - name: Copy server files to EC2 server
               uses: burnett01/rsync-deployments@7.0.1
               with:
-                  switches: --verbose --human-readable --archive --delete
+                  switches: --verbose --human-readable --archive --delete --exclude "addresses.db"
                   path: server/
                   remote_user: ${{ env.SSH_USER }}
                   remote_host: ${{ env.SSH_HOST }}
