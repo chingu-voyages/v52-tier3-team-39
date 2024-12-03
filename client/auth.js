@@ -16,7 +16,6 @@ export const authOptions = {
           },
         });
         const role = await res.json();
-        console.log(role);
         return {
           id: profile.sub,
           email: profile.email,
