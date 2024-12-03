@@ -6,6 +6,7 @@ applications:
               build:
                   commands:
                       - npm ci
+                      - echo "NEXTAUTH_URL=$AWS_BRANCH.d1nf6f3sg6up3r.amplifyapp.com" >> .env
                       - echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> .env
                       - npm run build
           artifacts:
