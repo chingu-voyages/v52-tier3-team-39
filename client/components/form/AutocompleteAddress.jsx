@@ -6,22 +6,22 @@ import { FormControl, InputLabel, Input, FormHelperText } from "@mui/material";
 import { serverUrl } from "@/constants";
 
 export default function Autocomplete({ setAddress, errorMsg }) {
-  const fetchAddresses = async (query) => {
-    const searchString = encodeURIComponent(query);
-    const response = await fetch(`${serverUrl}addresses/autocomplete?searchString=${searchString}`);
-
-    const { error, suggestions } = await response.json();
-
-    if (error) {
-      console.warn("Failed to fetch autocomplete suggestions");
-      console.warn(error);
-      return [];
+  useEffect(() => {
+    const fetchAddresses = async (query) => {
+      const searchString = encodeURIComponent(query);
+      const response = await fetch(`${serverUrl}addresses/autocomplete?searchString=${searchString}`);
+  
+      const { error, suggestions } = await response.json();
+  
+      if (error) {
+        console.warn("Failed to fetch autocomplete suggestions");
+        console.warn(error);
+        return [];
+      }
+  
+      return suggestions;
     }
 
-    return suggestions;
-  }
-
-  useEffect(() => {
     const autoCompleteJS = new autoComplete({
       selector: "#autoComplete",
       placeHolder: "Search for Addresses...",
@@ -44,7 +44,7 @@ export default function Autocomplete({ setAddress, errorMsg }) {
     });
 
     return () => autoCompleteJS.unInit();
-  }, [fetchAddresses]);
+  }, [serverUrl]);
 
   return (
     <FormControl>
