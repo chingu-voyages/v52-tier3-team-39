@@ -42,6 +42,8 @@ export default function Autocomplete({ setAddress, errorMsg }) {
         },
       },
     });
+
+    return () => autoCompleteJS.unInit();
   }, [fetchAddresses]);
 
   return (
