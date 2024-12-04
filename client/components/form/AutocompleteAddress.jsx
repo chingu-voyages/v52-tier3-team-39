@@ -31,6 +31,7 @@ export default function Autocomplete({ setAddress, errorMsg }) {
       resultItem: {
         highlight: true,
       },
+      debounce: 200,
       events: {
         input: {
           selection: (event) => {
