@@ -24,7 +24,7 @@ export default function Autocomplete({ setAddress, errorMsg }) {
 
     const autoCompleteJS = new autoComplete({
       selector: "#autoComplete",
-      placeHolder: "Search for Addresses...",
+      placeHolder: "Search for Los Angeles Addresses...",
       data: {
         src: fetchAddresses,
       },
@@ -49,7 +49,7 @@ export default function Autocomplete({ setAddress, errorMsg }) {
   return (
     <FormControl>
       <InputLabel htmlFor="address">Address</InputLabel>
-      <Input id="autoComplete" aria-describedby="phone-error-text" />
+      <Input id="autoComplete" aria-describedby="address-autocomplete" />
       {errorMsg && (
         <FormHelperText id="name-error-text" error>
           {errorMsg}

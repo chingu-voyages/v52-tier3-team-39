@@ -13,14 +13,7 @@ export async function geocodeAddress(address) {
 
   const resp = await fetch(geocodeUrl);
   const data = await resp.json();
-  console.log(data);
-  if (data.status === "OK") {
-    const geodata = data.results[0].geometry.location;
-    console.log("geodata", geodata);
-
-    return geodata;
-  }
-  throw new Error(`Geocoding issue: ${data.status}`);
+  return data;
 }
 
 export async function newAppointment(req, res, next) {
@@ -49,7 +42,17 @@ export async function newAppointment(req, res, next) {
       });
     }
 
-    const coords = await geocodeAddress(address);
+    const geocodeData = await geocodeAddress(address);
+
+    if (!geocodeData.results.length) {
+      res.status(404);
+      if (geocodeData.status === "ZERO_RESULTS") {
+        return next({ message: "The address submitted is not valid." });
+      }
+      return next({
+        message: "Unable to locate the address. Please verify and try again.",
+      });
+    }
 
     // add request data to the database
     const appt = new Appointment({
@@ -60,7 +63,11 @@ export async function newAppointment(req, res, next) {
         preferredEarlyTime: earlyTimeHour,
         preferredLateTime: lateTimeHour,
       },
-      location: { ...coords, address },
+      location: {
+        address: address,
+        lat: geocodeData.results[0].geometry.location.lat,
+        lng: geocodeData.results[0].geometry.location.lng,
+      },
     });
 
     const newAppt = await appt.save();
