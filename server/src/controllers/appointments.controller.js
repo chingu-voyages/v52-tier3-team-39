@@ -13,7 +13,6 @@ export async function geocodeAddress(address) {
 
   const resp = await fetch(geocodeUrl);
   const data = await resp.json();
-  console.log(data);
   return data;
 }
 
@@ -30,15 +29,27 @@ export async function newAppointment(req, res, next) {
     const { earlyTimeHour, lateTimeHour, address, email, ...rest } = req.body;
     const geocodeData = await geocodeAddress(address);
 
-    if (geocodeData.status === "ZERO_RESULTS") {
-      res.status(404);
-      return next({ message: "The address submitted is not valid." });
-    }
-
     if (!geocodeData.results.length) {
       res.status(404);
+      if (geocodeData.status === "ZERO_RESULTS") {
+        return next({ message: "The address submitted is not valid." });
+      }
       return next({
         message: "Unable to locate the address. Please verify and try again.",
+      });
+    }
+
+    // return error if doc with matching address and "Pending" or "Confirmed" status exists
+    const checkAddress = await Appointment.findOne({
+      "location.address": address,
+      status: { $in: ["Pending", "Confirmed"] },
+    });
+
+    if (checkAddress) {
+      res.status(409); // Conflict
+      return next({
+        message:
+          "An appointment for this address has already been scheduled. Please modify the existing appointment or choose a different address.",
       });
     }
 
@@ -51,8 +62,11 @@ export async function newAppointment(req, res, next) {
         preferredEarlyTime: earlyTimeHour,
         preferredLateTime: lateTimeHour,
       },
-      location: geocodeData.results[0].geometry.location,
-      address,
+      location: {
+        address: address,
+        lat: geocodeData.results[0].geometry.location.lat,
+        lng: geocodeData.results[0].geometry.location.lng,
+      },
     });
 
     const newAppt = await appt.save();

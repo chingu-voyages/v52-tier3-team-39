@@ -57,6 +57,7 @@ export default function Autocomplete({ address, setAddress, errorMsg }) {
 
   return (
     <FormControl>
+      <InputLabel htmlFor="address">Address</InputLabel>
       <Input id="autoComplete" aria-describedby="address-autocomplete" />
       {errorMsg && (
         <FormHelperText id="name-error-text" error>
