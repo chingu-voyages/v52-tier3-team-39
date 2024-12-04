@@ -6,6 +6,7 @@ import connectDb from "./config/db.js";
 import { port, dbConnectStr } from "./config/env.js";
 import appointmentsRouter from "./routes/appointments.routes.js";
 import userRouter from "./routes/user.route.js";
+import addressRouter from "./routes/address.routes.js";
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(cors());
 
 app.use("/user", userRouter);
 app.use("/appointments", appointmentsRouter);
+app.use("/addresses", addressRouter)
 
 app.use("/database-health", async (_, res) => {
   try {

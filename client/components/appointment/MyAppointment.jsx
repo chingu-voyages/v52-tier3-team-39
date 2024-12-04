@@ -1,11 +1,31 @@
-import { fetchSingleAppointment } from "@/actions/form";
+import { Box, Typography } from "@mui/material";
+import { fetchUsersAppointments } from "@/actions/form";
 import NoAppointment from "./NoAppointment";
 import AppointmentDetails from "./AppointmentDetails";
 
 export default async function MyAppointment({ email }) {
-  const fetchResponse = await fetchSingleAppointment(email);
-  if (!fetchResponse) {
+  const fetchResponse = await fetchUsersAppointments(email);
+  if (!fetchResponse.length) {
     return <NoAppointment />;
   }
-  return <AppointmentDetails formData={fetchResponse} />;
+
+  return (
+    <Box>
+      {fetchResponse.map((appt) => (
+        <AppointmentDetails key={appt._id} formData={appt} />
+      ))}
+
+      <Typography
+        fontStyle="italic"
+        sx={{
+          "&::before": { content: '"* "' },
+          fontSize: "0.8rem",
+          marginTop: 2,
+          padding: 2,
+        }}
+      >
+        Mock emails expire after a few hours
+      </Typography>
+    </Box>
+  );
 }

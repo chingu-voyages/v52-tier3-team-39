@@ -16,7 +16,6 @@ export const authOptions = {
           },
         });
         const role = await res.json();
-        console.log(role);
         return {
           id: profile.sub,
           email: profile.email,
@@ -38,7 +37,6 @@ export const authOptions = {
       return baseUrl + '/login-redirect'
     }
   },
-  secret: process.env.AUTH_SECRET,
 };
 
 export default NextAuth(authOptions);

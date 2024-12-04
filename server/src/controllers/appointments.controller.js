@@ -163,6 +163,24 @@ export async function getSingleAppointment(req, res, next) {
   }
 }
 
+export async function getUsersAppointments(req, res, next) {
+  const { email } = req.params;
+  try {
+    const appointments = await Appointment.find({
+      email,
+      status: { $ne: "Cancelled" },
+    })
+      .sort({ dateCreated: -1 })
+      .exec();
+    res.status(200);
+    res.json(appointments);
+  } catch (error) {
+    console.error(error);
+    res.status(500);
+    return next({ message: "An internal server error occurred" });
+  }
+}
+
 export async function cancelAppointment(req, res, next) {
   const { email } = req.body;
   try {
