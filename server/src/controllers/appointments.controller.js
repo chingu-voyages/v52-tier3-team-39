@@ -27,17 +27,6 @@ export async function newAppointment(req, res, next) {
     }
 
     const { earlyTimeHour, lateTimeHour, address, email, ...rest } = req.body;
-    const geocodeData = await geocodeAddress(address);
-
-    if (!geocodeData.results.length) {
-      res.status(404);
-      if (geocodeData.status === "ZERO_RESULTS") {
-        return next({ message: "The address submitted is not valid." });
-      }
-      return next({
-        message: "Unable to locate the address. Please verify and try again.",
-      });
-    }
 
     // return error if doc with matching address and "Pending" or "Confirmed" status exists
     const checkAddress = await Appointment.findOne({
@@ -50,6 +39,18 @@ export async function newAppointment(req, res, next) {
       return next({
         message:
           "An appointment for this address has already been scheduled. Please modify the existing appointment or choose a different address.",
+      });
+    }
+
+    const geocodeData = await geocodeAddress(address);
+
+    if (!geocodeData.results.length) {
+      res.status(404);
+      if (geocodeData.status === "ZERO_RESULTS") {
+        return next({ message: "The address submitted is not valid." });
+      }
+      return next({
+        message: "Unable to locate the address. Please verify and try again.",
       });
     }
 
