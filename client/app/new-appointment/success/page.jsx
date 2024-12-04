@@ -41,7 +41,7 @@ export default async function SuccessView() {
       >
         <Typography textAlign={{ sm: "center" }}>
           Hi {response.name}, we've received your request for an appointment at{" "}
-          {response.address}.
+          {response.location.address}.
         </Typography>
         <List sx={{ marginTop: 2 }}>
           <ListItem disableGutters>
