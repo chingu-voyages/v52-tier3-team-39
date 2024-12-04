@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Card, CardContent, List, Stack, Typography } from "@mui/material";
-import AppointmentListItem from "./AppointmentListItem";
 import CancelAppointment from "./CancelAppointment";
 
 function convertHourTo12HourTime(hour) {
@@ -58,9 +57,9 @@ export default function AppointmentDetails({ formData }) {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <AppointmentListItem
-                    value={"View Mock Request Received Email"}
-                  />
+                  <Typography sx={{ fontSize: { xs: "0.9rem", lg: "1rem" } }}>
+                    View Mock Request Received Email
+                  </Typography>
                 </Link>
               </Stack>
               <Stack gap={1 / 2}>
@@ -69,9 +68,9 @@ export default function AppointmentDetails({ formData }) {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <AppointmentListItem
-                    value={"View Mock Schedule Confirmation Email"}
-                  />
+                  <Typography sx={{ fontSize: { xs: "0.9rem", lg: "1rem" } }}>
+                    View Mock Schedule Confirmation Email
+                  </Typography>
                 </Link>
               </Stack>
             </Stack>
