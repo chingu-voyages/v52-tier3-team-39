@@ -1,12 +1,5 @@
 import Link from "next/link";
-import {
-  Card,
-  CardContent,
-  Divider,
-  List,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Card, CardContent, List, Stack, Typography } from "@mui/material";
 import AppointmentListItem from "./AppointmentListItem";
 import CancelAppointment from "./CancelAppointment";
 
@@ -18,9 +11,7 @@ function convertHourTo12HourTime(hour) {
 
 export default function AppointmentDetails({ formData }) {
   const {
-    name,
     email,
-    phone,
     location: { address },
     status,
     notifications: { apptRequestEmailUrl, apptConfirmationEmailUrl },
@@ -35,68 +26,32 @@ export default function AppointmentDetails({ formData }) {
   return (
     <Card sx={{ mt: 4, padding: 2 }}>
       <CardContent>
-        <Stack gap={2}>
-          <Typography
-            component="h2"
-            variant="h1"
-            sx={{ fontSize: { xs: "1.2rem", lg: "1.5rem" } }}
-          >
-            Appointment Details
-          </Typography>
-          <Divider orientation="horizontal" />
-        </Stack>
-        <List sx={{ marginY: 2 }}>
-          <Stack gap={4}>
-            <Stack gap={1}>
+        <List sx={{ marginY: 0 }}>
+          <Stack gap={3}>
+            <Typography
+              component="h2"
+              variant="h2"
+              sx={{ fontSize: { xs: "1rem", sm: "1.1rem", md: "1.2rem" } }}
+            >
+              {address}
+            </Typography>
+            <Stack gap={2}>
               <Typography
-                variant="subtitle2"
+                fontStyle="italic"
                 sx={{ fontSize: { xs: "0.9rem", lg: "1rem" } }}
               >
-                Contact Info
+                {status}
               </Typography>
               <Stack gap={1 / 2}>
-                <AppointmentListItem label="Name" value={name} />
-                <AppointmentListItem label="Email" value={email} />
-                <AppointmentListItem label="Phone" value={phone} />
+                <Typography sx={{ fontSize: { xs: "0.9rem", lg: "1rem" } }}>
+                  Date: {scheduledDateString || "N/A"}
+                </Typography>
+                <Typography sx={{ fontSize: { xs: "0.9rem", lg: "1rem" } }}>
+                  Time: {scheduledTime}
+                </Typography>
               </Stack>
             </Stack>
             <Stack gap={1}>
-              <Typography
-                variant="subtitle2"
-                sx={{ fontSize: { xs: "0.9rem", lg: "1rem" } }}
-              >
-                Address
-              </Typography>
-              <Stack gap={1 / 2}>
-                <AppointmentListItem value={address} />
-              </Stack>
-            </Stack>
-            <Stack gap={1}>
-              <Typography
-                variant="subtitle2"
-                sx={{ fontSize: { xs: "0.9rem", lg: "1rem" } }}
-              >
-                Scheduling
-              </Typography>
-              <Stack gap={1 / 2}>
-                <AppointmentListItem label="Status" value={status} />
-                <AppointmentListItem
-                  label="Apppointment Date"
-                  value={scheduledDateString || "N/A"}
-                />
-                <AppointmentListItem
-                  label="Appointment Time Range"
-                  value={scheduledTime}
-                />
-              </Stack>
-            </Stack>
-            <Stack gap={1}>
-              <Typography
-                variant="subtitle2"
-                sx={{ fontSize: { xs: "0.9rem", lg: "1rem" } }}
-              >
-                Additional Information
-              </Typography>
               <Stack gap={1 / 2}>
                 <Link
                   href={apptRequestEmailUrl}
@@ -122,12 +77,6 @@ export default function AppointmentDetails({ formData }) {
             </Stack>
           </Stack>
         </List>
-        <Typography
-          fontStyle="italic"
-          sx={{ "&::before": { content: '"* "' }, fontSize: "0.8rem" }}
-        >
-          Mock email expires after a few hours
-        </Typography>
       </CardContent>
       {showCancelBtn && <CancelAppointment email={email} />}
     </Card>
