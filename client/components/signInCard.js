@@ -11,7 +11,7 @@ import {
 import GoogleIcon from "@mui/icons-material/Google";
 import { signIn } from "next-auth/react";
 
-export default async function SignInCard() {
+export default function SignInCard() {
 
   const handleSubmit = () => {
     signIn("google")
