@@ -1,11 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import {
   DataGrid,
   GridToolbarExport,
   GridToolbarContainer,
 } from "@mui/x-data-grid";
-import { Paper } from "@mui/material";
+import { Paper, Box } from "@mui/material";
+import SearchBar from "./SearchBar";
 
 const formatName = (name) => {
   const [firstName, ...rest] = name.split(" ");
@@ -88,27 +90,33 @@ const Toolbar = () => (
 );
 
 export default function Grid({ rows }) {
+  const [filterModel, setFilterModel] = useState({ items: [] });
   return (
     <Paper elevation={24}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        initialState={{
-          pagination: { paginationModel },
-          sorting: {
-            sortModel: [
-              {
-                field: "visitOrder",
-                sort: "asc",
-              },
-            ],
-          },
-        }}
-        pageSizeOptions={[15, 10]}
-        sx={{ border: 0 }}
-        getRowHeight={() => "auto"}
-        slots={{ toolbar: Toolbar }}
-      />
+      <Box p={2}>
+        <SearchBar onFilterChange={setFilterModel} columns={columns} />
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          initialState={{
+            pagination: { paginationModel },
+            sorting: {
+              sortModel: [
+                {
+                  field: "visitOrder",
+                  sort: "asc",
+                },
+              ],
+            },
+          }}
+          pageSizeOptions={[15, 10]}
+          sx={{ border: 0 }}
+          getRowHeight={() => "auto"}
+          slots={{ toolbar: Toolbar }}
+          filterModel={filterModel}
+          onFilterModelChange={(model) => setFilterModel(model)}
+        />
+      </Box>
     </Paper>
   );
 }
