@@ -16,8 +16,6 @@ export async function requestAppt(formValues) {
   if (!response.ok) {
     return { message: data.message };
   }
-
-  redirect("/new-appointment/success");
 }
 
 // GET ALL APPTS

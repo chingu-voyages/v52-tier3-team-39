@@ -57,6 +57,7 @@ export default function Form({ email }) {
   const [toast, setToast] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
   const [disableBtn, setDisableBtn] = useState(null);
+  const [isPending, setIsPending] = useState(false);
 
   function handleCancel() {
     redirect("/new-appointment/cancel");
@@ -81,16 +82,27 @@ export default function Form({ email }) {
       setErrorPath(error.details[0].path[0]);
       return;
     }
-    const err = await requestAppt(value);
 
-    if (err) {
-      setToast(true);
-      setToastMsg(err.message);
+    try {
+      setIsPending(true);
+      const serverErr = await requestAppt(value);
+      if (serverErr) {
+        setToast(true);
+        return setToastMsg(serverErr.message);
+      }
+    } catch (error) {
+      console.error(error);
+      throw new Error("There was an error submitting the form");
+    } finally {
+      setIsPending(false);
     }
+
+    redirect("/new-appointment/success");
   }
 
   return (
     <>
+      {isPending && <p>Submission pending...</p>}
       <ErrorToast
         toast={toast}
         setToast={setToast}
