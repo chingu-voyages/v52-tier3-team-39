@@ -100,11 +100,13 @@ export default function Grid({ rows }) {
 
         if (col.field === "dateCreated") {
           const formattedDate = formatDateCreated(new Date(value));
-          return formattedDate.toLowerCase().includes(searchText);
+          return formattedDate.toLowerCase().includes(searchText.toLowerCase());
         }
         if (col.field === "timeRange") {
           const formattedTimeRange = formatTimeRange(value);
-          return formattedTimeRange.toLowerCase().includes(searchText);
+          return formattedTimeRange
+            .toLowerCase()
+            .includes(searchText.toLowerCase());
         }
 
         return value
