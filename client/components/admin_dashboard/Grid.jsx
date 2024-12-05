@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   DataGrid,
   GridToolbarExport,
@@ -90,13 +90,31 @@ const Toolbar = () => (
 );
 
 export default function Grid({ rows }) {
-  const [filterModel, setFilterModel] = useState({ items: [] });
+  const [searchText, setSearchText] = useState("");
+
+  const filteredRows = useMemo(() => {
+    if (!searchText) return rows;
+    return rows.filter((row) =>
+      columns.some((col) => {
+        const value = row[col.field];
+        return value
+          ?.toString()
+          .toLowerCase()
+          .includes(searchText.toLowerCase());
+      })
+    );
+  }, [searchText, rows]);
+
+  const onSearchChange = (value) => {
+    setSearchText(value);
+  };
+
   return (
     <Paper elevation={24}>
       <Box p={2}>
-        <SearchBar onFilterChange={setFilterModel} columns={columns} />
+        <SearchBar onSearchChange={onSearchChange} searchText={searchText} />
         <DataGrid
-          rows={rows}
+          rows={filteredRows}
           columns={columns}
           initialState={{
             pagination: { paginationModel },
@@ -113,8 +131,6 @@ export default function Grid({ rows }) {
           sx={{ border: 0 }}
           getRowHeight={() => "auto"}
           slots={{ toolbar: Toolbar }}
-          filterModel={filterModel}
-          onFilterModelChange={(model) => setFilterModel(model)}
         />
       </Box>
     </Paper>

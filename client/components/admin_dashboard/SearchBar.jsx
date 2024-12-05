@@ -1,20 +1,10 @@
 import { useState } from "react";
 import { TextField } from "@mui/material";
 
-const SearchBar = ({ onFilterChange, columns }) => {
-  const [searchText, setSearchText] = useState("");
-
+const SearchBar = ({ onSearchChange, searchText }) => {
   const handleSearch = (e) => {
     const value = e.target.value;
-    setSearchText(value);
-
-    const filters = columns.map((col) => ({
-      columnField: col.field,
-      operatorValue: "contains",
-      value,
-    }));
-
-    onFilterChange({ items: value ? filters : [] });
+    onSearchChange(value);
   };
 
   return (
