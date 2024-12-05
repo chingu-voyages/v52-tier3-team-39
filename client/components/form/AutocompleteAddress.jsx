@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import autoComplete from "@tarekraafat/autocomplete.js";
 import { FormControl, InputLabel, Input, FormHelperText } from "@mui/material";
 import { serverUrl } from "@/constants";
+import "./Autocomplete.css";
 
 export default function Autocomplete({ setAddress, errorMsg, isPending }) {
   useEffect(() => {
@@ -55,6 +56,7 @@ export default function Autocomplete({ setAddress, errorMsg, isPending }) {
         id="autoComplete"
         aria-describedby="address-autocomplete"
         disabled={isPending}
+        fullWidth
       />
       {errorMsg && (
         <FormHelperText id="name-error-text" error>
