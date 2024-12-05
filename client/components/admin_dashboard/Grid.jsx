@@ -97,6 +97,16 @@ export default function Grid({ rows }) {
     return rows.filter((row) =>
       columns.some((col) => {
         const value = row[col.field];
+
+        if (col.field === "dateCreated") {
+          const formattedDate = formatDateCreated(new Date(value));
+          return formattedDate.toLowerCase().includes(searchText);
+        }
+        if (col.field === "timeRange") {
+          const formattedTimeRange = formatTimeRange(value);
+          return formattedTimeRange.toLowerCase().includes(searchText);
+        }
+
         return value
           ?.toString()
           .toLowerCase()

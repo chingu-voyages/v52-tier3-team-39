@@ -16,7 +16,7 @@ const SearchBar = ({ onSearchChange, searchText }) => {
         value={searchText}
         onChange={handleSearch}
         sx={{
-          width: "65%",
+          width: "55%",
         }}
       />
     </Box>
