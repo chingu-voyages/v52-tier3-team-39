@@ -5,22 +5,24 @@ import autoComplete from "@tarekraafat/autocomplete.js";
 import { FormControl, InputLabel, Input, FormHelperText } from "@mui/material";
 import { serverUrl } from "@/constants";
 
-export default function Autocomplete({ setAddress, errorMsg }) {
+export default function Autocomplete({ setAddress, errorMsg, isPending }) {
   useEffect(() => {
     const fetchAddresses = async (query) => {
       const searchString = encodeURIComponent(query);
-      const response = await fetch(`${serverUrl}addresses/autocomplete?searchString=${searchString}`);
-  
+      const response = await fetch(
+        `${serverUrl}addresses/autocomplete?searchString=${searchString}`
+      );
+
       const { error, suggestions } = await response.json();
-  
+
       if (error) {
         console.warn("Failed to fetch autocomplete suggestions");
         console.warn(error);
         return [];
       }
-  
+
       return suggestions;
-    }
+    };
 
     const autoCompleteJS = new autoComplete({
       selector: "#autoComplete",
@@ -49,7 +51,11 @@ export default function Autocomplete({ setAddress, errorMsg }) {
   return (
     <FormControl>
       <InputLabel htmlFor="address">Address</InputLabel>
-      <Input id="autoComplete" aria-describedby="address-autocomplete" />
+      <Input
+        id="autoComplete"
+        aria-describedby="address-autocomplete"
+        disabled={isPending}
+      />
       {errorMsg && (
         <FormHelperText id="name-error-text" error>
           {errorMsg}
