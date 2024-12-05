@@ -25,6 +25,11 @@ const navLinks = [
     href: "/admin-dashboard",
     protected: true,
   },
+  {
+    label: "Sign Out",
+    href: "/api/auth/signout",
+    protected: false,
+  },
 ];
 
 export function MobileNav() {
