@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import autoComplete from "@tarekraafat/autocomplete.js";
 import { FormControl, InputLabel, Input, FormHelperText } from "@mui/material";
 import { serverUrl } from "@/constants";
+import "./Autocomplete.css"
 
 export default function Autocomplete({ setAddress, errorMsg }) {
   useEffect(() => {
@@ -49,7 +50,7 @@ export default function Autocomplete({ setAddress, errorMsg }) {
   return (
     <FormControl>
       <InputLabel htmlFor="address">Address</InputLabel>
-      <Input id="autoComplete" aria-describedby="address-autocomplete" />
+      <Input id="autoComplete" aria-describedby="address-autocomplete"  fullWidth/>
       {errorMsg && (
         <FormHelperText id="name-error-text" error>
           {errorMsg}
