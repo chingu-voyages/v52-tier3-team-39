@@ -1,54 +1,121 @@
 import Appointment from "../models/appointments.model.js";
+import { appendSchedule } from "../scheduling/scheduler.js";
 import appointmentSchema from "../validators/appointments.validator.js";
+import sendEmail, {
+  apptConfirmationEmailHtml,
+  apptConfirmationEmailText,
+  apptRequestEmailHtml,
+  apptRequestEmailText,
+} from "../utils/emailHelper.js";
 
 export async function geocodeAddress(address) {
   const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.GOOGLE_API_KEY}`;
-  console.log(geocodeUrl);
-  try {
-    const resp = await fetch(geocodeUrl);
-    const data = await resp.json();
-    console.log(data);
-    if (data.status === "OK") {
-      const geodata = data.results[0].geometry.location;
-      console.log("geodata", geodata);
 
-      return geodata;
-    }
-  } catch (error) {
-    console.log("Geocoding error", error.message);
-    throw error;
-  }
+  const resp = await fetch(geocodeUrl);
+  const data = await resp.json();
+  return data;
 }
 
 export async function newAppointment(req, res, next) {
-  console.log("inside?");
   try {
+    // handle validation errors
     const { error } = appointmentSchema.validate(req.body);
 
-    // handle validation errors
     if (error) {
-      // console.log("inside?");
       res.status(422);
       return next({ message: error.details[0].message });
     }
 
-    // send value to db
-    const { earlyTimeHour, lateTimeHour, address, ...rest } = req.body;
+    const { earlyTimeHour, lateTimeHour, address, email, ...rest } = req.body;
 
-    const coords = await geocodeAddress(address);
-    console.log("coords", coords);
-    const newAppt = new Appointment({
-      ...rest,
-      userId: "Insert Id Here",
-      timeRange: {
-        earlyTimeHour,
-        lateTimeHour,
-      },
-      location: coords,
+    // return error if doc with matching address and "Pending" or "Confirmed" status exists
+    const checkAddress = await Appointment.findOne({
+      "location.address": address,
+      status: { $in: ["Pending", "Confirmed"] },
     });
-    await newAppt.save();
 
-    // send success response
+    if (checkAddress) {
+      res.status(409); // Conflict
+      return next({
+        message:
+          "An appointment for this address has already been scheduled. Please modify the existing appointment or choose a different address.",
+      });
+    }
+
+    const geocodeData = await geocodeAddress(address);
+
+    if (!geocodeData.results.length) {
+      res.status(404);
+      if (geocodeData.status === "ZERO_RESULTS") {
+        return next({ message: "The address submitted is not valid." });
+      }
+      return next({
+        message: "Unable to locate the address. Please verify and try again.",
+      });
+    }
+
+    // add request data to the database
+    const appt = new Appointment({
+      ...rest,
+      email,
+      userId: "Insert Id Here",
+      preferredTimeRange: {
+        preferredEarlyTime: earlyTimeHour,
+        preferredLateTime: lateTimeHour,
+      },
+      location: {
+        address: address,
+        lat: geocodeData.results[0].geometry.location.lat,
+        lng: geocodeData.results[0].geometry.location.lng,
+      },
+    });
+
+    const newAppt = await appt.save();
+
+    // send mock appt request email
+    const requestEmailUrl = await sendEmail({
+      toAddress: email,
+      subject: "Appointment Request Received",
+      text: apptRequestEmailText(req.body),
+      html: apptRequestEmailHtml(req.body),
+    });
+
+    // update appointment details with dummy date and preferred time range
+    const dateCreated = new Date(newAppt.dateCreated);
+    const dummyDate = new Date(dateCreated.getTime() + 1000 * 60 * 60 * 24); // +1 day
+    const updatedAppt = await Appointment.findByIdAndUpdate(
+      { _id: newAppt._id },
+      {
+        schedule: {
+          scheduledDate: dummyDate,
+          scheduledEarlyTime: earlyTimeHour,
+          scheduledLateTime: lateTimeHour,
+        },
+        status: "Confirmed",
+      },
+      { new: true }
+    );
+
+    // send mock appt confirmation email
+    const confirmationEmailUrl = await sendEmail({
+      toAddress: email,
+      subject: "Your Appointment Has Been Confirmed",
+      text: apptConfirmationEmailText(updatedAppt),
+      html: apptConfirmationEmailHtml(updatedAppt),
+    });
+
+    if (requestEmailUrl && confirmationEmailUrl) {
+      await Appointment.updateOne(
+        { _id: newAppt._id },
+        {
+          notifications: {
+            apptRequestEmailUrl: requestEmailUrl,
+            apptConfirmationEmailUrl: confirmationEmailUrl,
+          },
+        }
+      );
+    }
+
     res.status(201);
     res.json({ message: "ok" });
   } catch (error) {
@@ -70,7 +137,10 @@ export async function newAppointment(req, res, next) {
 export async function getAllAppointments(req, res, next) {
   try {
     const appointments = await Appointment.find();
-    res.status(200).json(appointments);
+    const withScheduling = appendSchedule(
+      appointments.map((a) => a.toObject())
+    );
+    res.status(200).json(withScheduling);
   } catch (error) {
     console.error("Error fetching appointments:", error);
     res.status(500);
@@ -81,9 +151,30 @@ export async function getAllAppointments(req, res, next) {
 export async function getSingleAppointment(req, res, next) {
   const { email } = req.params;
   try {
-    const appointment = await Appointment.findOne({ email });
+    const [appointment] = await Appointment.find({ email })
+      .sort({ dateCreated: -1 }) // sort descending order
+      .limit(1)
+      .exec();
     res.status(200);
-    res.json(appointment);
+    res.json(appointment || null);
+  } catch (error) {
+    console.error(error);
+    res.status(500);
+    return next({ message: "An internal server error occurred" });
+  }
+}
+
+export async function getUsersAppointments(req, res, next) {
+  const { email } = req.params;
+  try {
+    const appointments = await Appointment.find({
+      email,
+      status: { $ne: "Cancelled" },
+    })
+      .sort({ dateCreated: -1 })
+      .exec();
+    res.status(200);
+    res.json(appointments);
   } catch (error) {
     console.error(error);
     res.status(500);
