@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TextField } from "@mui/material";
+import { TextField, Box } from "@mui/material";
 
 const SearchBar = ({ onSearchChange, searchText }) => {
   const handleSearch = (e) => {
@@ -8,15 +8,18 @@ const SearchBar = ({ onSearchChange, searchText }) => {
   };
 
   return (
-    <TextField
-      label="Search"
-      variant="outlined"
-      fullWidth
-      margin="normal"
-      value={searchText}
-      onChange={handleSearch}
-      placeholder="Search across all fields"
-    />
+    <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
+      <TextField
+        label="Search"
+        variant="outlined"
+        margin="normal"
+        value={searchText}
+        onChange={handleSearch}
+        sx={{
+          width: "65%",
+        }}
+      />
+    </Box>
   );
 };
 
