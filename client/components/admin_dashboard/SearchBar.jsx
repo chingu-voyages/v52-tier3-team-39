@@ -12,7 +12,7 @@ const SearchBar = ({ onSearchChange, searchText }) => {
     <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
       <Tooltip
         title="Quickly filter across all column fields"
-        placement="top"
+        placement="bottom"
         arrow
       >
         <TextField

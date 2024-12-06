@@ -106,13 +106,23 @@ export default function Grid({ rows }) {
       renderCell: (params) => {
         const { id, markVisited } = params.row;
         return (
-          <Button
-            variant={markVisited ? "contained" : "outlined"}
-            color="primary"
-            onClick={() => toggleVisited(id)}
+          <Tooltip
+            title={
+              markVisited
+                ? "Click to mark as not visited"
+                : "Click to mark as visited"
+            }
+            placement="right"
+            arrow
           >
-            {markVisited ? "Visited" : "Need to Visit"}
-          </Button>
+            <Button
+              variant={markVisited ? "contained" : "outlined"}
+              color="primary"
+              onClick={() => toggleVisited(id)}
+            >
+              {markVisited ? "Visited" : "Need to Visit"}
+            </Button>
+          </Tooltip>
         );
       },
     },
