@@ -121,26 +121,21 @@ export default function Grid({ rows }) {
 
   const filteredRows = useMemo(() => {
     if (!searchText) return customRows;
+
+    const needToFormat = {
+      dateCreated: (value) => formatDateCreated(new Date(value)),
+      timeRange: (value) => formatTimeRange(value),
+      markVisited: (value, row) =>
+        row.markVisited ? "Visited" : "Need to Visit",
+    };
+
     return customRows.filter((row) =>
       columns.some((col) => {
         const value = row[col.field];
-
-        if (col.field === "dateCreated") {
-          const formattedDate = formatDateCreated(new Date(value));
-          return formattedDate.toLowerCase().includes(searchText.toLowerCase());
-        }
-        if (col.field === "timeRange") {
-          const formattedTimeRange = formatTimeRange(value);
-          return formattedTimeRange
-            .toLowerCase()
-            .includes(searchText.toLowerCase());
-        }
-        if (col.field === "markVisited") {
-          const status = row.markVisited ? "Visited" : "Need to Visit";
-          return status.toLowerCase().includes(searchText.toLowerCase());
-        }
-
-        return value
+        const formattedValue = needToFormat[col.field]
+          ? needToFormat[col.field](value, row)
+          : value;
+        return formattedValue
           ?.toString()
           .toLowerCase()
           .includes(searchText.toLowerCase());
