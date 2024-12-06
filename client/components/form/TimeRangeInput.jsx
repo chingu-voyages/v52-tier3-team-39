@@ -23,6 +23,7 @@ export default function TimeRangeInput({
   setLateTime,
   errorPath,
   setDisableBtn,
+  isPending,
 }) {
   const [earlyTimeErr, setEarlyTimeErr] = useState(null);
   const [lateTimeErr, setLateTimeErr] = useState(null);
@@ -55,6 +56,7 @@ export default function TimeRangeInput({
               onChange={(newValue) => {
                 setEarlyTime(newValue);
               }}
+              disabled={isPending}
             />
             <FormHelperText>Select a time between 9am and 4pm</FormHelperText>
             {earlyTimeErr && (
@@ -86,6 +88,7 @@ export default function TimeRangeInput({
               onChange={(newValue) => {
                 setLateTime(newValue);
               }}
+              disabled={isPending}
             />
             <FormHelperText>Select a time between 10am and 5pm</FormHelperText>
             {lateTimeErr && (

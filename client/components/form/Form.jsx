@@ -18,6 +18,7 @@ import TimeRangeInput from "./TimeRangeInput";
 import { requestAppt } from "@/actions/form";
 import AutocompleteAddress from "./AutocompleteAddress";
 import ErrorToast from "../errors/ErrorToast";
+import Loading from "@/app/loading";
 
 const schema = Joi.object({
   name: Joi.string().min(2).max(255).required().trim(),
@@ -57,6 +58,7 @@ export default function Form({ email }) {
   const [toast, setToast] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
   const [disableBtn, setDisableBtn] = useState(null);
+  const [isPending, setIsPending] = useState(false);
 
   function handleCancel() {
     redirect("/new-appointment/cancel");
@@ -81,16 +83,27 @@ export default function Form({ email }) {
       setErrorPath(error.details[0].path[0]);
       return;
     }
-    const err = await requestAppt(value);
 
-    if (err) {
-      setToast(true);
-      setToastMsg(err.message);
+    try {
+      setIsPending(true);
+      const serverErr = await requestAppt(value);
+      if (serverErr) {
+        setToast(true);
+        return setToastMsg(serverErr.message);
+      }
+    } catch (error) {
+      console.error(error);
+      throw new Error("There was an error submitting the form");
+    } finally {
+      setIsPending(false);
     }
+
+    redirect("/new-appointment/success");
   }
 
   return (
     <>
+      {isPending && <Loading />}
       <ErrorToast
         toast={toast}
         setToast={setToast}
@@ -112,6 +125,7 @@ export default function Form({ email }) {
                 id="name"
                 aria-describedby="name-error-text"
                 value={name}
+                disabled={isPending}
                 onChange={(event) => {
                   setName(event.currentTarget.value);
                 }}
@@ -129,6 +143,7 @@ export default function Form({ email }) {
                 id="phone"
                 aria-describedby="phone-error-text"
                 value={phone}
+                disabled={isPending}
                 onChange={(event) => {
                   setPhone(event.currentTarget.value);
                 }}
@@ -142,6 +157,7 @@ export default function Form({ email }) {
             <AutocompleteAddress
               setAddress={setAddress}
               errorMsg={errorPath === "address" ? errorMsg : undefined}
+              isPending={isPending}
             />
 
             <TimeRangeInput
@@ -152,6 +168,7 @@ export default function Form({ email }) {
               errorMsg={errorMsg}
               errorPath={errorPath}
               setDisableBtn={setDisableBtn}
+              isPending={isPending}
             />
 
             <Stack
@@ -164,6 +181,7 @@ export default function Form({ email }) {
                 color="warning"
                 size="large"
                 onClick={handleCancel}
+                disabled={isPending}
               >
                 Cancel
               </Button>
@@ -171,7 +189,7 @@ export default function Form({ email }) {
                 variant="contained"
                 size="large"
                 type="submit"
-                disabled={!!disableBtn}
+                disabled={!!disableBtn || isPending}
               >
                 Submit
               </Button>
