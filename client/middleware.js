@@ -15,6 +15,9 @@ export default withAuth(
         if (token) return true;
       },
     },
+    pages: {
+      signIn: "/signIn",
+      },
   }
 );
 
