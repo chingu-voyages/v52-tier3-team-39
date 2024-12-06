@@ -118,31 +118,29 @@ export default function Grid({ rows }) {
   };
 
   return (
-    <Paper elevation={24}>
-      <Box p={2}>
-        <SearchBar onSearchChange={onSearchChange} searchText={searchText} />
-        <DataGrid
-          rows={filteredRows}
-          columns={columns}
-          initialState={{
-            pagination: { paginationModel },
-            sorting: {
-              sortModel: [
-                {
-                  field: "visitOrder",
-                  sort: "asc",
-                },
-              ],
-            },
-          }}
-          pageSizeOptions={[15, 10]}
-          sx={{ border: 0 }}
-          getRowHeight={() => "auto"}
-          slots={{ toolbar: Toolbar }}
-          autosizeOnMount
-          autosizeOptions={{includeHeaders: true, expand: true}}
-        />
-      </Box>
-    </Paper>
+    <>
+      <SearchBar onSearchChange={onSearchChange} searchText={searchText} />
+      <DataGrid
+        rows={filteredRows}
+        columns={columns}
+        initialState={{
+          pagination: { paginationModel },
+          sorting: {
+            sortModel: [
+              {
+                field: "visitOrder",
+                sort: "asc",
+              },
+            ],
+          },
+        }}
+        pageSizeOptions={[15, 10]}
+        sx={{ border: 0 }}
+        getRowHeight={() => "auto"}
+        slots={{ toolbar: Toolbar }}
+        autosizeOnMount
+        autosizeOptions={{ includeHeaders: true, expand: true }}
+      />
+    </>
   );
 }
