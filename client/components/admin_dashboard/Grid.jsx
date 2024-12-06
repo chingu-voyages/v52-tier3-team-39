@@ -1,11 +1,13 @@
 "use client";
 
+import { useState, useMemo } from "react";
 import {
   DataGrid,
   GridToolbarExport,
   GridToolbarContainer,
 } from "@mui/x-data-grid";
-import { Paper } from "@mui/material";
+import { Paper, Box } from "@mui/material";
+import SearchBar from "./SearchBar";
 
 const formatName = (name) => {
   const [firstName, ...rest] = name.split(" ");
@@ -88,27 +90,61 @@ const Toolbar = () => (
 );
 
 export default function Grid({ rows }) {
+  const [searchText, setSearchText] = useState("");
+
+  const filteredRows = useMemo(() => {
+    if (!searchText) return rows;
+    return rows.filter((row) =>
+      columns.some((col) => {
+        const value = row[col.field];
+
+        if (col.field === "dateCreated") {
+          const formattedDate = formatDateCreated(new Date(value));
+          return formattedDate.toLowerCase().includes(searchText.toLowerCase());
+        }
+        if (col.field === "timeRange") {
+          const formattedTimeRange = formatTimeRange(value);
+          return formattedTimeRange
+            .toLowerCase()
+            .includes(searchText.toLowerCase());
+        }
+
+        return value
+          ?.toString()
+          .toLowerCase()
+          .includes(searchText.toLowerCase());
+      })
+    );
+  }, [searchText, rows]);
+
+  const onSearchChange = (value) => {
+    setSearchText(value);
+  };
+
   return (
     <Paper elevation={24}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        initialState={{
-          pagination: { paginationModel },
-          sorting: {
-            sortModel: [
-              {
-                field: "visitOrder",
-                sort: "asc",
-              },
-            ],
-          },
-        }}
-        pageSizeOptions={[15, 10]}
-        sx={{ border: 0 }}
-        getRowHeight={() => "auto"}
-        slots={{ toolbar: Toolbar }}
-      />
+      <Box p={2}>
+        <SearchBar onSearchChange={onSearchChange} searchText={searchText} />
+        <DataGrid
+          rows={filteredRows}
+          columns={columns}
+          initialState={{
+            pagination: { paginationModel },
+            sorting: {
+              sortModel: [
+                {
+                  field: "visitOrder",
+                  sort: "asc",
+                },
+              ],
+            },
+          }}
+          pageSizeOptions={[15, 10]}
+          sx={{ border: 0, height: "100%" }}
+          getRowHeight={() => "auto"}
+          slots={{ toolbar: Toolbar }}
+        />
+      </Box>
     </Paper>
   );
 }
