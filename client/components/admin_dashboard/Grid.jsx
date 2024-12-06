@@ -44,40 +44,34 @@ const formatPhone = (phone) => {
 const columns = [
   {
     field: "visitOrder",
-    headerName: "Visit Order",
-    width: 190,
+    headerName: "Order",
     valueGetter: (_, row) => row.schedule.order,
   },
-  { field: "status", headerName: "Status", width: 190 },
+  { field: "status", headerName: "Status" },
   {
     valueFormatter: formatName,
     field: "name",
     headerName: "Name",
-    width: 190,
   },
   {
     valueFormatter: formatDateCreated,
     field: "dateCreated",
-    headerName: "Requested on",
-    width: 190,
+    headerName: "Requested On",
   },
   {
     valueFormatter: formatTimeRange,
     field: "timeRange",
     headerName: "Timeslot",
-    width: 190,
   },
   {
     valueFormatter: formatPhone,
     field: "phone",
     headerName: "Phone",
-    width: 190,
   },
-  { field: "email", headerName: "Email", width: 190 },
+  { field: "email", headerName: "Email" },
   {
     field: "address",
     headerName: "Address",
-    width: 190,
   },
 ];
 
@@ -143,6 +137,8 @@ export default function Grid({ rows }) {
           sx={{ border: 0 }}
           getRowHeight={() => "auto"}
           slots={{ toolbar: Toolbar }}
+          autosizeOnMount
+          autosizeOptions={{includeHeaders: true, expand: true}}
         />
       </Box>
     </Paper>
