@@ -7,6 +7,7 @@ import {
   GridToolbarContainer,
 } from "@mui/x-data-grid";
 import { Paper, Box } from "@mui/material";
+import Button from "@mui/material/Button";
 import SearchBar from "./SearchBar";
 
 const formatName = (name) => {
@@ -41,46 +42,6 @@ const formatPhone = (phone) => {
   return match ? `(${match[1]}) ${match[2]}-${match[3]}` : phone;
 };
 
-const columns = [
-  {
-    field: "visitOrder",
-    headerName: "Visit Order",
-    width: 190,
-    valueGetter: (_, row) => row.schedule.order,
-  },
-  { field: "status", headerName: "Status", width: 190 },
-  {
-    valueFormatter: formatName,
-    field: "name",
-    headerName: "Name",
-    width: 190,
-  },
-  {
-    valueFormatter: formatDateCreated,
-    field: "dateCreated",
-    headerName: "Requested on",
-    width: 190,
-  },
-  {
-    valueFormatter: formatTimeRange,
-    field: "timeRange",
-    headerName: "Timeslot",
-    width: 190,
-  },
-  {
-    valueFormatter: formatPhone,
-    field: "phone",
-    headerName: "Phone",
-    width: 190,
-  },
-  { field: "email", headerName: "Email", width: 190 },
-  {
-    field: "address",
-    headerName: "Address",
-    width: 190,
-  },
-];
-
 const paginationModel = { page: 0, pageSize: 15 };
 
 const Toolbar = () => (
@@ -91,10 +52,76 @@ const Toolbar = () => (
 
 export default function Grid({ rows }) {
   const [searchText, setSearchText] = useState("");
+  const [customRows, setCustomRows] = useState(rows);
+
+  const columns = [
+    {
+      field: "visitOrder",
+      headerName: "Visit Order",
+      width: 190,
+      valueGetter: (_, row) => row.schedule.order,
+    },
+    {
+      field: "markVisited",
+      headerName: "Mark as Visited",
+      width: 190,
+      renderCell: (params) => {
+        const { id, markVisited } = params.row;
+        return (
+          <Button
+            variant={markVisited ? "contained" : "outlined"}
+            color="primary"
+            onClick={() => toggleVisited(id)}
+          >
+            {markVisited ? "Visited" : "Need to Visit"}
+          </Button>
+        );
+      },
+    },
+    { field: "status", headerName: "Status", width: 190 },
+    {
+      valueFormatter: formatName,
+      field: "name",
+      headerName: "Name",
+      width: 190,
+    },
+    {
+      valueFormatter: formatDateCreated,
+      field: "dateCreated",
+      headerName: "Requested on",
+      width: 190,
+    },
+    {
+      valueFormatter: formatTimeRange,
+      field: "timeRange",
+      headerName: "Timeslot",
+      width: 190,
+    },
+    {
+      valueFormatter: formatPhone,
+      field: "phone",
+      headerName: "Phone",
+      width: 190,
+    },
+    { field: "email", headerName: "Email", width: 190 },
+    {
+      field: "address",
+      headerName: "Address",
+      width: 190,
+    },
+  ];
+
+  const toggleVisited = (id) => {
+    setCustomRows((prev) =>
+      prev.map((row) =>
+        row.id === id ? { ...row, markVisited: !row.markVisited } : row
+      )
+    );
+  };
 
   const filteredRows = useMemo(() => {
-    if (!searchText) return rows;
-    return rows.filter((row) =>
+    if (!searchText) return customRows;
+    return customRows.filter((row) =>
       columns.some((col) => {
         const value = row[col.field];
 
@@ -115,7 +142,7 @@ export default function Grid({ rows }) {
           .includes(searchText.toLowerCase());
       })
     );
-  }, [searchText, rows]);
+  }, [searchText, customRows]);
 
   const onSearchChange = (value) => {
     setSearchText(value);
