@@ -135,6 +135,10 @@ export default function Grid({ rows }) {
             .toLowerCase()
             .includes(searchText.toLowerCase());
         }
+        if (col.field === "markVisited") {
+          const status = row.markVisited ? "Visited" : "Need to Visit";
+          return status.toLowerCase().includes(searchText.toLowerCase());
+        }
 
         return value
           ?.toString()
