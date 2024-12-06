@@ -1,27 +1,50 @@
-"use client";
-
+import Link from "next/link";
 import { Box, Stack, Typography } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
+import { headingFont } from "@/app/theme";
 import Nav from "./Nav";
 
 export default function Header() {
   return (
     <Box
       component="header"
-      className="py-2 lg:py-4 px-4 border-b border-gray-200"
+      className="border-b border-gray-200"
+      sx={{
+        paddingY: { xs: 1, sm: 2 },
+      }}
     >
-      <Stack direction="row" className="justify-between items-center">
-        <Typography variant="h5" component="h1">
-          <Typography
-            variant="h5"
-            component="span"
-            sx={{ color: (theme) => theme.palette.branding }}
-          >
-            Ray
-          </Typography>
-          Volution
-        </Typography>
-        <Nav />
-      </Stack>
+      <Box
+        sx={{
+          width: { xs: 1 },
+          maxWidth: "1200px",
+          marginX: "auto",
+          paddingX: { xs: 2, sm: 4, lg: 2, xl: 0 },
+        }}
+      >
+        <Stack direction="row" className="justify-between items-center">
+          <ThemeProvider theme={headingFont}>
+            <Link href="/">
+              <Typography
+                variant="h1"
+                component="h1"
+                sx={{
+                  fontSize: {
+                    xs: "1.6rem",
+                    sm: "2rem",
+                    md: "2.4rem",
+                    lg: "3rem",
+                  },
+                }}
+                className="text-accent"
+              >
+                <span className="text-branding">Ray</span>
+                Volution
+              </Typography>
+            </Link>
+          </ThemeProvider>
+          <Nav />
+        </Stack>
+      </Box>
     </Box>
   );
 }

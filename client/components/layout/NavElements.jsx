@@ -6,11 +6,6 @@ import NavLink from "./NavLink";
 
 const navLinks = [
   {
-    label: "Home",
-    href: "/",
-    protected: false,
-  },
-  {
     label: "Request Service",
     href: "/new-appointment",
     protected: false,
