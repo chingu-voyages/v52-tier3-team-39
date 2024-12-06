@@ -46,6 +46,8 @@ const columns = [
     field: "visitOrder",
     headerName: "Order",
     valueGetter: (_, row) => row.schedule.order,
+    minWidth: 60, // This column doesn't autofit well for some reason. This is a bandaid
+    align: "center"
   },
   { field: "status", headerName: "Status" },
   {
