@@ -6,7 +6,7 @@ import {
   GridToolbarExport,
   GridToolbarContainer,
 } from "@mui/x-data-grid";
-import { Paper, Box } from "@mui/material";
+import { Paper, Box, Tooltip } from "@mui/material";
 import Button from "@mui/material/Button";
 import SearchBar from "./SearchBar";
 
@@ -59,12 +59,50 @@ export default function Grid({ rows }) {
       field: "visitOrder",
       headerName: "Visit Order",
       width: 190,
+      renderHeader: (params) => (
+        <Tooltip
+          title={`Click on ellipses to filter by ${params.colDef.headerName}`}
+          placement="right-start"
+          arrow
+          PopperProps={{
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, 65],
+                },
+              },
+            ],
+          }}
+        >
+          <div>{`${params.colDef.headerName}`}</div>
+        </Tooltip>
+      ),
       valueGetter: (_, row) => row.schedule.order,
     },
     {
       field: "markVisited",
       headerName: "Mark as Visited",
       width: 190,
+      renderHeader: (params) => (
+        <Tooltip
+          title={`Click on ellipses to filter by ${params.colDef.headerName}`}
+          placement="right-start"
+          arrow
+          PopperProps={{
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, 65],
+                },
+              },
+            ],
+          }}
+        >
+          <div>{`${params.colDef.headerName}`}</div>
+        </Tooltip>
+      ),
       renderCell: (params) => {
         const { id, markVisited } = params.row;
         return (
@@ -78,36 +116,154 @@ export default function Grid({ rows }) {
         );
       },
     },
-    { field: "status", headerName: "Status", width: 190 },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 190,
+      renderHeader: (params) => (
+        <Tooltip
+          title={`Click on ellipses to filter by ${params.colDef.headerName}`}
+          placement="right-start"
+          arrow
+          PopperProps={{
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, 65],
+                },
+              },
+            ],
+          }}
+        >
+          <div>{`${params.colDef.headerName}`}</div>
+        </Tooltip>
+      ),
+    },
     {
       valueFormatter: formatName,
       field: "name",
       headerName: "Name",
       width: 190,
+      renderHeader: (params) => (
+        <Tooltip
+          title={`Click on ellipses to filter by ${params.colDef.headerName}`}
+          placement="right-start"
+          arrow
+          PopperProps={{
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, 65],
+                },
+              },
+            ],
+          }}
+        >
+          <div>{`${params.colDef.headerName}`}</div>
+        </Tooltip>
+      ),
     },
     {
       valueFormatter: formatDateCreated,
       field: "dateCreated",
       headerName: "Requested on",
       width: 190,
+      renderHeader: (params) => (
+        <Tooltip
+          title={`Click on ellipses to filter by ${params.colDef.headerName}`}
+          placement="right-start"
+          arrow
+          PopperProps={{
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, 65],
+                },
+              },
+            ],
+          }}
+        >
+          <div>{`${params.colDef.headerName}`}</div>
+        </Tooltip>
+      ),
     },
     {
       valueFormatter: formatTimeRange,
       field: "timeRange",
       headerName: "Timeslot",
       width: 190,
+      renderHeader: (params) => (
+        <Tooltip
+          title={`Click on ellipses to filter by ${params.colDef.headerName}`}
+          placement="right-start"
+          arrow
+          PopperProps={{
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, 65],
+                },
+              },
+            ],
+          }}
+        >
+          <div>{`${params.colDef.headerName}`}</div>
+        </Tooltip>
+      ),
     },
     {
       valueFormatter: formatPhone,
       field: "phone",
       headerName: "Phone",
       width: 190,
+      renderHeader: (params) => (
+        <Tooltip
+          title={`Click on ellipses to filter by ${params.colDef.headerName}`}
+          placement="right-start"
+          arrow
+          PopperProps={{
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, 65],
+                },
+              },
+            ],
+          }}
+        >
+          <div>{`${params.colDef.headerName}`}</div>
+        </Tooltip>
+      ),
     },
     { field: "email", headerName: "Email", width: 190 },
     {
       field: "address",
       headerName: "Address",
       width: 190,
+      renderHeader: (params) => (
+        <Tooltip
+          title={`Click on ellipses to filter by ${params.colDef.headerName}`}
+          placement="right-start"
+          arrow
+          PopperProps={{
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, 65],
+                },
+              },
+            ],
+          }}
+        >
+          <div>{`${params.colDef.headerName}`}</div>
+        </Tooltip>
+      ),
     },
   ];
 
