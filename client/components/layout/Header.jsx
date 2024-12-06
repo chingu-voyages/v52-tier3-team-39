@@ -1,7 +1,5 @@
 import Link from "next/link";
 import { Box, Stack, Typography } from "@mui/material";
-import { ThemeProvider } from "@mui/material/styles";
-import { headingFont } from "@/app/theme";
 import Nav from "./Nav";
 
 export default function Header() {
@@ -22,26 +20,23 @@ export default function Header() {
         }}
       >
         <Stack direction="row" className="justify-between items-center">
-          <ThemeProvider theme={headingFont}>
-            <Link href="/">
-              <Typography
-                variant="h1"
-                component="h1"
-                sx={{
-                  fontSize: {
-                    xs: "1.6rem",
-                    sm: "2rem",
-                    md: "2.4rem",
-                    lg: "3rem",
-                  },
-                }}
-                className="text-accent"
-              >
-                <span className="text-branding">Ray</span>
-                Volution
-              </Typography>
-            </Link>
-          </ThemeProvider>
+          <Link href="/">
+            <Typography
+              variant="h1"
+              sx={{
+                fontSize: {
+                  xs: "1.6rem",
+                  sm: "2rem",
+                  md: "2.4rem",
+                  lg: "3rem",
+                },
+              }}
+              className="text-accent"
+            >
+              <span className="text-branding">Ray</span>
+              Volution
+            </Typography>
+          </Link>
           <Nav />
         </Stack>
       </Box>

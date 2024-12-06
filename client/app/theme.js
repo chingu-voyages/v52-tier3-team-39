@@ -16,18 +16,13 @@ const orbitron = Orbitron({
 
 const theme = createTheme({
   typography: {
-    content: {
-      fontFamily: roboto.style.fontFamily,
+    fontFamily: roboto.style.fontFamily,
+    h1: {
+      fontFamily: orbitron.style.fontFamily,
     },
   },
   palette: {
     branding: "#eab308",
-  },
-});
-
-export const headingFont = createTheme({
-  typography: {
-    fontFamily: orbitron.style.fontFamily,
   },
 });
 
