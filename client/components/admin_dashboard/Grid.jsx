@@ -140,7 +140,7 @@ export default function Grid({ rows }) {
             },
           }}
           pageSizeOptions={[15, 10]}
-          sx={{ border: 0, height: "100%" }}
+          sx={{ border: 0 }}
           getRowHeight={() => "auto"}
           slots={{ toolbar: Toolbar }}
         />
