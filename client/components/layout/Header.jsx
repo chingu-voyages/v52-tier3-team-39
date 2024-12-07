@@ -11,15 +11,15 @@ export default async function Header() {
       component="header"
       className="border-b border-gray-200"
       sx={{
-        paddingY: { xs: 1, sm: 2 },
+        paddingY: { xs: 1, md: 1.5 },
       }}
     >
       <Box
         sx={{
           width: { xs: 1 },
-          maxWidth: "1200px",
+          maxWidth: "xl",
           marginX: "auto",
-          paddingX: { xs: 2, sm: 4, lg: 2, xl: 0 },
+          paddingX: { xs: 2, sm: 4, xl: 2 },
         }}
       >
         <Stack direction="row" className="justify-between items-center">
@@ -30,7 +30,6 @@ export default async function Header() {
                 fontSize: {
                   xs: "1.6rem",
                   sm: "2rem",
-                  md: "2.4rem",
                   lg: "3rem",
                 },
               }}

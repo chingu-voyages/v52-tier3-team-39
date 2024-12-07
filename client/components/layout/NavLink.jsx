@@ -10,14 +10,23 @@ export default function NavLink({ link, setOpen, idx }) {
   return (
     <>
       {idx ? <Divider /> : null}
-      <ListItem sx={{ width: 1, paddingX: 2, marginY: 1 }}>
+      <ListItem
+        sx={{
+          width: { xs: 1, lg: "fit-content" },
+          paddingX: { xs: 2, sm: 4, md: 6, lg: 0 },
+          marginY: 1,
+        }}
+      >
         <Link
           href={href}
           scroll={false}
           onClick={() => setOpen && setOpen(false)}
         >
           <Typography
-            sx={{ fontSize: { xs: 24 }, fontWeight: { xs: 400 } }}
+            sx={{
+              fontSize: { xs: 24, lg: 20, xl: 22 },
+              fontWeight: { xs: 400, lg: 500 },
+            }}
             className="text-darkAccent"
           >
             {label}

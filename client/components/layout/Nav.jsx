@@ -43,7 +43,12 @@ export default function Nav({ session }) {
         <IconButton onClick={() => setOpen(true)}>
           <MenuIcon sx={{ fontSize: 30 }} className="text-darkAccent" />
         </IconButton>
-        <Drawer open={open} anchor="left" onClose={() => setOpen(false)}>
+        <Drawer
+          open={open}
+          anchor="left"
+          onClose={() => setOpen(false)}
+          sx={{ display: { lg: "none" } }}
+        >
           <Stack direction="row-reverse" className="m-2">
             <IconButton onClick={() => setOpen(false)}>
               <CloseIcon sx={{ fontSize: 36 }} className="text-darkAccent" />
@@ -51,7 +56,7 @@ export default function Nav({ session }) {
           </Stack>
           <Box
             sx={{
-              width: { xs: 320, sm: 480 },
+              width: { xs: 320, sm: 432, md: 690 },
             }}
           >
             <List>
@@ -71,7 +76,7 @@ export default function Nav({ session }) {
       </Box>
       {/* DESKTOP NAV */}
       <Box sx={{ display: { xs: "none", lg: "block" } }}>
-        <Stack component="ul" direction="row" gap={2}>
+        <Stack component="ul" direction="row" gap={{ lg: 4, xl: 6 }}>
           {protectedRoutes.map((link) => {
             return <NavLink key={link.label} link={link} />;
           })}
