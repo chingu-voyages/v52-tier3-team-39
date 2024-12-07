@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ListItem } from "@mui/material";
+import { ListItem, Typography } from "@mui/material";
 
 // scroll={false} fixes issue that Next.js has with position: "sticky"
 // elements (MUI Backdrop component) and scrolling behavior
@@ -14,7 +14,7 @@ export default function NavLink({ link, setOpen }) {
         scroll={false}
         onClick={() => setOpen && setOpen(false)}
       >
-        {label}
+        <Typography variant="sans">{label}</Typography>
       </Link>
     </ListItem>
   );

@@ -6,24 +6,20 @@ import NavLink from "./NavLink";
 
 const navLinks = [
   {
-    label: "Request Service",
+    label: "Service",
     href: "/new-appointment",
-    protected: false,
   },
   {
-    label: "My Appointments",
+    label: "Appointments",
     href: "/my-appointments",
-    protected: false,
   },
   {
-    label: "Dashboard",
+    label: "Admin",
     href: "/admin-dashboard",
-    protected: true,
   },
   {
     label: "Sign Out",
     href: "/api/auth/signout",
-    protected: false,
   },
 ];
 

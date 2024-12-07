@@ -22,7 +22,7 @@ export default function Header() {
         <Stack direction="row" className="justify-between items-center">
           <Link href="/">
             <Typography
-              variant="h1"
+              variant="display"
               sx={{
                 fontSize: {
                   xs: "1.6rem",

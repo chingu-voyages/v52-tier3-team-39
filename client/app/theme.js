@@ -1,6 +1,12 @@
 "use client";
-import { Roboto, Orbitron } from "next/font/google";
+import { Montserrat, Roboto, Orbitron } from "next/font/google";
 import { createTheme } from "@mui/material/styles";
+
+const montserrat = Montserrat({
+  weight: ["600"],
+  subsets: ["latin"],
+  display: "swap",
+});
 
 const roboto = Roboto({
   weight: ["300", "400", "500", "700"],
@@ -17,8 +23,11 @@ const orbitron = Orbitron({
 const theme = createTheme({
   typography: {
     fontFamily: roboto.style.fontFamily,
-    h1: {
+    display: {
       fontFamily: orbitron.style.fontFamily,
+    },
+    sans: {
+      fontFamily: montserrat.style.fontFamily,
     },
   },
   palette: {
