@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
               <Header />
               <Container
                 component="main"
-                maxWidth="lg"
+                maxWidth="xl"
                 className="border-x border-gray-200 bg-gray-50 grow py-4"
               >
                 {children}
