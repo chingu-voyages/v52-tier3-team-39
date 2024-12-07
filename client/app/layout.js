@@ -1,6 +1,6 @@
 import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
-import { Box, Container } from "@mui/material";
+import { Container, Stack } from "@mui/material";
 import { StyledRoot } from "./StyledRoot";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -16,16 +16,16 @@ export default function RootLayout({ children }) {
       <body>
         <AppRouterCacheProvider>
           <StyledRoot>
-            <Box className="min-h-[calc(100vh-80px)] flex flex-col">
+            <Stack className="min-h-[calc(100vh-var(--footer-height))]">
               <Header />
               <Container
                 component="main"
                 maxWidth="xl"
-                className="border-x border-gray-200 bg-gray-50 grow py-4"
+                sx={{ paddingY: 2, flexGrow: 1 }}
               >
                 {children}
               </Container>
-            </Box>
+            </Stack>
             <Footer />
           </StyledRoot>
         </AppRouterCacheProvider>

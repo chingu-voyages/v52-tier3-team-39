@@ -9,9 +9,9 @@ export default async function Header() {
   return (
     <Box
       component="header"
-      className="border-b border-gray-200"
       sx={{
         paddingY: { xs: 1, md: 1.5 },
+        borderBottom: "1px solid #eee",
       }}
     >
       <Box
