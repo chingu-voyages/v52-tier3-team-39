@@ -45,6 +45,7 @@ export default function NavLink({
               }
             }
             className={`${activeLink ? "text-branding" : textColor} ${
+              !activeLink &&
               hover &&
               "hover:bg-branding hover:text-background hover:opacity-70"
             } `}
