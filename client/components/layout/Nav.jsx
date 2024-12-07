@@ -82,7 +82,7 @@ export default function Nav({ session }) {
       </Box>
       {/* DESKTOP NAV */}
       <Box sx={{ display: { xs: "none", lg: "block" } }}>
-        <Stack component="ul" direction="row" gap={{ lg: 4, xl: 6 }}>
+        <Stack component="ul" direction="row" gap={{ lg: 3, xl: 6 }}>
           {protectedRoutes
             .filter((link) => !link.mobile)
             .map((link) => {

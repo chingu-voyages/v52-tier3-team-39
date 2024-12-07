@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Divider, ListItem, Typography } from "@mui/material";
 
 // scroll={false} fixes issue that Next.js has with position: "sticky"
@@ -7,6 +8,8 @@ import { Divider, ListItem, Typography } from "@mui/material";
 
 export default function NavLink({ link, setOpen, idx }) {
   const { label, href } = link;
+  const pathname = usePathname();
+  const activeLink = pathname === href;
   return (
     <>
       {idx ? <Divider /> : null}
@@ -26,8 +29,11 @@ export default function NavLink({ link, setOpen, idx }) {
             sx={{
               fontSize: { xs: 24, lg: 20, xl: 22 },
               fontWeight: { xs: 400, lg: 500 },
+              paddingX: 0.5,
             }}
-            className="text-darkAccent"
+            className={`${
+              activeLink ? "text-branding" : "text-darkAccent"
+            } lg:hover:bg-branding lg:hover:text-background lg:hover:opacity-70`}
           >
             {label}
           </Typography>
