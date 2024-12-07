@@ -1,8 +1,11 @@
 import Link from "next/link";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/auth";
 import { Box, Stack, Typography } from "@mui/material";
 import Nav from "./Nav";
 
-export default function Header() {
+export default async function Header() {
+  const session = await getServerSession(authOptions);
   return (
     <Box
       component="header"
@@ -37,7 +40,7 @@ export default function Header() {
               Volution
             </Typography>
           </Link>
-          <Nav />
+          <Nav session={session} />
         </Stack>
       </Box>
     </Box>
