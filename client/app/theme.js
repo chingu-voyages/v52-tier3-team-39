@@ -3,7 +3,7 @@ import { Montserrat, Roboto, Orbitron } from "next/font/google";
 import { createTheme } from "@mui/material/styles";
 
 const montserrat = Montserrat({
-  weight: ["600"],
+  weight: ["400", "500", "600"],
   subsets: ["latin"],
   display: "swap",
 });

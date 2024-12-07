@@ -33,14 +33,25 @@ export function MobileNav() {
       </IconButton>
       <Drawer open={open} anchor="left" onClose={() => setOpen(false)}>
         <Stack direction="row-reverse" className="m-2">
-          <IconButton size="large" onClick={() => setOpen(false)}>
-            <CloseIcon fontSize="inherit" />
+          <IconButton onClick={() => setOpen(false)}>
+            <CloseIcon sx={{ fontSize: 36 }} className="text-foreground" />
           </IconButton>
         </Stack>
-        <Box className="w-[320px] sm:w-[480px]">
+        <Box
+          sx={{
+            width: { xs: 320, sm: 480 },
+          }}
+        >
           <List>
-            {navLinks.map((link) => {
-              return <NavLink key={link.label} link={link} setOpen={setOpen} />;
+            {navLinks.map((link, idx) => {
+              return (
+                <NavLink
+                  key={link.label}
+                  link={link}
+                  setOpen={setOpen}
+                  idx={idx}
+                />
+              );
             })}
           </List>
         </Box>
