@@ -22,12 +22,9 @@ const orbitron = Orbitron({
 
 const theme = createTheme({
   typography: {
-    fontFamily: roboto.style.fontFamily,
+    fontFamily: montserrat.style.fontFamily,
     display: {
       fontFamily: orbitron.style.fontFamily,
-    },
-    sans: {
-      fontFamily: montserrat.style.fontFamily,
     },
   },
   palette: {

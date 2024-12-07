@@ -17,8 +17,8 @@ export default function NavLink({ link, setOpen, idx }) {
           onClick={() => setOpen && setOpen(false)}
         >
           <Typography
-            variant="sans"
             sx={{ fontSize: { xs: 24 }, fontWeight: { xs: 400 } }}
+            className="text-darkAccent"
           >
             {label}
           </Typography>

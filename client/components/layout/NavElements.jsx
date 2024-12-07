@@ -63,11 +63,11 @@ export function MobileNav() {
 export function DesktopNav() {
   return (
     <Box>
-      <List className="flex gap-2 lg:gap-8">
+      <Stack component="ul" direction="row" gap={2}>
         {navLinks.map((link) => {
           return <NavLink key={link.label} link={link} />;
         })}
-      </List>
+      </Stack>
     </Box>
   );
 }
