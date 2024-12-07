@@ -1,9 +1,27 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/auth";
+import Logo from "./Logo";
+import FooterNav from "./FooterNav";
 
-export default function Footer() {
+export default async function Footer() {
+  const session = await getServerSession(authOptions);
   return (
-    <Box component="footer" className="h-20 border-t border-gray-200 py-2 px-4">
-      <Typography component="p">&copy; 2024, RayVolution</Typography>
+    <Box component="footer" className="bg-lightAccent text-background">
+      <Stack
+        gap={4}
+        sx={{
+          width: 1,
+          maxWidth: "xl",
+          marginX: "auto",
+          paddingY: 4,
+          paddingX: { xs: 2, sm: 4, xl: 2 },
+        }}
+      >
+        <Logo logoSize={{ xs: 20, sm: 24 }} textSize={{ xs: 26, sm: 32 }} />
+        {session && <FooterNav session={session} />}
+        <Typography sx={{ fontSize: 14 }}>&copy; 2024, RayVolution</Typography>
+      </Stack>
     </Box>
   );
 }

@@ -14,7 +14,7 @@ export default function Logo({
       <Box>
         <WbSunnyIcon className={iconColor} sx={{ fontSize: logoSize }} />
       </Box>
-      <Link href="/">
+      <Link href="/" scroll={false}>
         <Typography
           variant="display"
           sx={{ fontSize: textSize }}

@@ -1,8 +1,6 @@
-import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth";
-import { Box, Stack, Typography } from "@mui/material";
-import WbSunnyIcon from "@mui/icons-material/WbSunny";
+import { Box, Stack } from "@mui/material";
 import Nav from "./Nav";
 import Logo from "./Logo";
 
@@ -36,7 +34,7 @@ export default async function Header() {
             mainColor="branding-gradient"
             accent="text-accent"
           />
-          <Nav session={session} />
+          {session && <Nav session={session} />}
         </Stack>
       </Box>
     </Box>

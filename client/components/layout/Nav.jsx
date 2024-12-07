@@ -6,7 +6,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import NavLink from "./NavLink";
 
-const navLinks = [
+export const navLinks = [
   {
     label: "Home",
     href: "/",
@@ -86,7 +86,7 @@ export default function Nav({ session }) {
           {protectedRoutes
             .filter((link) => !link.mobile)
             .map((link) => {
-              return <NavLink key={link.label} link={link} />;
+              return <NavLink key={link.label} link={link} hover />;
             })}
         </Stack>
       </Box>
