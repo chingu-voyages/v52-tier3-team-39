@@ -44,10 +44,10 @@ export default function NavLink({
                 paddingX: 0.5,
               }
             }
-            className={`${activeLink ? "text-branding" : "text-darkAccent"} ${
+            className={`${activeLink ? "text-branding" : textColor} ${
               hover &&
               "hover:bg-branding hover:text-background hover:opacity-70"
-            } ${textColor || "text-darkAccent"}`}
+            } `}
           >
             {label}
           </Typography>

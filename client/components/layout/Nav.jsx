@@ -73,6 +73,7 @@ export default function Nav({ session }) {
                     link={link}
                     setOpen={setOpen}
                     idx={idx}
+                    textColor="text-darkAccent"
                   />
                 );
               })}
