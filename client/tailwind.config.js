@@ -11,6 +11,8 @@ module.exports = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         branding: "var(--branding)",
+        brandingDark: "var(--branding-dark)",
+        brandingLight: "var(--branding-light)",
         accent: "var(--accent)",
         darkAccent: "var(--dark-accent)",
         primary: "var(--primary)",
