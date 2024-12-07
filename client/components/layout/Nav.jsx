@@ -8,6 +8,12 @@ import NavLink from "./NavLink";
 
 const navLinks = [
   {
+    label: "Home",
+    href: "/",
+    role: ["user", "admin"],
+    mobile: true,
+  },
+  {
     label: "Service",
     href: "/new-appointment",
     role: ["user", "admin"],
@@ -77,9 +83,11 @@ export default function Nav({ session }) {
       {/* DESKTOP NAV */}
       <Box sx={{ display: { xs: "none", lg: "block" } }}>
         <Stack component="ul" direction="row" gap={{ lg: 4, xl: 6 }}>
-          {protectedRoutes.map((link) => {
-            return <NavLink key={link.label} link={link} />;
-          })}
+          {protectedRoutes
+            .filter((link) => !link.mobile)
+            .map((link) => {
+              return <NavLink key={link.label} link={link} />;
+            })}
         </Stack>
       </Box>
     </>
