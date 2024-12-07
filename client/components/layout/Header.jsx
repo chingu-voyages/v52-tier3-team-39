@@ -4,6 +4,7 @@ import { authOptions } from "@/auth";
 import { Box, Stack, Typography } from "@mui/material";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import Nav from "./Nav";
+import Logo from "./Logo";
 
 export default async function Header() {
   const session = await getServerSession(authOptions);
@@ -28,30 +29,13 @@ export default async function Header() {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Stack direction="row" alignItems="center">
-            <Box>
-              <WbSunnyIcon
-                className="text-brandingDark"
-                sx={{ fontSize: 32 }}
-              />
-            </Box>
-            <Link href="/">
-              <Typography
-                variant="display"
-                sx={{
-                  fontSize: {
-                    xs: "1.6rem",
-                    sm: "2rem",
-                    lg: "3rem",
-                  },
-                }}
-                className="text-accent"
-              >
-                <span className="branding-gradient">Ray</span>
-                Volution
-              </Typography>
-            </Link>
-          </Stack>
+          <Logo
+            logoSize={{ xs: 20, sm: 24, lg: 32 }}
+            textSize={{ xs: 26, sm: 32, lg: 48 }}
+            iconColor="text-brandingDark"
+            mainColor="branding-gradient"
+            accent="text-accent"
+          />
           <Nav session={session} />
         </Stack>
       </Box>
