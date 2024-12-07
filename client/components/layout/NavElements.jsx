@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Box, Drawer, IconButton, List, Stack } from "@mui/material";
-import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
+import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import NavLink from "./NavLink";
 
@@ -28,13 +28,13 @@ export function MobileNav() {
 
   return (
     <>
-      <IconButton size="medium" onClick={() => setOpen(true)}>
-        <MenuRoundedIcon fontSize="inherit" />
+      <IconButton onClick={() => setOpen(true)}>
+        <MenuIcon sx={{ fontSize: 30 }} className="text-darkAccent" />
       </IconButton>
       <Drawer open={open} anchor="left" onClose={() => setOpen(false)}>
         <Stack direction="row-reverse" className="m-2">
           <IconButton onClick={() => setOpen(false)}>
-            <CloseIcon sx={{ fontSize: 36 }} className="text-foreground" />
+            <CloseIcon sx={{ fontSize: 36 }} className="text-darkAccent" />
           </IconButton>
         </Stack>
         <Box
