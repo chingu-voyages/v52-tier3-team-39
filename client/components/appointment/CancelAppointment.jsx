@@ -9,15 +9,26 @@ export default function CancelAppointment({ email }) {
   const [modal, setModal] = useState(false);
   const [toast, setToast] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
+  const [hasRuntimeError, setHasRuntimeError] = useState(false);
 
   const handleConfirm = async () => {
-    const err = await cancelAppointment(email);
-    if (err) {
-      setToast(true);
-      setToastMsg(err.message);
+    try {
+      // response is undefined unless server-side error msg is returned
+      const res = await cancelAppointment(email);
+      if (res) {
+        setToast(true);
+        setToastMsg(res.message);
+      }
+      setModal(false);
+    } catch (err) {
+      console.error(err);
+      setHasRuntimeError(true);
     }
-    setModal(false);
   };
+
+  if (hasRuntimeError) {
+    throw new Error("Failed to cancel the appointment due to a server error");
+  }
 
   return (
     <>
