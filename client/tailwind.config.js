@@ -10,6 +10,13 @@ module.exports = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        branding: "var(--branding)",
+        brandingDark: "var(--branding-dark)",
+        brandingLight: "var(--branding-light)",
+        accent: "var(--accent)",
+        darkAccent: "var(--dark-accent)",
+        lightAccent: "var(--light-accent)",
+        primary: "var(--primary)",
       },
     },
   },

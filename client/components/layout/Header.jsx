@@ -1,27 +1,42 @@
-"use client";
-
-import { Box, Stack, Typography } from "@mui/material";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/auth";
+import { Box, Stack } from "@mui/material";
 import Nav from "./Nav";
+import Logo from "./Logo";
 
-export default function Header() {
+export default async function Header() {
+  const session = await getServerSession(authOptions);
   return (
     <Box
       component="header"
-      className="py-2 lg:py-4 px-4 border-b border-gray-200"
+      sx={{
+        paddingY: { xs: 1, md: 1.5 },
+        borderBottom: "1px solid #eee",
+      }}
     >
-      <Stack direction="row" className="justify-between items-center">
-        <Typography variant="h5" component="h1">
-          <Typography
-            variant="h5"
-            component="span"
-            sx={{ color: (theme) => theme.palette.branding }}
-          >
-            Ray
-          </Typography>
-          Volution
-        </Typography>
-        <Nav />
-      </Stack>
+      <Box
+        sx={{
+          width: { xs: 1 },
+          maxWidth: "xl",
+          marginX: "auto",
+          paddingX: { xs: 2, sm: 4, xl: 2 },
+        }}
+      >
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Logo
+            logoSize={{ xs: 20, sm: 24, lg: 32 }}
+            textSize={{ xs: 26, sm: 32, lg: 48 }}
+            iconColor="text-brandingDark"
+            mainColor="branding-gradient"
+            accent="text-accent"
+          />
+          {session && <Nav session={session} />}
+        </Stack>
+      </Box>
     </Box>
   );
 }
