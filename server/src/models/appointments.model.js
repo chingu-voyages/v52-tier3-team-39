@@ -19,6 +19,10 @@ const appointmentSchema = new mongoose.Schema({
     enum: ["Pending", "Confirmed", "Cancelled", "Visited"],
     default: "Pending",
   },
+  markVisited: {
+    type: Boolean,
+    default: false,
+  },
   notifications: {
     apptRequestEmailUrl: String,
     apptConfirmationEmailUrl: String,

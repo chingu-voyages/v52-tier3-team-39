@@ -9,6 +9,7 @@ import {
 import { Paper, Box, Tooltip } from "@mui/material";
 import Button from "@mui/material/Button";
 import SearchBar from "./SearchBar";
+// import StatusChange from "./StatusChange";
 
 const formatName = (name) => {
   const [firstName, ...rest] = name.split(" ");
@@ -283,6 +284,7 @@ export default function Grid({ rows }) {
         row.id === id ? { ...row, markVisited: !row.markVisited } : row
       )
     );
+    // updateVisitedOnServer();
   };
 
   const filteredRows = useMemo(() => {

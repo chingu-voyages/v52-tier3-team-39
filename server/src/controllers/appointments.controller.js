@@ -31,7 +31,7 @@ export async function newAppointment(req, res, next) {
     // return error if doc with matching address and "Pending" or "Confirmed" status exists
     const checkAddress = await Appointment.findOne({
       "location.address": address,
-      status: { $in: ["Pending", "Confirmed"] },
+      status: { $in: ["Pending", "Requested"] },
     });
 
     if (checkAddress) {
@@ -204,5 +204,30 @@ export async function cancelAppointment(req, res, next) {
     console.error(error);
     res.status(500);
     return next({ message: "An internal server error occurred" });
+  }
+}
+
+export async function updateMarkVisited(req, res) {
+  const { address, markVisited } = req.query;
+
+  if (!address || typeof markVisited !== "boolean") {
+    return rest.status(400).json({ message: "Invalid request" });
+  }
+  try {
+    const filter = { "location.address": address };
+    const update = { markVisited };
+
+    const updateVisited = await Appointment.findOneAndUpdate(filter, update, {
+      new: true,
+    });
+    if (!updateVisited) {
+      return res
+        .status(404)
+        .json({ message: "Appointment not found for this address" });
+    }
+
+    return res.status(200).json(updateVisited);
+  } catch (error) {
+    return res.status(500).json({ message: "Server error: updating visited" });
   }
 }
