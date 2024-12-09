@@ -1,14 +1,9 @@
-"use client"; // Error boundaries must be Client Components
+"use client";
 
-import { useEffect } from "react";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 
 export default function Error({ error, reset }) {
-  // useEffect(() => {
-  //   console.error(error);
-  // }, [error]);
-
   return (
     <Stack
       sx={{
