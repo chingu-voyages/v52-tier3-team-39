@@ -1,6 +1,5 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { serverUrl } from "@/constants";
 
@@ -47,11 +46,15 @@ export async function fetchAppointments() {
 }
 
 // GET SINGLE APPT
-//! switch email to google id
 export async function fetchSingleAppointment(email) {
-  const response = await fetch(serverUrl + `appointments/${email}`);
-  const data = await response.json();
-  return data;
+  try {
+    const response = await fetch(serverUrl + `appointments/${email}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to fetch the appointment due to a server error");
+  }
 }
 
 export async function fetchUsersAppointments(email) {
@@ -66,7 +69,6 @@ export async function fetchUsersAppointments(email) {
 }
 
 // UPDATE SINGLE APPT STATUS
-//! switch email to google id
 export async function cancelAppointment(email) {
   const response = await fetch(serverUrl + "appointments/cancel", {
     method: "PATCH",
