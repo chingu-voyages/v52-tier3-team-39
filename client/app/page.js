@@ -72,7 +72,6 @@ export default function LandingView() {
               </Stack>
             ))}
           </Stack>
-          <SignInCard />
         </Stack>
       </Stack>
     </div>
