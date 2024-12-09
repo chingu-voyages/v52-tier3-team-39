@@ -23,26 +23,31 @@ export async function requestAppt(formValues) {
 
 // GET ALL APPTS
 export async function fetchAppointments() {
-  const response = await fetch(serverUrl + "appointments", {
-    cache: "no-store",
-  });
-  if (!response.ok) {
+  try {
+    const response = await fetch(serverUrl + "appointments", {
+      cache: "no-store",
+    });
+
+    if (!response.ok) throw error;
+
+    const data = await response.json();
+
+    return data.map((item, index) => ({
+      id: item.id || index + 1,
+      name: item.name,
+      status: item.status ? item.status : "Requested",
+      dateCreated: new Date(item.dateCreated),
+      timeRange: item.preferredTimeRange,
+      phone: item.phone,
+      email: item.email,
+      address: item.location.address,
+      location: { lat: item.location.lat, lng: item.location.lng },
+      schedule: item.schedule,
+    }));
+  } catch (error) {
+    console.error(error);
     throw new Error("Failed to fetch appointments");
   }
-  const data = await response.json();
-
-  return data.map((item, index) => ({
-    id: item.id || index + 1,
-    name: item.name,
-    status: item.status ? item.status : "Requested",
-    dateCreated: new Date(item.dateCreated),
-    timeRange: item.preferredTimeRange,
-    phone: item.phone,
-    email: item.email,
-    address: item.location.address,
-    location: { lat: item.location.lat, lng: item.location.lng },
-    schedule: item.schedule,
-  }));
 }
 
 // GET SINGLE APPT
