@@ -7,14 +7,7 @@ import sendEmail, {
   apptRequestEmailHtml,
   apptRequestEmailText,
 } from "../utils/emailHelper.js";
-
-export async function geocodeAddress(address) {
-  const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.GOOGLE_API_KEY}`;
-
-  const resp = await fetch(geocodeUrl);
-  const data = await resp.json();
-  return data;
-}
+import { getLatLong } from "../addresses/address.js";
 
 export async function newAppointment(req, res, next) {
   try {
@@ -42,17 +35,7 @@ export async function newAppointment(req, res, next) {
       });
     }
 
-    const geocodeData = await geocodeAddress(address);
-
-    if (!geocodeData.results.length) {
-      res.status(404);
-      if (geocodeData.status === "ZERO_RESULTS") {
-        return next({ message: "The address submitted is not valid." });
-      }
-      return next({
-        message: "Unable to locate the address. Please verify and try again.",
-      });
-    }
+    const { lat, long } = getLatLong(address);
 
     // add request data to the database
     const appt = new Appointment({
@@ -65,8 +48,8 @@ export async function newAppointment(req, res, next) {
       },
       location: {
         address: address,
-        lat: geocodeData.results[0].geometry.location.lat,
-        lng: geocodeData.results[0].geometry.location.lng,
+        lat: lat,
+        lng: long,
       },
     });
 
