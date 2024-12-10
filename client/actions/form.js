@@ -5,19 +5,15 @@ import { serverUrl } from "@/constants";
 
 // CREATE NEW APPT
 export async function requestAppt(formValues) {
-  try {
-    const response = await fetch(serverUrl + "appointments", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formValues),
-    });
-    const data = await response.json();
+  const response = await fetch(serverUrl + "appointments", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(formValues),
+  });
+  const data = await response.json();
 
-    if (!response.ok) {
-      return { message: data.message };
-    }
-  } catch (error) {
-    throw error;
+  if (!response.ok) {
+    return { message: data.message };
   }
 }
 
