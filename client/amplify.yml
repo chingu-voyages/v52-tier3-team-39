@@ -6,7 +6,7 @@ applications:
               build:
                   commands:
                       - npm ci
-                      - echo "NEXTAUTH_URL=$AWS_BRANCH.d1nf6f3sg6up3r.amplifyapp.com" >> .env
+                      - echo "NEXTAUTH_URL=https://$AWS_BRANCH.d3p7d19jg8832.amplifyapp.com" >> .env
                       - echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> .env
                       - echo "GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID" >> .env
                       - echo "GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET" >> .env
