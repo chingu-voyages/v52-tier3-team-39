@@ -65,25 +65,18 @@ export default function Grid({ rows }) {
     },
     {
       field: "markVisited",
-      headerName: "Mark as Visited",
+      headerName: "Visited?",
       width: 190,
       renderCell: (params) => {
-        const { id, markVisited } = params.row;
-        console.log(
-          "Rendered Cell:",
-          id,
-          "status:",
-          status,
-          "markVisited:",
-          markVisited
-        );
+        const { id, status } = params.row;
+
         return (
           <Button
-            variant={markVisited === "Confirmed" ? "contained" : "outlined"}
+            variant={status === "Visited" ? "contained" : "outlined"}
             color="primary"
             onClick={() => toggleVisited(id)}
           >
-            {markVisited}
+            {status === "Visited" ? "Visited" : "Not Visited"}
           </Button>
         );
       },
@@ -127,8 +120,6 @@ export default function Grid({ rows }) {
   ];
 
   const toggleVisited = (id) => {
-    console.log("id", id);
-
     updateVisitedOnServer(id).then((updatedMarkVisited) => {
       setCustomRows((prev) =>
         prev.map((row) =>
