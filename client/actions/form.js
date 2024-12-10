@@ -29,7 +29,7 @@ export async function fetchAppointments() {
   const data = await response.json();
 
   return data.map((item, index) => ({
-    id: item.id || index + 1,
+    id: item._id,
     name: item.name,
     status: item.status ? item.status : "Requested",
     dateCreated: new Date(item.dateCreated),
@@ -74,3 +74,34 @@ export async function cancelAppointment(email) {
 
   revalidatePath("/my-appointments");
 }
+
+export async function updateVisitedOnServer(id) {
+  const response = await fetch(serverUrl + `appointments/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    return { message: data.message };
+  }
+}
+
+// export async function updateStatusOnServer(address, status) {
+//   const response = await fetch(serverUrl + "appointments/status-change", {
+//     method: "PATCH",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify({ address, status }),
+//   });
+
+//   const data = await response.json();
+
+//   if (!response.ok) {
+//     return { message: data.message };
+//   }
+// }

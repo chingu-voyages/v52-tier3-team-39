@@ -99,7 +99,7 @@ const sendEmail = async ({ toAddress, subject, text, html }) => {
       text,
       html,
     };
-    console.time();
+
     const result = await transporter.sendMail(message);
 
     return nodemailer.getTestMessageUrl(result);

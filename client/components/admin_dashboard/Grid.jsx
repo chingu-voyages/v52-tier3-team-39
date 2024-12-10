@@ -6,8 +6,11 @@ import {
   GridToolbarExport,
   GridToolbarContainer,
 } from "@mui/x-data-grid";
-import { Paper, Box } from "@mui/material";
+import { Paper, Box, Tooltip } from "@mui/material";
+import Button from "@mui/material/Button";
 import SearchBar from "./SearchBar";
+import StatusChange from "./StatusChange";
+import { fetchAppointments, updateVisitedOnServer } from "@/actions/form";
 
 const formatName = (name) => {
   const [firstName, ...rest] = name.split(" ");
@@ -41,46 +44,6 @@ const formatPhone = (phone) => {
   return match ? `(${match[1]}) ${match[2]}-${match[3]}` : phone;
 };
 
-const columns = [
-  {
-    field: "visitOrder",
-    headerName: "Visit Order",
-    width: 190,
-    valueGetter: (_, row) => row.schedule.order,
-  },
-  { field: "status", headerName: "Status", width: 190 },
-  {
-    valueFormatter: formatName,
-    field: "name",
-    headerName: "Name",
-    width: 190,
-  },
-  {
-    valueFormatter: formatDateCreated,
-    field: "dateCreated",
-    headerName: "Requested on",
-    width: 190,
-  },
-  {
-    valueFormatter: formatTimeRange,
-    field: "timeRange",
-    headerName: "Timeslot",
-    width: 190,
-  },
-  {
-    valueFormatter: formatPhone,
-    field: "phone",
-    headerName: "Phone",
-    width: 190,
-  },
-  { field: "email", headerName: "Email", width: 190 },
-  {
-    field: "address",
-    headerName: "Address",
-    width: 190,
-  },
-];
-
 const paginationModel = { page: 0, pageSize: 15 };
 
 const Toolbar = () => (
@@ -91,31 +54,100 @@ const Toolbar = () => (
 
 export default function Grid({ rows }) {
   const [searchText, setSearchText] = useState("");
+  const [customRows, setCustomRows] = useState(rows);
+
+  const columns = [
+    {
+      field: "visitOrder",
+      headerName: "Visit Order",
+      width: 190,
+      valueGetter: (_, row) => row.schedule.order,
+    },
+    {
+      field: "markVisited",
+      headerName: "Visited?",
+      width: 190,
+      renderCell: (params) => {
+        const { id, status } = params.row;
+
+        return (
+          <Button
+            variant={status === "Visited" ? "contained" : "outlined"}
+            color="primary"
+            onClick={() => toggleVisited(id)}
+          >
+            {status === "Visited" ? "Visited" : "Not Visited"}
+          </Button>
+        );
+      },
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 190,
+      renderCell: (status) => <StatusChange />,
+    },
+    {
+      valueFormatter: formatName,
+      field: "name",
+      headerName: "Name",
+      width: 190,
+    },
+    {
+      valueFormatter: formatDateCreated,
+      field: "dateCreated",
+      headerName: "Requested on",
+      width: 190,
+    },
+    {
+      valueFormatter: formatTimeRange,
+      field: "timeRange",
+      headerName: "Timeslot",
+      width: 190,
+    },
+    {
+      valueFormatter: formatPhone,
+      field: "phone",
+      headerName: "Phone",
+      width: 190,
+    },
+    { field: "email", headerName: "Email", width: 190 },
+    {
+      field: "address",
+      headerName: "Address",
+      width: 190,
+    },
+  ];
+
+  const toggleVisited = async (id) => {
+    await updateVisitedOnServer(id);
+    const updatedRows = await fetchAppointments();
+    setCustomRows(updatedRows);
+  };
 
   const filteredRows = useMemo(() => {
-    if (!searchText) return rows;
-    return rows.filter((row) =>
+    if (!searchText) return customRows;
+
+    const needToFormat = {
+      dateCreated: (value) => formatDateCreated(new Date(value)),
+      timeRange: (value) => formatTimeRange(value),
+      markVisited: (value, row) =>
+        row.markVisited ? "Visited" : "Need to Visit",
+    };
+
+    return customRows.filter((row) =>
       columns.some((col) => {
         const value = row[col.field];
-
-        if (col.field === "dateCreated") {
-          const formattedDate = formatDateCreated(new Date(value));
-          return formattedDate.toLowerCase().includes(searchText.toLowerCase());
-        }
-        if (col.field === "timeRange") {
-          const formattedTimeRange = formatTimeRange(value);
-          return formattedTimeRange
-            .toLowerCase()
-            .includes(searchText.toLowerCase());
-        }
-
-        return value
+        const formattedValue = needToFormat[col.field]
+          ? needToFormat[col.field](value, row)
+          : value;
+        return formattedValue
           ?.toString()
           .toLowerCase()
           .includes(searchText.toLowerCase());
       })
     );
-  }, [searchText, rows]);
+  }, [searchText, customRows]);
 
   const onSearchChange = (value) => {
     setSearchText(value);
