@@ -10,7 +10,7 @@ import { Paper, Box, Tooltip } from "@mui/material";
 import Button from "@mui/material/Button";
 import SearchBar from "./SearchBar";
 import StatusChange from "./StatusChange";
-import { updateVisitedOnServer } from "@/actions/form";
+import { fetchAppointments, updateVisitedOnServer } from "@/actions/form";
 
 const formatName = (name) => {
   const [firstName, ...rest] = name.split(" ");
@@ -119,19 +119,10 @@ export default function Grid({ rows }) {
     },
   ];
 
-  const toggleVisited = (id) => {
-    updateVisitedOnServer(id).then((updatedMarkVisited) => {
-      setCustomRows((prev) =>
-        prev.map((row) =>
-          row.id === id
-            ? {
-                ...row,
-                markVisited: updatedMarkVisited,
-              }
-            : row
-        )
-      );
-    });
+  const toggleVisited = async (id) => {
+    await updateVisitedOnServer(id);
+    const updatedRows = await fetchAppointments();
+    setCustomRows(updatedRows);
   };
 
   const filteredRows = useMemo(() => {
