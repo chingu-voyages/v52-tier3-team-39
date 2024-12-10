@@ -207,27 +207,37 @@ export async function cancelAppointment(req, res, next) {
   }
 }
 
-export async function updateMarkVisited(req, res) {
-  const { address, markVisited } = req.query;
+export async function updateVisited(req, res) {
+  // const { address, status } = req.query;
+  const { id } = req.params;
 
-  if (!address || typeof markVisited !== "boolean") {
-    return rest.status(400).json({ message: "Invalid request" });
-  }
+  // if (!address || typeof markVisited !== "boolean") {
+  //   return rest.status(400).json({ message: "Invalid request" });
+  // }
   try {
-    const filter = { "location.address": address };
-    const update = { markVisited };
+    // const update = { status };
 
-    const updateVisited = await Appointment.findOneAndUpdate(filter, update, {
-      new: true,
-    });
-    if (!updateVisited) {
-      return res
-        .status(404)
-        .json({ message: "Appointment not found for this address" });
+    const data = await Appointment.findById(id);
+    console.log("data", data);
+    if (!data) {
+      return res.status(404).json({ message: "Could not grab data" });
     }
+    const newStatus = data.status === "Confirmed" ? "Visited" : "Confirmed";
+    data.status = newStatus;
+    const visited = await data.save();
 
-    return res.status(200).json(updateVisited);
+    // const updateStatus = await Appointment.findByIdAndUpdate({id}) {
+    //   new: true,
+    // };
+
+    // if (!updateStatus) {
+    //   return res
+    //     .status(404)
+    //     .json({ message: "Appointment not found for this address" });
+    // }
+
+    return res.status(200).json(visited);
   } catch (error) {
-    return res.status(500).json({ message: "Server error: updating visited" });
+    return res.status(500).json({ message: "Server error: updating status" });
   }
 }

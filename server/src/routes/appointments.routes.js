@@ -4,6 +4,7 @@ import {
   getSingleAppointment,
   getUsersAppointments,
   newAppointment,
+  updateVisited,
   cancelAppointment,
 } from "../controllers/appointments.controller.js";
 
@@ -23,5 +24,7 @@ router.get("/:email/all", getUsersAppointments);
 
 // PATCH "/appointments/cancel"
 router.patch("/cancel", cancelAppointment);
+
+router.patch("/:id", updateVisited);
 
 export default router;
