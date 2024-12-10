@@ -90,8 +90,6 @@ export async function updateVisitedOnServer(id) {
   if (!response.ok) {
     return { message: data.message };
   }
-
-  revalidatePath("/admin-dashboard");
 }
 
 // export async function updateStatusOnServer(address, status) {
