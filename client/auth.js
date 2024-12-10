@@ -37,6 +37,7 @@ export const authOptions = {
       return baseUrl + '/login-redirect'
     }
   },
+  debug: true,
 };
 
 export default NextAuth(authOptions);
