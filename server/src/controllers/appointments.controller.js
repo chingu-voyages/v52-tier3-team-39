@@ -30,8 +30,7 @@ export async function newAppointment(req, res, next) {
     if (checkAddress) {
       res.status(409); // Conflict
       return next({
-        message:
-          "An appointment for this address has already been scheduled. Please modify the existing appointment or choose a different address.",
+        message: "An appointment for this address has already been scheduled.",
       });
     }
 

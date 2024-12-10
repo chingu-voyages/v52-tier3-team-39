@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Joi from "joi";
 import dayjs from "dayjs";
 import {
@@ -43,7 +43,8 @@ const schema = Joi.object({
 });
 
 export default function Form({ email }) {
-  // capture state
+  const router = useRouter();
+  // Form state
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [earlyTime, setEarlyTime] = useState(
@@ -53,15 +54,17 @@ export default function Form({ email }) {
     dayjs().hour(10).minute(0).second(0)
   );
   const [address, setAddress] = useState("");
+  const [disableBtn, setDisableBtn] = useState(null);
+  // Error state
   const [errorMsg, setErrorMsg] = useState("");
   const [errorPath, setErrorPath] = useState("");
   const [toast, setToast] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
-  const [disableBtn, setDisableBtn] = useState(null);
+  const [hasSubmitError, setHasSubmitError] = useState(false);
   const [isPending, setIsPending] = useState(false);
 
   function handleCancel() {
-    redirect("/new-appointment/cancel");
+    router.push("/new-appointment/cancel");
   }
 
   async function handleSubmit(e) {
@@ -69,6 +72,8 @@ export default function Form({ email }) {
 
     const earlyTimeHour = earlyTime.hour();
     const lateTimeHour = lateTime.hour();
+
+    // Handle validation errors
     const { error, value } = schema.validate({
       name,
       email,
@@ -86,19 +91,23 @@ export default function Form({ email }) {
 
     try {
       setIsPending(true);
+      // Handle server errors
       const serverErr = await requestAppt(value);
       if (serverErr) {
         setToast(true);
         return setToastMsg(serverErr.message);
       }
-    } catch (error) {
-      console.error(error);
-      throw new Error("There was an error submitting the form");
+      router.push("/new-appointment/success");
+    } catch (err) {
+      console.error(err);
+      setHasSubmitError(true);
     } finally {
       setIsPending(false);
     }
+  }
 
-    redirect("/new-appointment/success");
+  if (hasSubmitError) {
+    throw new Error("Failed to submit form due to a server error");
   }
 
   return (
