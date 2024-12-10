@@ -1,7 +1,6 @@
 "use client"
 
 import { Stack, Typography } from "@mui/material/";
-import SignInCard from "@/components/signInCard";
 import AutoFixHighRoundedIcon from "@mui/icons-material/AutoFixHighRounded";
 import ConstructionRoundedIcon from "@mui/icons-material/ConstructionRounded";
 import ThumbUpAltRoundedIcon from "@mui/icons-material/ThumbUpAltRounded";
@@ -72,7 +71,6 @@ export default function LandingView() {
               </Stack>
             ))}
           </Stack>
-          <SignInCard />
         </Stack>
       </Stack>
     </div>

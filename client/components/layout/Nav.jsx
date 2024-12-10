@@ -30,7 +30,7 @@ export const navLinks = [
   },
   {
     label: "Sign Out",
-    href: "/api/auth/signout",
+    href: "/api/auth/signout/",
     role: ["user", "admin"],
   },
 ];
