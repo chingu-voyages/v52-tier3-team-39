@@ -6,7 +6,8 @@ import {
   GridToolbarExport,
   GridToolbarContainer,
 } from "@mui/x-data-grid";
-import { Paper, Box } from "@mui/material";
+import { Paper, Box, Tooltip } from "@mui/material";
+import Button from "@mui/material/Button";
 import SearchBar from "./SearchBar";
 
 const formatName = (name) => {
@@ -41,46 +42,6 @@ const formatPhone = (phone) => {
   return match ? `(${match[1]}) ${match[2]}-${match[3]}` : phone;
 };
 
-const columns = [
-  {
-    field: "visitOrder",
-    headerName: "Visit Order",
-    width: 190,
-    valueGetter: (_, row) => row.schedule.order,
-  },
-  { field: "status", headerName: "Status", width: 190 },
-  {
-    valueFormatter: formatName,
-    field: "name",
-    headerName: "Name",
-    width: 190,
-  },
-  {
-    valueFormatter: formatDateCreated,
-    field: "dateCreated",
-    headerName: "Requested on",
-    width: 190,
-  },
-  {
-    valueFormatter: formatTimeRange,
-    field: "timeRange",
-    headerName: "Timeslot",
-    width: 190,
-  },
-  {
-    valueFormatter: formatPhone,
-    field: "phone",
-    headerName: "Phone",
-    width: 190,
-  },
-  { field: "email", headerName: "Email", width: 190 },
-  {
-    field: "address",
-    headerName: "Address",
-    width: 190,
-  },
-];
-
 const paginationModel = { page: 0, pageSize: 15 };
 
 const Toolbar = () => (
@@ -91,31 +52,262 @@ const Toolbar = () => (
 
 export default function Grid({ rows }) {
   const [searchText, setSearchText] = useState("");
+  const [customRows, setCustomRows] = useState(rows);
+
+  const columns = [
+    {
+      field: "visitOrder",
+      headerName: "Visit Order",
+      width: 190,
+      renderHeader: (params) => (
+        <Tooltip
+          title={`Click on ellipses to filter by ${params.colDef.headerName}`}
+          placement="right-start"
+          arrow
+          PopperProps={{
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, 65],
+                },
+              },
+            ],
+          }}
+        >
+          <div>{`${params.colDef.headerName}`}</div>
+        </Tooltip>
+      ),
+      valueGetter: (_, row) => row.schedule.order,
+    },
+    {
+      field: "markVisited",
+      headerName: "Mark as Visited",
+      width: 190,
+      renderHeader: (params) => (
+        <Tooltip
+          title={`Click on ellipses to filter by ${params.colDef.headerName}`}
+          placement="right-start"
+          arrow
+          PopperProps={{
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, 65],
+                },
+              },
+            ],
+          }}
+        >
+          <div>{`${params.colDef.headerName}`}</div>
+        </Tooltip>
+      ),
+      renderCell: (params) => {
+        const { id, markVisited } = params.row;
+        return (
+          <Tooltip
+            title={
+              markVisited
+                ? "Click to mark as not visited"
+                : "Click to mark as visited"
+            }
+            placement="right"
+            arrow
+          >
+            <Button
+              variant={markVisited ? "contained" : "outlined"}
+              color="primary"
+              onClick={() => toggleVisited(id)}
+            >
+              {markVisited ? "Visited" : "Need to Visit"}
+            </Button>
+          </Tooltip>
+        );
+      },
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 190,
+      renderHeader: (params) => (
+        <Tooltip
+          title={`Click on ellipses to filter by ${params.colDef.headerName}`}
+          placement="right-start"
+          arrow
+          PopperProps={{
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, 65],
+                },
+              },
+            ],
+          }}
+        >
+          <div>{`${params.colDef.headerName}`}</div>
+        </Tooltip>
+      ),
+    },
+    {
+      valueFormatter: formatName,
+      field: "name",
+      headerName: "Name",
+      width: 190,
+      renderHeader: (params) => (
+        <Tooltip
+          title={`Click on ellipses to filter by ${params.colDef.headerName}`}
+          placement="right-start"
+          arrow
+          PopperProps={{
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, 65],
+                },
+              },
+            ],
+          }}
+        >
+          <div>{`${params.colDef.headerName}`}</div>
+        </Tooltip>
+      ),
+    },
+    {
+      valueFormatter: formatDateCreated,
+      field: "dateCreated",
+      headerName: "Requested on",
+      width: 190,
+      renderHeader: (params) => (
+        <Tooltip
+          title={`Click on ellipses to filter by ${params.colDef.headerName}`}
+          placement="right-start"
+          arrow
+          PopperProps={{
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, 65],
+                },
+              },
+            ],
+          }}
+        >
+          <div>{`${params.colDef.headerName}`}</div>
+        </Tooltip>
+      ),
+    },
+    {
+      valueFormatter: formatTimeRange,
+      field: "timeRange",
+      headerName: "Timeslot",
+      width: 190,
+      renderHeader: (params) => (
+        <Tooltip
+          title={`Click on ellipses to filter by ${params.colDef.headerName}`}
+          placement="right-start"
+          arrow
+          PopperProps={{
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, 65],
+                },
+              },
+            ],
+          }}
+        >
+          <div>{`${params.colDef.headerName}`}</div>
+        </Tooltip>
+      ),
+    },
+    {
+      valueFormatter: formatPhone,
+      field: "phone",
+      headerName: "Phone",
+      width: 190,
+      renderHeader: (params) => (
+        <Tooltip
+          title={`Click on ellipses to filter by ${params.colDef.headerName}`}
+          placement="right-start"
+          arrow
+          PopperProps={{
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, 65],
+                },
+              },
+            ],
+          }}
+        >
+          <div>{`${params.colDef.headerName}`}</div>
+        </Tooltip>
+      ),
+    },
+    { field: "email", headerName: "Email", width: 190 },
+    {
+      field: "address",
+      headerName: "Address",
+      width: 190,
+      renderHeader: (params) => (
+        <Tooltip
+          title={`Click on ellipses to filter by ${params.colDef.headerName}`}
+          placement="right-start"
+          arrow
+          PopperProps={{
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, 65],
+                },
+              },
+            ],
+          }}
+        >
+          <div>{`${params.colDef.headerName}`}</div>
+        </Tooltip>
+      ),
+    },
+  ];
+
+  const toggleVisited = (id) => {
+    setCustomRows((prev) =>
+      prev.map((row) =>
+        row.id === id ? { ...row, markVisited: !row.markVisited } : row
+      )
+    );
+  };
 
   const filteredRows = useMemo(() => {
-    if (!searchText) return rows;
-    return rows.filter((row) =>
+    if (!searchText) return customRows;
+
+    const needToFormat = {
+      dateCreated: (value) => formatDateCreated(new Date(value)),
+      timeRange: (value) => formatTimeRange(value),
+      markVisited: (value, row) =>
+        row.markVisited ? "Visited" : "Need to Visit",
+    };
+
+    return customRows.filter((row) =>
       columns.some((col) => {
         const value = row[col.field];
-
-        if (col.field === "dateCreated") {
-          const formattedDate = formatDateCreated(new Date(value));
-          return formattedDate.toLowerCase().includes(searchText.toLowerCase());
-        }
-        if (col.field === "timeRange") {
-          const formattedTimeRange = formatTimeRange(value);
-          return formattedTimeRange
-            .toLowerCase()
-            .includes(searchText.toLowerCase());
-        }
-
-        return value
+        const formattedValue = needToFormat[col.field]
+          ? needToFormat[col.field](value, row)
+          : value;
+        return formattedValue
           ?.toString()
           .toLowerCase()
           .includes(searchText.toLowerCase());
       })
     );
-  }, [searchText, rows]);
+  }, [searchText, customRows]);
 
   const onSearchChange = (value) => {
     setSearchText(value);
