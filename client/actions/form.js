@@ -78,7 +78,6 @@ export async function cancelAppointment(email) {
 }
 
 export async function updateVisitedOnServer(id) {
-  console.log("id", id);
   const response = await fetch(serverUrl + `appointments/${id}`, {
     method: "PATCH",
     headers: {
@@ -91,21 +90,20 @@ export async function updateVisitedOnServer(id) {
   if (!response.ok) {
     return { message: data.message };
   }
-  console.log(data);
 }
 
-export async function updateStatusOnServer(address, status) {
-  const response = await fetch(serverUrl + "appointments/status-change", {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ address, status }),
-  });
+// export async function updateStatusOnServer(address, status) {
+//   const response = await fetch(serverUrl + "appointments/status-change", {
+//     method: "PATCH",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify({ address, status }),
+//   });
 
-  const data = await response.json();
+//   const data = await response.json();
 
-  if (!response.ok) {
-    return { message: data.message };
-  }
-}
+//   if (!response.ok) {
+//     return { message: data.message };
+//   }
+// }

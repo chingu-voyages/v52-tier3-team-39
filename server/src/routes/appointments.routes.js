@@ -25,6 +25,7 @@ router.get("/:email/all", getUsersAppointments);
 // PATCH "/appointments/cancel"
 router.patch("/cancel", cancelAppointment);
 
+// PATCH "/appointments/:id"
 router.patch("/:id", updateVisited);
 
 export default router;

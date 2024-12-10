@@ -9,7 +9,8 @@ import {
 import { Paper, Box, Tooltip } from "@mui/material";
 import Button from "@mui/material/Button";
 import SearchBar from "./SearchBar";
-// import StatusChange from "./StatusChange";
+import StatusChange from "./StatusChange";
+import { updateVisitedOnServer } from "@/actions/form";
 
 const formatName = (name) => {
   const [firstName, ...rest] = name.split(" ");
@@ -60,70 +61,30 @@ export default function Grid({ rows }) {
       field: "visitOrder",
       headerName: "Visit Order",
       width: 190,
-      renderHeader: (params) => (
-        <Tooltip
-          title={`Click on ellipses to filter by ${params.colDef.headerName}`}
-          placement="right-start"
-          arrow
-          PopperProps={{
-            modifiers: [
-              {
-                name: "offset",
-                options: {
-                  offset: [0, 65],
-                },
-              },
-            ],
-          }}
-        >
-          <div>{`${params.colDef.headerName}`}</div>
-        </Tooltip>
-      ),
       valueGetter: (_, row) => row.schedule.order,
     },
     {
       field: "markVisited",
       headerName: "Mark as Visited",
       width: 190,
-      renderHeader: (params) => (
-        <Tooltip
-          title={`Click on ellipses to filter by ${params.colDef.headerName}`}
-          placement="right-start"
-          arrow
-          PopperProps={{
-            modifiers: [
-              {
-                name: "offset",
-                options: {
-                  offset: [0, 65],
-                },
-              },
-            ],
-          }}
-        >
-          <div>{`${params.colDef.headerName}`}</div>
-        </Tooltip>
-      ),
       renderCell: (params) => {
         const { id, markVisited } = params.row;
+        console.log(
+          "Rendered Cell:",
+          id,
+          "status:",
+          status,
+          "markVisited:",
+          markVisited
+        );
         return (
-          <Tooltip
-            title={
-              markVisited
-                ? "Click to mark as not visited"
-                : "Click to mark as visited"
-            }
-            placement="right"
-            arrow
+          <Button
+            variant={markVisited === "Confirmed" ? "contained" : "outlined"}
+            color="primary"
+            onClick={() => toggleVisited(id)}
           >
-            <Button
-              variant={markVisited ? "contained" : "outlined"}
-              color="primary"
-              onClick={() => toggleVisited(id)}
-            >
-              {markVisited ? "Visited" : "Need to Visit"}
-            </Button>
-          </Tooltip>
+            {markVisited}
+          </Button>
         );
       },
     },
@@ -131,160 +92,55 @@ export default function Grid({ rows }) {
       field: "status",
       headerName: "Status",
       width: 190,
-      renderHeader: (params) => (
-        <Tooltip
-          title={`Click on ellipses to filter by ${params.colDef.headerName}`}
-          placement="right-start"
-          arrow
-          PopperProps={{
-            modifiers: [
-              {
-                name: "offset",
-                options: {
-                  offset: [0, 65],
-                },
-              },
-            ],
-          }}
-        >
-          <div>{`${params.colDef.headerName}`}</div>
-        </Tooltip>
-      ),
+      renderCell: (status) => <StatusChange />,
     },
     {
       valueFormatter: formatName,
       field: "name",
       headerName: "Name",
       width: 190,
-      renderHeader: (params) => (
-        <Tooltip
-          title={`Click on ellipses to filter by ${params.colDef.headerName}`}
-          placement="right-start"
-          arrow
-          PopperProps={{
-            modifiers: [
-              {
-                name: "offset",
-                options: {
-                  offset: [0, 65],
-                },
-              },
-            ],
-          }}
-        >
-          <div>{`${params.colDef.headerName}`}</div>
-        </Tooltip>
-      ),
     },
     {
       valueFormatter: formatDateCreated,
       field: "dateCreated",
       headerName: "Requested on",
       width: 190,
-      renderHeader: (params) => (
-        <Tooltip
-          title={`Click on ellipses to filter by ${params.colDef.headerName}`}
-          placement="right-start"
-          arrow
-          PopperProps={{
-            modifiers: [
-              {
-                name: "offset",
-                options: {
-                  offset: [0, 65],
-                },
-              },
-            ],
-          }}
-        >
-          <div>{`${params.colDef.headerName}`}</div>
-        </Tooltip>
-      ),
     },
     {
       valueFormatter: formatTimeRange,
       field: "timeRange",
       headerName: "Timeslot",
       width: 190,
-      renderHeader: (params) => (
-        <Tooltip
-          title={`Click on ellipses to filter by ${params.colDef.headerName}`}
-          placement="right-start"
-          arrow
-          PopperProps={{
-            modifiers: [
-              {
-                name: "offset",
-                options: {
-                  offset: [0, 65],
-                },
-              },
-            ],
-          }}
-        >
-          <div>{`${params.colDef.headerName}`}</div>
-        </Tooltip>
-      ),
     },
     {
       valueFormatter: formatPhone,
       field: "phone",
       headerName: "Phone",
       width: 190,
-      renderHeader: (params) => (
-        <Tooltip
-          title={`Click on ellipses to filter by ${params.colDef.headerName}`}
-          placement="right-start"
-          arrow
-          PopperProps={{
-            modifiers: [
-              {
-                name: "offset",
-                options: {
-                  offset: [0, 65],
-                },
-              },
-            ],
-          }}
-        >
-          <div>{`${params.colDef.headerName}`}</div>
-        </Tooltip>
-      ),
     },
     { field: "email", headerName: "Email", width: 190 },
     {
       field: "address",
       headerName: "Address",
       width: 190,
-      renderHeader: (params) => (
-        <Tooltip
-          title={`Click on ellipses to filter by ${params.colDef.headerName}`}
-          placement="right-start"
-          arrow
-          PopperProps={{
-            modifiers: [
-              {
-                name: "offset",
-                options: {
-                  offset: [0, 65],
-                },
-              },
-            ],
-          }}
-        >
-          <div>{`${params.colDef.headerName}`}</div>
-        </Tooltip>
-      ),
     },
   ];
 
   const toggleVisited = (id) => {
-    setCustomRows((prev) =>
-      prev.map((row) =>
-        row.id === id ? { ...row, markVisited: !row.markVisited } : row
-      )
-    );
-    // updateVisitedOnServer();
+    console.log("id", id);
+
+    updateVisitedOnServer(id).then((updatedMarkVisited) => {
+      setCustomRows((prev) =>
+        prev.map((row) =>
+          row.id === id
+            ? {
+                ...row,
+                markVisited: updatedMarkVisited,
+              }
+            : row
+        )
+      );
+    });
   };
 
   const filteredRows = useMemo(() => {

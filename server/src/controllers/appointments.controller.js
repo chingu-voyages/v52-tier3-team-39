@@ -208,15 +208,9 @@ export async function cancelAppointment(req, res, next) {
 }
 
 export async function updateVisited(req, res) {
-  // const { address, status } = req.query;
   const { id } = req.params;
 
-  // if (!address || typeof markVisited !== "boolean") {
-  //   return rest.status(400).json({ message: "Invalid request" });
-  // }
   try {
-    // const update = { status };
-
     const data = await Appointment.findById(id);
     console.log("data", data);
     if (!data) {
@@ -225,17 +219,7 @@ export async function updateVisited(req, res) {
     const newStatus = data.status === "Confirmed" ? "Visited" : "Confirmed";
     data.status = newStatus;
     const visited = await data.save();
-
-    // const updateStatus = await Appointment.findByIdAndUpdate({id}) {
-    //   new: true,
-    // };
-
-    // if (!updateStatus) {
-    //   return res
-    //     .status(404)
-    //     .json({ message: "Appointment not found for this address" });
-    // }
-
+    console.log("server: visited", visited);
     return res.status(200).json(visited);
   } catch (error) {
     return res.status(500).json({ message: "Server error: updating status" });
