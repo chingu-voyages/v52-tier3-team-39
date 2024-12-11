@@ -1,28 +1,29 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import autoComplete from "@tarekraafat/autocomplete.js";
 import { FormControl, InputLabel, Input, FormHelperText } from "@mui/material";
 import { serverUrl } from "@/constants";
 import "./Autocomplete.css";
 
 export default function Autocomplete({ setAddress, errorMsg, isPending }) {
+  const [hasServerError, setHasServerError] = useState(false);
   useEffect(() => {
     const fetchAddresses = async (query) => {
-      const searchString = encodeURIComponent(query);
-      const response = await fetch(
-        `${serverUrl}addresses/autocomplete?searchString=${searchString}`
-      );
+      try {
+        const searchString = encodeURIComponent(query);
+        const response = await fetch(
+          `${serverUrl}addresses/autocomplete?searchString=${searchString}`
+        );
+        const { error, suggestions } = await response.json();
 
-      const { error, suggestions } = await response.json();
+        if (error) throw error;
 
-      if (error) {
-        console.warn("Failed to fetch autocomplete suggestions");
-        console.warn(error);
-        return [];
+        return suggestions;
+      } catch (error) {
+        console.error(error);
+        setHasServerError(true);
       }
-
-      return suggestions;
     };
 
     const autoCompleteJS = new autoComplete({
@@ -48,6 +49,10 @@ export default function Autocomplete({ setAddress, errorMsg, isPending }) {
 
     return () => autoCompleteJS.unInit();
   }, [serverUrl]);
+
+  if (hasServerError) {
+    throw new Error("Failed to fetch autocomplete suggestions");
+  }
 
   return (
     <FormControl>
