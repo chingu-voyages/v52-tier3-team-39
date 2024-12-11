@@ -20,8 +20,8 @@ export default function SignInCard() {
   return (
     <Card variant="outlined" sx={{ minWidth: 375, p: 2 }}>
       <CardMedia
-        sx={{ height: 300 }}
-        image="/solar_panels.jpg"
+        sx={{ height: 500 }}
+        image="/static/solar_panels.jpg"
         title="solar_panels"
       />
       <CardContent>

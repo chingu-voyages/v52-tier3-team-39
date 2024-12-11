@@ -15,6 +15,11 @@ export default withAuth(
         if (token) return true;
       },
     },
+    pages: {
+      signIn: "/signIn",
+    },
   }
 );
 
+// We should not use the auth middleware for static assets
+export const config = { matcher: ["\/((?!static).*)"] }
