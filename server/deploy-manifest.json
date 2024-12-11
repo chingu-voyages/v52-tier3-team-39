@@ -40,7 +40,7 @@
         {
             "name": "default",
             "runtime": "nodejs22.x",
-            "entrypoint": "index.js"
+            "entrypoint": "src/app.js"
         }
     ]
 }
