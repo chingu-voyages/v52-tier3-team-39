@@ -1,27 +1,30 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import autoComplete from "@tarekraafat/autocomplete.js";
 import { FormControl, InputLabel, Input, FormHelperText } from "@mui/material";
 import { serverUrl } from "@/constants";
-import "./Autocomplete.css"
+import "./Autocomplete.css";
 
-export default function Autocomplete({ setAddress, errorMsg }) {
+export default function Autocomplete({ setAddress, errorMsg, isPending }) {
+  const [hasServerError, setHasServerError] = useState(false);
   useEffect(() => {
     const fetchAddresses = async (query) => {
-      const searchString = encodeURIComponent(query);
-      const response = await fetch(`${serverUrl}addresses/autocomplete?searchString=${searchString}`);
-  
-      const { error, suggestions } = await response.json();
-  
-      if (error) {
-        console.warn("Failed to fetch autocomplete suggestions");
-        console.warn(error);
-        return [];
+      try {
+        const searchString = encodeURIComponent(query);
+        const response = await fetch(
+          `${serverUrl}addresses/autocomplete?searchString=${searchString}`
+        );
+        const { error, suggestions } = await response.json();
+
+        if (error) throw error;
+
+        return suggestions;
+      } catch (error) {
+        console.error(error);
+        setHasServerError(true);
       }
-  
-      return suggestions;
-    }
+    };
 
     const autoCompleteJS = new autoComplete({
       selector: "#autoComplete",
@@ -47,10 +50,19 @@ export default function Autocomplete({ setAddress, errorMsg }) {
     return () => autoCompleteJS.unInit();
   }, [serverUrl]);
 
+  if (hasServerError) {
+    throw new Error("Failed to fetch autocomplete suggestions");
+  }
+
   return (
     <FormControl>
       <InputLabel htmlFor="address">Address</InputLabel>
-      <Input id="autoComplete" aria-describedby="address-autocomplete"  fullWidth/>
+      <Input
+        id="autoComplete"
+        aria-describedby="address-autocomplete"
+        disabled={isPending}
+        fullWidth
+      />
       {errorMsg && (
         <FormHelperText id="name-error-text" error>
           {errorMsg}

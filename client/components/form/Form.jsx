@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Joi from "joi";
 import dayjs from "dayjs";
 import {
@@ -18,6 +18,7 @@ import TimeRangeInput from "./TimeRangeInput";
 import { requestAppt } from "@/actions/form";
 import AutocompleteAddress from "./AutocompleteAddress";
 import ErrorToast from "../errors/ErrorToast";
+import Loading from "@/app/loading";
 
 const schema = Joi.object({
   name: Joi.string().min(2).max(255).required().trim(),
@@ -42,7 +43,8 @@ const schema = Joi.object({
 });
 
 export default function Form({ email }) {
-  // capture state
+  const router = useRouter();
+  // Form state
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [earlyTime, setEarlyTime] = useState(
@@ -52,14 +54,17 @@ export default function Form({ email }) {
     dayjs().hour(10).minute(0).second(0)
   );
   const [address, setAddress] = useState("");
+  const [disableBtn, setDisableBtn] = useState(null);
+  // Error state
   const [errorMsg, setErrorMsg] = useState("");
   const [errorPath, setErrorPath] = useState("");
   const [toast, setToast] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
-  const [disableBtn, setDisableBtn] = useState(null);
+  const [hasSubmitError, setHasSubmitError] = useState(false);
+  const [isPending, setIsPending] = useState(false);
 
   function handleCancel() {
-    redirect("/new-appointment/cancel");
+    router.push("/new-appointment/cancel");
   }
 
   async function handleSubmit(e) {
@@ -67,6 +72,8 @@ export default function Form({ email }) {
 
     const earlyTimeHour = earlyTime.hour();
     const lateTimeHour = lateTime.hour();
+
+    // Handle validation errors
     const { error, value } = schema.validate({
       name,
       email,
@@ -81,16 +88,31 @@ export default function Form({ email }) {
       setErrorPath(error.details[0].path[0]);
       return;
     }
-    const err = await requestAppt(value);
 
-    if (err) {
-      setToast(true);
-      setToastMsg(err.message);
+    try {
+      setIsPending(true);
+      // Handle server errors
+      const serverErr = await requestAppt(value);
+      if (serverErr) {
+        setToast(true);
+        return setToastMsg(serverErr.message);
+      }
+      router.push("/new-appointment/success");
+    } catch (err) {
+      console.error(err);
+      setHasSubmitError(true);
+    } finally {
+      setIsPending(false);
     }
+  }
+
+  if (hasSubmitError) {
+    throw new Error("Failed to submit form due to a server error");
   }
 
   return (
     <>
+      {isPending && <Loading />}
       <ErrorToast
         toast={toast}
         setToast={setToast}
@@ -112,6 +134,7 @@ export default function Form({ email }) {
                 id="name"
                 aria-describedby="name-error-text"
                 value={name}
+                disabled={isPending}
                 onChange={(event) => {
                   setName(event.currentTarget.value);
                 }}
@@ -129,6 +152,7 @@ export default function Form({ email }) {
                 id="phone"
                 aria-describedby="phone-error-text"
                 value={phone}
+                disabled={isPending}
                 onChange={(event) => {
                   setPhone(event.currentTarget.value);
                 }}
@@ -142,6 +166,7 @@ export default function Form({ email }) {
             <AutocompleteAddress
               setAddress={setAddress}
               errorMsg={errorPath === "address" ? errorMsg : undefined}
+              isPending={isPending}
             />
 
             <TimeRangeInput
@@ -152,6 +177,7 @@ export default function Form({ email }) {
               errorMsg={errorMsg}
               errorPath={errorPath}
               setDisableBtn={setDisableBtn}
+              isPending={isPending}
             />
 
             <Stack
@@ -164,6 +190,7 @@ export default function Form({ email }) {
                 color="warning"
                 size="large"
                 onClick={handleCancel}
+                disabled={isPending}
               >
                 Cancel
               </Button>
@@ -171,7 +198,7 @@ export default function Form({ email }) {
                 variant="contained"
                 size="large"
                 type="submit"
-                disabled={!!disableBtn}
+                disabled={!!disableBtn || isPending}
               >
                 Submit
               </Button>
