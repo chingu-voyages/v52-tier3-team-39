@@ -1,6 +1,6 @@
 import { Stack } from "@mui/material";
 import SiteInfo from "@/components/landing/SiteInfo";
-import SignInCard from "@/components/signInCard";
+import Auth from "@/components/landing/Auth";
 
 export default function signIn() {
   return (
@@ -13,7 +13,7 @@ export default function signIn() {
       }}
     >
       <SiteInfo />
-      <SignInCard />
+      <Auth />
     </Stack>
   );
 }
