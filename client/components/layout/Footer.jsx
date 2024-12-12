@@ -7,7 +7,14 @@ import FooterNav from "./FooterNav";
 export default async function Footer() {
   const session = await getServerSession(authOptions);
   return (
-    <Box component="footer" className="bg-lightAccent text-background">
+    <Box
+      component="footer"
+      sx={{
+        minHeight: "var(--footer-height)",
+        backgroundColor: "var(--light-accent)",
+        color: "var(--background)",
+      }}
+    >
       <Stack
         gap={4}
         sx={{

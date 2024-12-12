@@ -12,13 +12,12 @@ import GoogleIcon from "@mui/icons-material/Google";
 import { signIn } from "next-auth/react";
 
 export default function SignInCard() {
-
   const handleSubmit = () => {
-    signIn("google")
-  } 
+    signIn("google");
+  };
 
   return (
-    <Card variant="outlined" sx={{ minWidth: 375, p: 2 }}>
+    <Card variant="outlined" sx={{ p: 2 }}>
       <CardMedia
         sx={{ height: 500 }}
         image="/static/solar_panels.jpg"
