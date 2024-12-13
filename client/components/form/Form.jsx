@@ -64,7 +64,7 @@ export default function Form({ email }) {
   const [isPending, setIsPending] = useState(false);
 
   function handleCancel() {
-    router.push("/new-appointment/cancel");
+    router.push("/");
   }
 
   async function handleSubmit(e) {
