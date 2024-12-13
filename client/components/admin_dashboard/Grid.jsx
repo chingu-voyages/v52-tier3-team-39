@@ -85,7 +85,10 @@ export default function Grid({ rows }) {
       field: "status",
       headerName: "Status",
       width: 190,
-      renderCell: (status) => <StatusChange />,
+      renderCell: (params) => {
+        const { id } = params.row;
+        return <StatusChange id={id} />;
+      },
     },
     {
       valueFormatter: formatName,
