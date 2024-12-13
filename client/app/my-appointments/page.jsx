@@ -4,6 +4,7 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth";
 import MyAppointment from "@/components/appointment/MyAppointment";
+import Spinner from "@/components/Spinner";
 
 export default async function MyAppointmentView() {
   const session = await getServerSession(authOptions);
@@ -40,7 +41,7 @@ export default async function MyAppointmentView() {
           </Stack>
         </Stack>
 
-        <Suspense fallback={<p>Loading...</p>}>
+        <Suspense fallback={<Spinner />}>
           <MyAppointment email={session.user.email} />
         </Suspense>
       </Stack>

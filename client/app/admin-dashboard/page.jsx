@@ -1,8 +1,8 @@
 import { Suspense } from "react";
-import { CircularProgress, Typography, Box } from "@mui/material";
-import { spacing } from "@mui/system";
+import { Typography, Box } from "@mui/material";
 import ReservationTable from "../../components/admin_dashboard/ReservationTable";
 import Map from "../../components/admin_dashboard/Map";
+import Spinner from "@/components/Spinner";
 import { fetchAppointments } from "@/actions/form";
 
 async function Dashboard() {
@@ -22,7 +22,7 @@ export default async function AdminDashboardView() {
   return (
     <div>
       <Typography variant="h1">Reservations:</Typography>
-      <Suspense fallback={<CircularProgress />}>
+      <Suspense fallback={<Spinner />}>
         <Dashboard />
       </Suspense>
     </div>
