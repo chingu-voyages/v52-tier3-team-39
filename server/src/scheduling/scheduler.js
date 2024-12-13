@@ -59,8 +59,9 @@ const getDistanceMatrix = async (address_batch) => {
           waypoint: {
             location: {
               latLng: {
-                latitude: 37.420999,
-                longitude: -122.086894,
+                // Solar Optimum
+                latitude: 34.163738,
+                longitude: -118.303307,
               },
             },
           },
