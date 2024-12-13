@@ -34,41 +34,41 @@ const appendSchedule = (appointments) => {
 };
 
 const getDistanceMatrix = async (address_batch) => {
-  const routesApiresponse = await fetch(ROUTES_API, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Goog-Api-Key": googleApiKey,
-      "X-Goog-FieldMask":
-        "originIndex,destinationIndex,duration,distanceMeters,status,condition",
-    },
-    body: JSON.stringify({
-      origins: [
-        {
-          waypoint: {
-            location: {
-              latLng: {
-                latitude: 37.420761,
-                longitude: -122.081356,
+  try {
+    const routesApiresponse = await fetch(ROUTES_API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Goog-Api-Key": googleApiKey,
+        "X-Goog-FieldMask":
+          "originIndex,destinationIndex,duration,distanceMeters,status,condition",
+      },
+      body: JSON.stringify({
+        origins: [
+          {
+            waypoint: {
+              location: {
+                latLng: {
+                  latitude: 37.420761,
+                  longitude: -122.081356,
+                },
+              },
+            },
+            routeModifiers: { avoid_ferries: true },
+          },
+          {
+            waypoint: {
+              location: {
+                latLng: {
+                  // Solar Optimum
+                  latitude: 34.163738,
+                  longitude: -118.303307,
+                },
               },
             },
           },
-          routeModifiers: { avoid_ferries: true },
-        },
-        {
-          waypoint: {
-            location: {
-              latLng: {
-                // Solar Optimum
-                latitude: 34.163738,
-                longitude: -118.303307,
-              },
-            },
-          },
-        },
-      ],
-      destinations: [
-        address_batch.map((address) => ({
+        ],
+        destinations: address_batch.map((address) => ({
           waypoint: {
             location: {
               latLng: {
@@ -78,14 +78,21 @@ const getDistanceMatrix = async (address_batch) => {
             },
           },
         })),
-      ],
-      travelMode: "DRIVE",
-      routingPreference: "TRAFFIC_AWARE",
-    }),
-  });
+        travelMode: "DRIVE",
+        routingPreference: "TRAFFIC_AWARE",
+      }),
+    });
 
-  const data = await routesApiresponse.json();
-  console.log("🚀 ~ newAppointment ~ data:", data);
+    if (!routesApiresponse.ok) {
+      throw new Error(`HTTP error! Status: ${routesApiresponse.status}`);
+    }
+
+    const data = await routesApiresponse.json();
+    console.log("🚀 ~ newAppointment ~ data:", data);
+    return data;
+  } catch (error) {
+    console.error("Error fetching distance matrix:", error);
+    throw error;
+  }
 };
-
 export { appendSchedule, getDistanceMatrix };
