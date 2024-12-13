@@ -9,7 +9,7 @@ export default function signIn() {
       sx={{
         width: { xs: 19 / 20, md: 3 / 4 },
         marginY: 4,
-        marginX: "auto",
+        marginX: { xs: "auto", lg: 4, xl: 0 },
       }}
     >
       <SiteInfo />

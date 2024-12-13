@@ -10,7 +10,6 @@ export default async function Footer() {
     <Box
       component="footer"
       sx={{
-        minHeight: "var(--footer-height)",
         backgroundColor: "var(--light-accent)",
         color: "var(--background)",
       }}
