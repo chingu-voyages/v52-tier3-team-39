@@ -3,6 +3,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { Container, Stack } from "@mui/material";
 import { StyledRoot } from "./StyledRoot";
 import Header from "@/components/layout/Header";
+import Splash from "@/components/landing/Splash";
 import Footer from "@/components/layout/Footer";
 
 export const metadata = {
@@ -18,6 +19,7 @@ export default function RootLayout({ children }) {
           <StyledRoot>
             <Stack className="min-h-[calc(100vh-var(--footer-height))]">
               <Header />
+              <Splash />
               <Container
                 component="main"
                 maxWidth="xl"

@@ -64,7 +64,7 @@ export default function Form({ email }) {
   const [isPending, setIsPending] = useState(false);
 
   function handleCancel() {
-    router.push("/new-appointment/cancel");
+    router.push("/");
   }
 
   async function handleSubmit(e) {
@@ -119,10 +119,7 @@ export default function Form({ email }) {
         toastMsg={toastMsg}
         setToastMsg={setToastMsg}
       />
-      <Stack
-        gap={2}
-        sx={{ width: { xs: 1, md: 1 / 2 }, marginX: "auto", marginY: 8 }}
-      >
+      <Stack gap={2} sx={{ width: { xs: 1 }, marginX: "auto", marginY: 8 }}>
         <Box>
           <Typography color="textSecondary">Email: {email}</Typography>
         </Box>
