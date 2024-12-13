@@ -1,4 +1,4 @@
-import { googleApiKey } from "../config/env";
+import { googleApiKey } from "../config/env.js";
 
 const ROUTES_API =
   "https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix";
@@ -33,7 +33,7 @@ const appendSchedule = (appointments) => {
   }));
 };
 
-const createSchedule = async () => {
+const getDistanceMatrix = async (address_batch) => {
   const routesApiresponse = await fetch(ROUTES_API, {
     method: "POST",
     headers: {
@@ -67,26 +67,16 @@ const createSchedule = async () => {
         },
       ],
       destinations: [
-        {
+        address_batch.map((address) => ({
           waypoint: {
             location: {
               latLng: {
-                latitude: 37.420999,
-                longitude: -122.086894,
+                latitude: address.lat,
+                longitude: address.lng,
               },
             },
           },
-        },
-        {
-          waypoint: {
-            location: {
-              latLng: {
-                latitude: 37.383047,
-                longitude: -122.044651,
-              },
-            },
-          },
-        },
+        })),
       ],
       travelMode: "DRIVE",
       routingPreference: "TRAFFIC_AWARE",
@@ -97,4 +87,4 @@ const createSchedule = async () => {
   console.log("🚀 ~ newAppointment ~ data:", data);
 };
 
-export { appendSchedule, createSchedule };
+export { appendSchedule, getDistanceMatrix };
