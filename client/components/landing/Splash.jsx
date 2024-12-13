@@ -12,9 +12,12 @@ export default function Splash() {
       <Box
         sx={{
           width: 1,
+          maxHeight: 500,
           position: "relative",
           aspectRatio: 2 / 1,
           overflow: "hidden",
+          borderTop: "2px solid var(--branding)",
+          borderBottom: "8px solid var(--branding)",
         }}
       >
         <Image

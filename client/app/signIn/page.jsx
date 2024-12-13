@@ -7,7 +7,7 @@ export default function signIn() {
     <Stack
       gap={4}
       sx={{
-        width: { xs: 19 / 20 },
+        width: { xs: 19 / 20, md: 3 / 4 },
         marginY: 4,
         marginX: "auto",
       }}

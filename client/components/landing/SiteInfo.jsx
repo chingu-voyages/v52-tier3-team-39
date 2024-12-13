@@ -7,7 +7,11 @@ const items = [
   {
     icon: (
       <ConstructionRoundedIcon
-        sx={{ color: "var(--primary)", opacity: 4 / 5, fontSize: 20 }}
+        sx={{
+          color: "var(--primary)",
+          opacity: 4 / 5,
+          fontSize: { xs: 20, lg: 32 },
+        }}
       />
     ),
     title: "Premium Craftsmanship",
@@ -16,7 +20,11 @@ const items = [
   {
     icon: (
       <SavingsRoundedIcon
-        sx={{ color: "var(--primary)", opacity: 4 / 5, fontSize: 20 }}
+        sx={{
+          color: "var(--primary)",
+          opacity: 4 / 5,
+          fontSize: { xs: 20, lg: 32 },
+        }}
       />
     ),
     title: "Save Energy and Money",
@@ -26,7 +34,11 @@ const items = [
   {
     icon: (
       <SolarPowerRoundedIcon
-        sx={{ color: "var(--primary)", opacity: 4 / 5, fontSize: 20 }}
+        sx={{
+          color: "var(--primary)",
+          opacity: 4 / 5,
+          fontSize: { xs: 20, lg: 32 },
+        }}
       />
     ),
     title: "Have Independence",
@@ -39,11 +51,14 @@ export default function SiteInfo() {
     <Stack
       sx={{
         flexDirection: "column",
-        alignSelf: "center",
         gap: 4,
       }}
     >
-      <Typography variant="h1" component="h1" sx={{ fontSize: { xs: 24 } }}>
+      <Typography
+        variant="h1"
+        component="h1"
+        sx={{ fontSize: { xs: 24, lg: 48 } }}
+      >
         A <span className="text-branding">ray</span>-volution in affordable home
         solar installation!
       </Typography>
@@ -52,9 +67,11 @@ export default function SiteInfo() {
         sx={{
           paddingX: 2,
           paddingY: 4,
-          marginX: "auto",
-          backgroundColor: "var(--background-accent)",
-          border: "1px solid #eee",
+          backgroundColor: {
+            xs: "var(--background-accent)",
+            lg: "transparent",
+          },
+          border: { xs: "1px solid #eee", lg: "none" },
           borderRadius: 4,
         }}
       >
@@ -63,7 +80,10 @@ export default function SiteInfo() {
             <Stack key={item.title} direction="column" gap={1}>
               <Stack direction="row" gap={1} alignItems="center">
                 {item.icon}
-                <Typography component="h2" sx={{ fontWeight: 500 }}>
+                <Typography
+                  component="h2"
+                  sx={{ fontSize: { xs: 16, lg: 28 }, fontWeight: 500 }}
+                >
                   {item.title}
                 </Typography>
               </Stack>

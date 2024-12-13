@@ -11,7 +11,6 @@ export default function SignIn() {
 
   return (
     <Button
-      fullWidth
       size="large"
       variant="outlined"
       startIcon={<GoogleIcon sx={{ color: "var(--branding)" }} />}
@@ -19,6 +18,7 @@ export default function SignIn() {
         color: "var(--accent)",
         borderColor: "var(--accent)",
         borderRadius: 2,
+        width: { xs: 1, lg: 300 },
       }}
       onClick={handleSubmit}
     >
