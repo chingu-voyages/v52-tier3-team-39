@@ -8,7 +8,7 @@ export default function signIn() {
       gap={4}
       sx={{
         width: { xs: 19 / 20, md: 3 / 4 },
-        marginY: 4,
+        marginY: { xs: 4, lg: 8 },
         marginX: { xs: "auto", lg: 4, xl: 0 },
       }}
     >
