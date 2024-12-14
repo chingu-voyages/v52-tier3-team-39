@@ -55,7 +55,7 @@ export default function Nav({ session }) {
           onClose={() => setOpen(false)}
           sx={{ display: { lg: "none" } }}
         >
-          <Stack direction="row-reverse" className="m-2">
+          <Stack direction="row-reverse" sx={{ margin: 1 }}>
             <IconButton onClick={() => setOpen(false)}>
               <CloseIcon sx={{ fontSize: 36 }} className="text-darkAccent" />
             </IconButton>

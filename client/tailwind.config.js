@@ -18,6 +18,7 @@ module.exports = {
         darkAccent: "var(--dark-accent)",
         lightAccent: "var(--light-accent)",
         primary: "var(--primary)",
+        border: "var(--border)",
       },
     },
   },

@@ -34,7 +34,7 @@ export default function TimeRangeInput({
         sx={{
           border: "1px solid",
           borderRadius: 2,
-          borderColor: "var(--accent)",
+          borderColor: "var(--border)",
           padding: 2,
           marginTop: 2,
         }}
@@ -42,8 +42,8 @@ export default function TimeRangeInput({
         <Typography variant="subtitle2">
           Preferred Appointment Time Range
         </Typography>
-        <Stack gap={2} className="mt-4">
-          <Stack direction="column" className="w-full">
+        <Stack gap={2} sx={{ marginTop: 2 }}>
+          <Stack direction="column" sx={{ width: 1 }}>
             <TimePicker
               label="Earliest"
               minTime={nineAM}
@@ -75,7 +75,7 @@ export default function TimeRangeInput({
               </FormHelperText>
             )}
           </Stack>
-          <Stack direction="column" className="w-full">
+          <Stack direction="column" sx={{ width: 1 }}>
             <TimePicker
               label="Latest"
               minTime={tenAM}
