@@ -32,7 +32,7 @@ export default function TimeRangeInput({
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box
         sx={{
-          bordeWidth: 1,
+          borderWidth: 1,
           borderRadius: 2,
           borderColor: "var(--border)",
           padding: 2,
@@ -65,6 +65,27 @@ export default function TimeRangeInput({
                 setEarlyTime(newValue);
               }}
               disabled={isPending}
+              slotProps={{
+                textField: {
+                  sx: {
+                    "& .MuiOutlinedInput-root": {
+                      "&:hover .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "inherit", // Disable hover styles
+                      },
+                      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "#1976d2 !important", // Force focus color
+                      },
+                    },
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "var(--accent)", // Default border color
+                    },
+                    label: { color: "var(--foreground)" }, // Label color
+                    input: { color: "var(--foreground)" }, // Input text color
+                    button: { display: "none" }, // Hides the clear button
+                  },
+                },
+              }}
+              desktopModeMediaQuery="@media (min-width: 0px)"
             />
             <FormHelperText>Select a time between 9am and 4pm</FormHelperText>
             {earlyTimeErr && (
@@ -97,6 +118,27 @@ export default function TimeRangeInput({
                 setLateTime(newValue);
               }}
               disabled={isPending}
+              slotProps={{
+                textField: {
+                  sx: {
+                    "& .MuiOutlinedInput-root": {
+                      "&:hover .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "inherit", // Disable hover styles
+                      },
+                      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "#1976d2 !important", // Force focus color
+                      },
+                    },
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "var(--accent)", // Default border color
+                    },
+                    label: { color: "var(--foreground)" }, // Label color
+                    input: { color: "var(--foreground)" }, // Input text color
+                    button: { display: "none" }, // Hides the clear button
+                  },
+                },
+              }}
+              desktopModeMediaQuery="@media (min-width: 0px)"
             />
             <FormHelperText>Select a time between 10am and 5pm</FormHelperText>
             {lateTimeErr && (

@@ -123,14 +123,22 @@ export default function Form({ email }) {
         <Box>
           <Typography color="textSecondary">Email: {email}</Typography>
         </Box>
-        <form onSubmit={handleSubmit}>
+        <Box component="form" onSubmit={handleSubmit}>
           <Stack direction="column" gap={4}>
             <FormControl>
-              <InputLabel htmlFor="name">Name</InputLabel>
+              <InputLabel htmlFor="name" sx={{ color: "var(--foreground)" }}>
+                Name
+              </InputLabel>
               <Input
                 id="name"
                 aria-describedby="name-error-text"
                 value={name}
+                sx={{
+                  "&:before": {
+                    borderColor: "var(--accent)",
+                  },
+                  color: "var(--foreground)",
+                }}
                 disabled={isPending}
                 onChange={(event) => {
                   setName(event.currentTarget.value);
@@ -144,11 +152,19 @@ export default function Form({ email }) {
             </FormControl>
 
             <FormControl>
-              <InputLabel htmlFor="phone">Phone Number</InputLabel>
+              <InputLabel htmlFor="phone" sx={{ color: "var(--foreground)" }}>
+                Phone Number
+              </InputLabel>
               <Input
                 id="phone"
                 aria-describedby="phone-error-text"
                 value={phone}
+                sx={{
+                  "&:before": {
+                    borderColor: "var(--accent)", // Custom styles for before
+                  },
+                  color: "var(--foreground)",
+                }}
                 disabled={isPending}
                 onChange={(event) => {
                   setPhone(event.currentTarget.value);
@@ -201,7 +217,7 @@ export default function Form({ email }) {
               </Button>
             </Stack>
           </Stack>
-        </form>
+        </Box>
       </Stack>
     </>
   );
