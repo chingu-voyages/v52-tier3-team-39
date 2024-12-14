@@ -40,7 +40,6 @@ export default function Map({ appointments }) {
       });
     });
   };
-  console.log(appointments[0]);
 
   return (
     <LoadScript

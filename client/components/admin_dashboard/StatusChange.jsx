@@ -6,11 +6,11 @@ import { updateStatusOnServer } from "@/actions/form";
 export default function StatusChange({ id }) {
   const [status, setStatus] = React.useState("Requested");
 
-  const handleChange = (e, id) => {
+  const handleChange = async (e, id) => {
     const newStatus = e.target.value;
     console.log("newStatus", newStatus);
     setStatus(newStatus);
-    updateStatusOnServer(id, newStatus);
+    await updateStatusOnServer(id, newStatus);
   };
   return (
     <Box sx={{ minWidth: 120 }}>
