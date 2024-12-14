@@ -11,7 +11,8 @@ export default async function Header() {
       component="header"
       sx={{
         paddingY: { xs: 1, md: 1.5 },
-        borderBottom: "1px solid #eee",
+        borderBottomWidth: 1,
+        borderColor: "var(--branding)",
       }}
     >
       <Box

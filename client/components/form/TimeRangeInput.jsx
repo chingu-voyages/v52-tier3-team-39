@@ -32,7 +32,7 @@ export default function TimeRangeInput({
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box
         sx={{
-          border: "1px solid",
+          bordeWidth: 1,
           borderRadius: 2,
           borderColor: "var(--border)",
           padding: 2,

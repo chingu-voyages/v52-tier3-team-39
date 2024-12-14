@@ -71,7 +71,8 @@ export default function SiteInfo() {
             xs: "var(--background-accent)",
             lg: "transparent",
           },
-          border: { xs: "1px solid #eee", lg: "none" },
+          borderWidth: { xs: 1, lg: 0 },
+          borderColor: "var(--border)",
           borderRadius: 4,
         }}
       >
@@ -91,7 +92,9 @@ export default function SiteInfo() {
                 {item.description}
               </Typography>
             </Stack>
-            {idx !== items.length - 1 && <Divider />}
+            {idx !== items.length - 1 && (
+              <Divider sx={{ borderColor: "var(--border)" }} />
+            )}
           </>
         ))}
       </Stack>

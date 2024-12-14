@@ -10,8 +10,8 @@ export default async function Footer() {
     <Box
       component="footer"
       sx={{
-        backgroundColor: "var(--light-accent)",
-        color: "var(--background)",
+        backgroundColor: "var(--footer)",
+        color: "var(--footer-text)",
       }}
     >
       <Stack

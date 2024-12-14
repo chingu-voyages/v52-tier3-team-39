@@ -21,7 +21,7 @@ export default function FooterNav({ session }) {
               fontSize: { xs: 20, xl: 22 },
               fontWeight: 400,
             }}
-            textColor="text-background"
+            textColor="text-white"
           />
         );
       })}
