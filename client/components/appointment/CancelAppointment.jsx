@@ -49,7 +49,7 @@ export default function CancelAppointment({ email }) {
             left: "50%",
             transform: "translate(-50%, -50%)",
             width: { xs: 9 / 10, sm: 500 },
-            bgcolor: "background.paper",
+            backgroundColor: "var(--background-accent)",
             boxShadow: 10,
             borderRadius: 2,
             p: 4,
