@@ -49,17 +49,6 @@ const getDistanceMatrix = async (address_batch) => {
             waypoint: {
               location: {
                 latLng: {
-                  latitude: 37.420761,
-                  longitude: -122.081356,
-                },
-              },
-            },
-            routeModifiers: { avoid_ferries: true },
-          },
-          {
-            waypoint: {
-              location: {
-                latLng: {
                   // Solar Optimum
                   latitude: 34.163738,
                   longitude: -118.303307,
@@ -85,6 +74,10 @@ const getDistanceMatrix = async (address_batch) => {
 
     if (!routesApiresponse.ok) {
       throw new Error(`HTTP error! Status: ${routesApiresponse.status}`);
+    }
+
+    if (routesApiresponse.status === 429) {
+      console.error("Rate limit exceeded");
     }
 
     const data = await routesApiresponse.json();
