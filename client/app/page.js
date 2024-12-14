@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import SiteInfo from "@/components/landing/SiteInfo";
 import NewAppointment from "@/components/appointment/NewAppointment";
 
@@ -15,7 +15,9 @@ export default function LandingView() {
       <SiteInfo />
       <Stack>
         <Typography>
-          <span className="text-branding">Ready to make an appointment?</span>{" "}
+          <Box component="span" sx={{ color: "var(--branding)" }}>
+            Ready to make an appointment?
+          </Box>{" "}
           Please click the button below.
         </Typography>
         <NewAppointment />

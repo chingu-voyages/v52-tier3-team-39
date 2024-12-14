@@ -30,7 +30,15 @@ export default function TimeRangeInput({
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Box className="border rounded-lg p-4 mt-4">
+      <Box
+        sx={{
+          border: "1px solid",
+          borderRadius: 2,
+          borderColor: "var(--accent)",
+          padding: 2,
+          marginTop: 2,
+        }}
+      >
         <Typography variant="subtitle2">
           Preferred Appointment Time Range
         </Typography>
