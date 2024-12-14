@@ -33,59 +33,60 @@ const appendSchedule = (appointments) => {
   }));
 };
 
-const getDistanceMatrix = async (address_batch) => {
-  try {
-    const routesApiresponse = await fetch(ROUTES_API, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Goog-Api-Key": googleApiKey,
-        "X-Goog-FieldMask":
-          "originIndex,destinationIndex,duration,distanceMeters,status,condition",
-      },
-      body: JSON.stringify({
-        origins: [
-          {
-            waypoint: {
-              location: {
-                latLng: {
-                  // Solar Optimum
-                  latitude: 34.163738,
-                  longitude: -118.303307,
-                },
-              },
-            },
-          },
-        ],
-        destinations: address_batch.map((address) => ({
-          waypoint: {
-            location: {
-              latLng: {
-                latitude: address.lat,
-                longitude: address.lng,
-              },
-            },
-          },
-        })),
-        travelMode: "DRIVE",
-        routingPreference: "TRAFFIC_AWARE",
-      }),
-    });
+// const getDistanceMatrix = async (address_batch) => {
+//   console.log("in getDistance");
+//   try {
+//     const routesApiresponse = await fetch(ROUTES_API, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//         "X-Goog-Api-Key": googleApiKey,
+//         "X-Goog-FieldMask":
+//           "originIndex,destinationIndex,duration,distanceMeters,status,condition",
+//       },
+//       body: JSON.stringify({
+//         origins: [
+//           {
+//             waypoint: {
+//               location: {
+//                 latLng: {
+//                   // Solar Optimum
+//                   latitude: 34.163738,
+//                   longitude: -118.303307,
+//                 },
+//               },
+//             },
+//           },
+//         ],
+//         destinations: address_batch.map((address) => ({
+//           waypoint: {
+//             location: {
+//               latLng: {
+//                 latitude: address.lat,
+//                 longitude: address.lng,
+//               },
+//             },
+//           },
+//         })),
+//         travelMode: "DRIVE",
+//         routingPreference: "TRAFFIC_AWARE",
+//       }),
+//     });
 
-    if (!routesApiresponse.ok) {
-      throw new Error(`HTTP error! Status: ${routesApiresponse.status}`);
-    }
+//     if (!routesApiresponse.ok) {
+//       throw new Error(`HTTP error! Status: ${routesApiresponse.status}`);
+//     }
 
-    if (routesApiresponse.status === 429) {
-      console.error("Rate limit exceeded");
-    }
+//     if (routesApiresponse.status === 429) {
+//       console.error("Rate limit exceeded");
+//     }
 
-    const data = await routesApiresponse.json();
-    console.log("🚀 ~ newAppointment ~ data:", data);
-    return data;
-  } catch (error) {
-    console.error("Error fetching distance matrix:", error);
-    throw error;
-  }
-};
-export { appendSchedule, getDistanceMatrix };
+//     const data = await routesApiresponse.json();
+//     console.log("🚀 ~ newAppointment ~ data:", data);
+//     return data;
+//   } catch (error) {
+//     console.error("Error fetching distance matrix:", error);
+//     throw error;
+//   }
+// };
+export { appendSchedule };

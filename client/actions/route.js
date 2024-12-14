@@ -5,8 +5,6 @@ import { revalidatePath } from "next/cache";
 
 // CREATE DISTANCE MATRIX
 export async function convertBatchToMatrix(address_batch) {
-  console.log("Sending batch to server...");
-
   try {
     const response = await fetch(serverUrl + `admin-dashboard/batch`, {
       method: "POST",
@@ -18,6 +16,7 @@ export async function convertBatchToMatrix(address_batch) {
 
     const data = await response.json();
     revalidatePath("/admin-dashboard/batch");
+    console.log("new: Sending batch to server...");
     return data;
   } catch (error) {
     console.error(error);
