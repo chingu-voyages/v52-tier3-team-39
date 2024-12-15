@@ -31,13 +31,15 @@ export default async function Header() {
         >
           <Logo
             logoSize={{ xs: 20, sm: 24, lg: 32 }}
-            textSize={{ xs: 26, sm: 32, lg: 48 }}
+            textSize={{ xs: 24, sm: 32, lg: 48 }}
             iconColor="text-brandingDark"
             mainColor="branding-gradient"
             accent="text-accent"
           />
-          {session && <Nav session={session} />}
-          <DarkMode />
+          <Stack direction="row" alignItems="center" gap={{ xs: 0, lg: 8 }}>
+            {session && <Nav session={session} />}
+            <DarkMode />
+          </Stack>
         </Stack>
       </Box>
     </Box>

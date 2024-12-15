@@ -119,9 +119,13 @@ export default function Form({ email }) {
         toastMsg={toastMsg}
         setToastMsg={setToastMsg}
       />
-      <Stack gap={2} sx={{ width: { xs: 1 }, marginX: "auto", marginY: 8 }}>
+      <Stack gap={4} sx={{ width: { xs: 1 }, marginX: "auto", marginY: 8 }}>
         <Box>
-          <Typography color="textSecondary">Email: {email}</Typography>
+          <Typography
+            sx={{ color: "var(--foreground)", fontSize: { xs: 16, lg: 20 } }}
+          >
+            Email: {email}
+          </Typography>
         </Box>
         <Box component="form" onSubmit={handleSubmit}>
           <Stack direction="column" gap={4}>

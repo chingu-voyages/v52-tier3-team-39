@@ -28,7 +28,7 @@ export default function DarkMode() {
   return (
     <IconButton onClick={handleClick}>
       {isDark ? (
-        <DarkModeTwoToneIcon className="text-primary" />
+        <DarkModeTwoToneIcon className="text-darkAccent" />
       ) : (
         <LightModeTwoToneIcon className="text-branding" />
       )}
