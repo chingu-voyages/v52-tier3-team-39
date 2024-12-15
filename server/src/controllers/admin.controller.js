@@ -1,23 +1,23 @@
 import { graphHopperApiKey } from "../config/env.js";
 
 const getOptimalRoute = async (req, res) => {
-  const batch_appts = req.body;
+  const { batch_appts } = req.body;
   console.log(batch_appts);
   const query = new URLSearchParams({
     key: graphHopperApiKey,
   }).toString();
 
   const services = batch_appts.map((appt) => ({
-    id: appt._id,
+    id: appt.id,
     address: {
-      location_id: appt._id,
+      location_id: appt.id,
       lat: appt.location.lat,
       lon: appt.location.lng,
     },
     time_windows: [
       {
-        earliest: appt.preferredTimeRange.preferredEarlyTime,
-        latest: appt.preferredTimeRange.preferredLateTime,
+        earliest: appt.timeRange.preferredEarlyTime,
+        latest: appt.timeRange.preferredLateTime,
       },
     ],
   }));
@@ -60,7 +60,7 @@ const getOptimalRoute = async (req, res) => {
     console.error(data.solution.routes);
     res.status(resp.status).send(data);
   } else {
-    console.log(data.solution.routes);
+    console.log(data);
     res.status(200).send(data.solution.routes);
   }
 };

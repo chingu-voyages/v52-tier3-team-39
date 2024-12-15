@@ -11,9 +11,9 @@ export default function ReservationTable({ appointments = [] }) {
       .sort((a, b) => a.dateCreated - b.dateCreated)
       .slice(0, 8)
       .map((appt) => ({
-        id: appt._id,
+        id: appt.id,
         location: appt.location,
-        preferredTimeRange: appt.preferredTimeRange,
+        timeRange: appt.timeRange,
       }));
   }
 

@@ -6,12 +6,14 @@ import { revalidatePath } from "next/cache";
 // CREATE DISTANCE MATRIX
 export async function convertBatchToMatrix(batch_appts) {
   try {
+    const body = JSON.stringify({ batch_appts });
+    console.log("body", body);
     const response = await fetch(serverUrl + `admin-dashboard/batch`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ batch_appts }),
+      body,
     });
 
     const data = await response.json();
