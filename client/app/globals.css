@@ -18,17 +18,15 @@
   --footer-height: 404px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --background-accent: #3c3c3c;
-    --foreground: #ededed;
-    --accent: #dedede;
-    --dark-accent: #fafafa;
-    --border: #818181;
-    --primary: #485ff0;
-    --footer: #272727;
-  }
+.dark {
+  --background: #0a0a0a;
+  --background-accent: #3c3c3c;
+  --foreground: #ededed;
+  --accent: #dedede;
+  --dark-accent: #fafafa;
+  --border: #818181;
+  --primary: #485ff0;
+  --footer: #272727;
 }
 
 body {

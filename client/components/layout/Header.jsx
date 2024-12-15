@@ -3,6 +3,7 @@ import { authOptions } from "@/auth";
 import { Box, Stack } from "@mui/material";
 import Nav from "./Nav";
 import Logo from "./Logo";
+import DarkMode from "./DarkMode";
 
 export default async function Header() {
   const session = await getServerSession(authOptions);
@@ -36,6 +37,7 @@ export default async function Header() {
             accent="text-accent"
           />
           {session && <Nav session={session} />}
+          <DarkMode />
         </Stack>
       </Box>
     </Box>
