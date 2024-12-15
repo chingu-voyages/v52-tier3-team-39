@@ -16,8 +16,8 @@ const getOptimalRoute = async (req, res) => {
     },
     time_windows: [
       {
-        earliest: appt.timeRange.preferredEarlyTime,
-        latest: appt.timeRange.preferredLateTime,
+        earliest: appt.timeRange.preferredEarlyTime * 3600,
+        latest: appt.timeRange.preferredLateTime * 3600,
       },
     ],
   }));
@@ -60,8 +60,8 @@ const getOptimalRoute = async (req, res) => {
     console.error(data.solution.routes);
     res.status(resp.status).send(data);
   } else {
-    console.log(data);
-    res.status(200).send(data.solution.routes);
+    console.dir(data, { depth: 100 });
+    res.status(200).send(data);
   }
 };
 
