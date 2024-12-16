@@ -28,6 +28,7 @@ export async function fetchAppointments() {
 
     const data = await response.json();
 
+    console.log("data", data);
     return data.map((item, index) => ({
       id: item.id || index + 1,
       name: item.name,

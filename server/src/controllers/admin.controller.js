@@ -1,29 +1,13 @@
 import { graphHopperApiKey } from "../config/env.js";
 
-/**
- * Returns a new copy of the array, appending scheduling info to each appointment.
- * Doesn't change the order of the array.
- */
-const appendSchedule = async (appointments) => {
-  const optimalRoute = await getOptimalRoute(appointments);
-  const orderedIds = optimalRoute.filter((id) =>
-    appointments.some((appt) => appt.id === id)
-  );
-
-  return appointments.map((appointment) => ({
-    ...appointment,
-    schedule: {
-      order: orderedIds.indexOf(appointment.id) + 1,
-    },
-  }));
-};
-
-const getOptimalRoute = async (appointments) => {
+const getOptimalRoute = async (req, res) => {
+  const { batch_appts } = req.body;
+  console.log(batch_appts);
   const query = new URLSearchParams({
     key: graphHopperApiKey,
   }).toString();
 
-  const services = appointments.map((appt) => ({
+  const services = batch_appts.map((appt) => ({
     id: appt.id,
     address: {
       location_id: appt.id,
@@ -32,8 +16,8 @@ const getOptimalRoute = async (appointments) => {
     },
     time_windows: [
       {
-        earliest: appt.preferredTimeRange.preferredEarlyTime * 3600,
-        latest: appt.preferredTimeRange.preferredLateTime * 3600,
+        earliest: appt.timeRange.preferredEarlyTime * 3600,
+        latest: appt.timeRange.preferredLateTime * 3600,
       },
     ],
   }));
@@ -73,11 +57,12 @@ const getOptimalRoute = async (appointments) => {
   const data = await resp.json();
 
   if (!resp.ok) {
-    console.log("data", data);
-    throw new Error("Couldn't connect to graph hopper");
+    console.error(data.solution.routes);
+    res.status(resp.status).send(data);
   } else {
-    return data.solution.routes[0].activities.map((activity) => activity.id);
+    console.dir(data, { depth: 100 });
+    res.status(200).send(data);
   }
 };
 
-export { appendSchedule };
+export { getOptimalRoute };
