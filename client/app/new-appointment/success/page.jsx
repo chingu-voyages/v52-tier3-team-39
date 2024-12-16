@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Box, Divider, List, ListItem, Stack, Typography } from "@mui/material";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import { getServerSession } from "next-auth";
@@ -22,18 +21,29 @@ export default async function SuccessView() {
       gap={4}
       sx={{
         maxWidth: 500,
-        marginTop: { xs: 8, md: 16 },
+        marginY: { xs: 8, md: 12 },
         marginX: "auto",
         padding: { xs: 0, sm: 2 },
       }}
-      divider={<Divider orientation="horizontal" flexItem />}
+      divider={
+        <Divider
+          orientation="horizontal"
+          flexItem
+          sx={{ borderColor: "var(--border)" }}
+        />
+      }
     >
-      <Stack direction="row" gap={2} alignItems="center">
-        <CheckCircleOutlineIcon fontSize="large" color="primary" />
-        <Typography variant="h6" component="h1" color="primary">
-          Your appointment request has been received
-        </Typography>
-      </Stack>
+      <Typography
+        variant="h1"
+        component="h1"
+        sx={{
+          fontSize: { xs: 24 },
+          textAlign: "center",
+          color: "var(--branding)",
+        }}
+      >
+        We received your request
+      </Typography>
       <Stack
         direction="column"
         alignItems={{ sm: "center" }}
@@ -53,7 +63,7 @@ export default async function SuccessView() {
             >
               <Stack direction="row" gap={2} alignItems="center">
                 <EmailOutlinedIcon fontSize="small" />
-                <Typography sx={{ fontSize: "0.9rem" }}>
+                <Typography sx={{ fontSize: 14 }}>
                   View Mock <q>Request Received</q> Email
                 </Typography>
               </Stack>
@@ -63,7 +73,7 @@ export default async function SuccessView() {
             <Box component={Link} href="/my-appointments">
               <Stack direction="row" gap={2} alignItems="center">
                 <ArticleOutlinedIcon fontSize="small" />
-                <Typography sx={{ fontSize: "0.9rem" }}>
+                <Typography sx={{ fontSize: 14 }}>
                   View Appointment Details
                 </Typography>
               </Stack>
@@ -72,8 +82,12 @@ export default async function SuccessView() {
         </List>
       </Stack>
       <Typography
-        fontStyle="italic"
-        sx={{ "&::before": { content: '"* "' }, fontSize: "0.8rem" }}
+        sx={{
+          "&::before": { content: '"* "' },
+          fontSize: "0.8rem",
+          textAlign: "center",
+          fontStyle: "italic",
+        }}
       >
         Mock email expires after a few hours
       </Typography>

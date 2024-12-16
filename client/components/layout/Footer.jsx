@@ -10,8 +10,8 @@ export default async function Footer() {
     <Box
       component="footer"
       sx={{
-        backgroundColor: "var(--light-accent)",
-        color: "var(--background)",
+        backgroundColor: "var(--footer)",
+        color: "var(--footer-text)",
       }}
     >
       <Stack
@@ -24,9 +24,17 @@ export default async function Footer() {
           paddingX: { xs: 2, sm: 4, xl: 2 },
         }}
       >
-        <Logo logoSize={{ xs: 20, sm: 24 }} textSize={{ xs: 26, sm: 32 }} />
+        <Logo
+          logoSize={{ xs: 20, sm: 24 }}
+          textSize={{ xs: 26, sm: 32 }}
+          iconColor="text-white"
+          accent="text-white"
+          mainColor="text-white"
+        />
         {session && <FooterNav session={session} />}
-        <Typography sx={{ fontSize: 14 }}>&copy; 2024, RayVolution</Typography>
+        <Typography sx={{ fontSize: 14, color: "white" }}>
+          &copy; 2024, RayVolution
+        </Typography>
       </Stack>
     </Box>
   );

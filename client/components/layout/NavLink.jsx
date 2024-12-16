@@ -21,7 +21,7 @@ export default function NavLink({
   const activeLink = pathname === href;
   return (
     <>
-      {idx ? <Divider /> : null}
+      {idx ? <Divider sx={{ borderColor: "var(--border)" }} /> : null}
       <ListItem
         sx={
           liStyle || {

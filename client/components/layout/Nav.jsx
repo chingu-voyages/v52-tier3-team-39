@@ -45,7 +45,11 @@ export default function Nav({ session }) {
   return (
     <>
       {/* MOBILE NAV */}
-      <Box sx={{ display: { xs: "block", lg: "none" } }}>
+      <Box
+        sx={{
+          display: { xs: "block", lg: "none" },
+        }}
+      >
         <IconButton onClick={() => setOpen(true)}>
           <MenuIcon sx={{ fontSize: 30 }} className="text-darkAccent" />
         </IconButton>
@@ -53,31 +57,35 @@ export default function Nav({ session }) {
           open={open}
           anchor="left"
           onClose={() => setOpen(false)}
-          sx={{ display: { lg: "none" } }}
+          sx={{
+            display: { lg: "none" },
+          }}
         >
-          <Stack direction="row-reverse" className="m-2">
-            <IconButton onClick={() => setOpen(false)}>
-              <CloseIcon sx={{ fontSize: 36 }} className="text-darkAccent" />
-            </IconButton>
-          </Stack>
-          <Box
-            sx={{
-              width: { xs: 320, sm: 432, md: 690 },
-            }}
-          >
-            <List>
-              {protectedRoutes.map((link, idx) => {
-                return (
-                  <NavLink
-                    key={link.label}
-                    link={link}
-                    setOpen={setOpen}
-                    idx={idx}
-                    textColor="text-darkAccent"
-                  />
-                );
-              })}
-            </List>
+          <Box sx={{ backgroundColor: "var(--background)", height: "100vh" }}>
+            <Stack direction="row-reverse" sx={{ margin: 1 }}>
+              <IconButton onClick={() => setOpen(false)}>
+                <CloseIcon sx={{ fontSize: 36 }} className="text-darkAccent" />
+              </IconButton>
+            </Stack>
+            <Box
+              sx={{
+                width: { xs: 320, sm: 432, md: 690 },
+              }}
+            >
+              <List>
+                {protectedRoutes.map((link, idx) => {
+                  return (
+                    <NavLink
+                      key={link.label}
+                      link={link}
+                      setOpen={setOpen}
+                      idx={idx}
+                      textColor="text-darkAccent"
+                    />
+                  );
+                })}
+              </List>
+            </Box>
           </Box>
         </Drawer>
       </Box>

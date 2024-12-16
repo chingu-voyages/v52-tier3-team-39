@@ -1,3 +1,4 @@
+import React from "react";
 import { Divider, Stack, Typography } from "@mui/material";
 import ConstructionRoundedIcon from "@mui/icons-material/ConstructionRounded";
 import SolarPowerRoundedIcon from "@mui/icons-material/SolarPowerRounded";
@@ -71,12 +72,13 @@ export default function SiteInfo() {
             xs: "var(--background-accent)",
             lg: "transparent",
           },
-          border: { xs: "1px solid #eee", lg: "none" },
+          borderWidth: { xs: 1, lg: 0 },
+          borderColor: "var(--border)",
           borderRadius: 4,
         }}
       >
         {items.map((item, idx) => (
-          <>
+          <React.Fragment key={item.title}>
             <Stack key={item.title} direction="column" gap={1}>
               <Stack direction="row" gap={1} alignItems="center">
                 {item.icon}
@@ -91,8 +93,10 @@ export default function SiteInfo() {
                 {item.description}
               </Typography>
             </Stack>
-            {idx !== items.length - 1 && <Divider />}
-          </>
+            {idx !== items.length - 1 && (
+              <Divider sx={{ borderColor: "var(--border)" }} />
+            )}
+          </React.Fragment>
         ))}
       </Stack>
     </Stack>

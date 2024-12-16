@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
       <body>
         <AppRouterCacheProvider>
           <StyledRoot>
-            <Stack className="min-h-[calc(100vh-var(--footer-height))]">
+            <Stack sx={{ minHeight: "calc(100vh - var(--footer-height))" }}>
               <Header />
               <Splash />
               <Container

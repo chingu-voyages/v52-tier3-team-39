@@ -3,6 +3,7 @@ import { authOptions } from "@/auth";
 import { Box, Stack } from "@mui/material";
 import Nav from "./Nav";
 import Logo from "./Logo";
+import DarkMode from "./DarkMode";
 
 export default async function Header() {
   const session = await getServerSession(authOptions);
@@ -11,7 +12,8 @@ export default async function Header() {
       component="header"
       sx={{
         paddingY: { xs: 1, md: 1.5 },
-        borderBottom: "1px solid #eee",
+        borderBottomWidth: 1,
+        borderColor: "var(--branding)",
       }}
     >
       <Box
@@ -29,12 +31,15 @@ export default async function Header() {
         >
           <Logo
             logoSize={{ xs: 20, sm: 24, lg: 32 }}
-            textSize={{ xs: 26, sm: 32, lg: 48 }}
+            textSize={{ xs: 24, sm: 32, lg: 48 }}
             iconColor="text-brandingDark"
             mainColor="branding-gradient"
             accent="text-accent"
           />
-          {session && <Nav session={session} />}
+          <Stack direction="row" alignItems="center" gap={{ xs: 0, lg: 8 }}>
+            {session && <Nav session={session} />}
+            <DarkMode />
+          </Stack>
         </Stack>
       </Box>
     </Box>
