@@ -28,7 +28,7 @@ const formatTimeRange = (timeRange) => {
   )}`;
 };
 
-const formatDateCreated = (date) => {
+const formatDate = (date) => {
   return `${date.toLocaleDateString()} ${date.toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
@@ -50,13 +50,20 @@ const columns = [
   },
   { field: "status", headerName: "Status", width: 190 },
   {
+    valueFormatter: formatDate,
+    field: "scheduledDate",
+    headerName: "Scheduled Date",
+    width: 190,
+    valueGetter: (_, row) => row.schedule.scheduledDate,
+  },
+  {
     valueFormatter: formatName,
     field: "name",
     headerName: "Name",
     width: 190,
   },
   {
-    valueFormatter: formatDateCreated,
+    valueFormatter: formatDate,
     field: "dateCreated",
     headerName: "Requested on",
     width: 190,

@@ -2,20 +2,51 @@ import { graphHopperApiKey } from "../config/env.js";
 
 /**
  * Returns a new copy of the array, appending scheduling info to each appointment.
- * Doesn't change the order of the array.
  */
+
 const appendSchedule = async (appointments) => {
   const optimalRoute = await getOptimalRoute(appointments);
   const orderedIds = optimalRoute.filter((id) =>
     appointments.some((appt) => appt.id === id)
   );
 
-  return appointments.map((appointment) => ({
-    ...appointment,
-    schedule: {
-      order: orderedIds.indexOf(appointment.id) + 1,
-    },
-  }));
+  return appointments.map((appointment, index) => {
+    const order = orderedIds.indexOf(appointment.id) + 1;
+
+    if (order > 0) {
+      const { preferredTimeRange } = appointment;
+      const { preferredEarlyTime, preferredLateTime } = preferredTimeRange;
+
+      const baseDate = new Date();
+      const earlyTime = new Date(baseDate);
+      earlyTime.setHours(preferredEarlyTime, 0, 0, 0);
+
+      const lateTime = new Date(baseDate);
+      lateTime.setHours(preferredLateTime, 0, 0, 0);
+
+      const interval = 120 * 60 * 1000;
+
+      const scheduledTime = new Date(
+        earlyTime.getTime() + (order - 1) * interval
+      );
+
+      if (scheduledTime > preferredLateTime) {
+        console.warn(
+          `Appointment ${appointment.id} exceeds preferred late time but will be logged.`
+        );
+      }
+
+      return {
+        ...appointment,
+        schedule: {
+          order,
+          scheduledDate: scheduledTime.toISOString(),
+        },
+      };
+    }
+    console.log("appointment.scheduledDate", appointment.scheduledDate);
+    return appointment;
+  });
 };
 
 const getOptimalRoute = async (appointments) => {
