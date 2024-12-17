@@ -3,7 +3,7 @@ import React from "react";
 import { Box, InputLabel, MenuItem, FormControl, Select } from "@mui/material";
 import { updateStatusOnServer } from "@/actions/form";
 
-export default function StatusChange({ id }) {
+export default function StatusChange({ id, refreshData }) {
   const [status, setStatus] = React.useState("Requested");
 
   const handleChange = async (e, id) => {
@@ -11,6 +11,7 @@ export default function StatusChange({ id }) {
     console.log("newStatus", newStatus);
     setStatus(newStatus);
     await updateStatusOnServer(id, newStatus);
+    refreshData();
   };
   return (
     <Box sx={{ minWidth: 120 }}>

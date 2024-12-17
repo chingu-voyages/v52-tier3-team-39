@@ -52,7 +52,7 @@ const Toolbar = () => (
   </GridToolbarContainer>
 );
 
-export default function Grid({ rows }) {
+export default function Grid({ rows, refreshData }) {
   const [searchText, setSearchText] = useState("");
   const [customRows, setCustomRows] = useState(rows);
 
@@ -87,7 +87,7 @@ export default function Grid({ rows }) {
       width: 190,
       renderCell: (params) => {
         const { id } = params.row;
-        return <StatusChange id={id} />;
+        return <StatusChange id={id} refreshData={refreshData} />;
       },
     },
     {
