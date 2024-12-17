@@ -19,7 +19,6 @@ export async function requestAppt(formValues) {
 
 // GET ALL APPTS
 export async function fetchAppointments() {
-  console.log("Fetching updated appointments...");
   try {
     const response = await fetch(serverUrl + "appointments", {
       cache: "no-store",
@@ -87,12 +86,13 @@ export async function cancelAppointment(email) {
   revalidatePath("/my-appointments");
 }
 
-export async function updateVisitedOnServer(id) {
+export async function updateVisitedOnServer(id, { status }) {
   const response = await fetch(serverUrl + `appointments/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
+    body: JSON.stringify({ status }),
   });
 
   const data = await response.json();
@@ -103,8 +103,6 @@ export async function updateVisitedOnServer(id) {
 }
 
 export async function updateStatusOnServer(id, newStatus) {
-  console.log("updateStatus: newStatus", newStatus);
-  console.log("id", id);
   const response = await fetch(serverUrl + `appointments/${id}/status-change`, {
     method: "PATCH",
     headers: {
@@ -120,5 +118,4 @@ export async function updateStatusOnServer(id, newStatus) {
   }
 
   revalidatePath("/admin-dashboard");
-  console.log("Revalidation triggered for /admin-dashboard");
 }

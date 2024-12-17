@@ -72,11 +72,11 @@ export default function Grid({ rows, refreshData }) {
 
         return (
           <Button
-            variant={status === "Visited" ? "contained" : "outlined"}
+            variant={status === "Completed" ? "contained" : "outlined"}
             color="primary"
             onClick={() => toggleVisited(id)}
           >
-            {status === "Visited" ? "Visited" : "Not Visited"}
+            {status === "Completed" ? "Visited" : "Not Visited"}
           </Button>
         );
       },
@@ -129,7 +129,7 @@ export default function Grid({ rows, refreshData }) {
   ];
 
   const toggleVisited = async (id) => {
-    await updateVisitedOnServer(id);
+    await updateVisitedOnServer(id, { status: "Completed" });
     const updatedRows = await fetchAppointments();
     setCustomRows(updatedRows);
   };

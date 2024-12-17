@@ -194,16 +194,19 @@ export async function cancelAppointment(req, res, next) {
 
 export async function updateVisited(req, res) {
   const { id } = req.params;
+  const { status } = req.body;
 
   try {
     const data = await Appointment.findById(id);
-    console.log("data", data);
+    // console.log("data", data);
     if (!data) {
       return res.status(404).json({ message: "Could not grab data" });
     }
-    const newStatus = data.status === "Confirmed" ? "Visited" : "Confirmed";
+    const newStatus = data.status === "Visited" ? "Completed" : "Visited";
+
     data.status = newStatus;
     const visited = await data.save();
+
     console.log("server: visited", visited);
     return res.status(200).json(visited);
   } catch (error) {

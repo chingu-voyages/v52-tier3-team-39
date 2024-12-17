@@ -10,7 +10,6 @@ export default function ReservationTable({ initAppointments }) {
 
   const refreshData = async () => {
     const updatedAppts = await fetchAppointments();
-    console.log("Updated Appointments:", updatedAppts);
     setAppointments(updatedAppts);
   };
 

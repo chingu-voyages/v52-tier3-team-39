@@ -6,11 +6,8 @@ import { updateStatusOnServer } from "@/actions/form";
 export default function StatusChange({ id, refreshData, currentStatus }) {
   const [status, setStatus] = React.useState(currentStatus);
 
-  console.log("StatusChange component rendered for id:", id);
-
   const handleChange = async (e, id) => {
     const newStatus = e.target.value;
-    console.log("newStatus", newStatus);
     setStatus(newStatus);
     await updateStatusOnServer(id, newStatus);
     refreshData();
