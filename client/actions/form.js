@@ -19,6 +19,7 @@ export async function requestAppt(formValues) {
 
 // GET ALL APPTS
 export async function fetchAppointments() {
+  console.log("Fetching updated appointments...");
   try {
     const response = await fetch(serverUrl + "appointments", {
       cache: "no-store",
@@ -113,6 +114,9 @@ export async function updateStatusOnServer(id, newStatus) {
   });
 
   const data = await response.json();
+
+  revalidatePath("/admin-dashboard");
+  console.log("Revalidation triggered for /admin-dashboard");
 
   if (!response.ok) {
     return { message: data.message };
