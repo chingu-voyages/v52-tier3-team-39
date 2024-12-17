@@ -86,8 +86,14 @@ export default function Grid({ rows, refreshData }) {
       headerName: "Status",
       width: 190,
       renderCell: (params) => {
-        const { id } = params.row;
-        return <StatusChange id={id} refreshData={refreshData} />;
+        const { id, status } = params.row;
+        return (
+          <StatusChange
+            id={id}
+            refreshData={refreshData}
+            currentStatus={status}
+          />
+        );
       },
     },
     {

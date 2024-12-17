@@ -115,10 +115,10 @@ export async function updateStatusOnServer(id, newStatus) {
 
   const data = await response.json();
 
-  revalidatePath("/admin-dashboard");
-  console.log("Revalidation triggered for /admin-dashboard");
-
   if (!response.ok) {
     return { message: data.message };
   }
+
+  revalidatePath("/admin-dashboard");
+  console.log("Revalidation triggered for /admin-dashboard");
 }

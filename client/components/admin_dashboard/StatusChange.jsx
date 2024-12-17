@@ -3,8 +3,10 @@ import React from "react";
 import { Box, InputLabel, MenuItem, FormControl, Select } from "@mui/material";
 import { updateStatusOnServer } from "@/actions/form";
 
-export default function StatusChange({ id, refreshData }) {
-  const [status, setStatus] = React.useState("Requested");
+export default function StatusChange({ id, refreshData, currentStatus }) {
+  const [status, setStatus] = React.useState(currentStatus);
+
+  console.log("StatusChange component rendered for id:", id);
 
   const handleChange = async (e, id) => {
     const newStatus = e.target.value;
