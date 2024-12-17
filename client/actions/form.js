@@ -103,12 +103,13 @@ export async function updateVisitedOnServer(id) {
 
 export async function updateStatusOnServer(id, newStatus) {
   console.log("updateStatus: newStatus", newStatus);
+  console.log("id", id);
   const response = await fetch(serverUrl + `appointments/${id}/status-change`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ id, newStatus }),
+    body: JSON.stringify({ newStatus }),
   });
 
   const data = await response.json();

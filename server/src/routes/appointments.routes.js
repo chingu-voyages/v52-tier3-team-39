@@ -6,8 +6,8 @@ import {
   newAppointment,
   updateVisited,
   cancelAppointment,
-  updateStatus,
 } from "../controllers/appointments.controller.js";
+import { updateStatus } from "../scheduling/scheduler.js";
 
 const router = Router();
 

@@ -120,7 +120,10 @@ export async function getAllAppointments(req, res, next) {
   try {
     const appointments = await Appointment.find();
     const withScheduling = appendSchedule(
-      appointments.map((a) => a.toObject())
+      appointments.map((a) => ({
+        ...a.toObject(),
+        id: a.id,
+      }))
     );
     res.status(200).json(withScheduling);
   } catch (error) {
@@ -205,26 +208,5 @@ export async function updateVisited(req, res) {
     return res.status(200).json(visited);
   } catch (error) {
     return res.status(500).json({ message: "Server error: updating status" });
-  }
-}
-
-export async function updateStatus(req, res) {
-  const { id, newStatus } = req.params;
-
-  try {
-    const data = await Appointment.findByIdAndUpdate(
-      id,
-      { status: newStatus },
-      { new: true }
-    );
-
-    if (!data) {
-      return res.status(404).json({ message: "Could not get data" });
-    }
-
-    console.log(data.status);
-    return res.status(200).json(data.status);
-  } catch (error) {
-    return res.status(500).json({ message: "Server error: saving new status" });
   }
 }
