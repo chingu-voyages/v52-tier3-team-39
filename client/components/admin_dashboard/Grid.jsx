@@ -10,7 +10,7 @@ import { Paper, Box, Tooltip } from "@mui/material";
 import Button from "@mui/material/Button";
 import SearchBar from "./SearchBar";
 import StatusChange from "./StatusChange";
-import { fetchAppointments, updateVisitedOnServer } from "@/actions/form";
+import { updateStatusOnServer } from "@/actions/form";
 
 const formatName = (name) => {
   const [firstName, ...rest] = name.split(" ");
@@ -54,7 +54,6 @@ const Toolbar = () => (
 
 export default function Grid({ rows, refreshData }) {
   const [searchText, setSearchText] = useState("");
-  const [customRows, setCustomRows] = useState(rows);
 
   const columns = [
     {
@@ -72,11 +71,11 @@ export default function Grid({ rows, refreshData }) {
 
         return (
           <Button
-            variant={status === "Completed" ? "contained" : "outlined"}
+            variant={status === "Visited" ? "contained" : "outlined"}
             color="primary"
-            onClick={() => toggleVisited(id)}
+            onClick={() => toggleVisited(id, status === "Visited" ? "Scheduled" : "Visited")}
           >
-            {status === "Completed" ? "Visited" : "Not Visited"}
+            {status === "Visited" ? "Visited" : "Not Visited"}
           </Button>
         );
       },
@@ -128,31 +127,15 @@ export default function Grid({ rows, refreshData }) {
     },
   ];
 
-  const toggleVisited = async (id) => {
-    setCustomRows((customRows) =>
-      customRows.map((row) =>
-        row.id === id
-          ? {
-              ...row,
-              status:
-                row.status === "Scheduled"
-                  ? "Completed"
-                  : row.status === "Visited" || row.status === "Completed"
-                  ? "Scheduled"
-                  : "Visited",
-            }
-          : row
-      )
-    );
-
-    await updateVisitedOnServer(id, { status: "Completed" });
+  const toggleVisited = async (id, status) => {
     // const updatedRows = await fetchAppointments();
     // setCustomRows(updatedRows);
+    await updateStatusOnServer(id, status);
     await refreshData();
   };
 
   const filteredRows = useMemo(() => {
-    if (!searchText) return customRows;
+    if (!searchText) return rows;
 
     const needToFormat = {
       dateCreated: (value) => formatDateCreated(new Date(value)),
@@ -161,7 +144,7 @@ export default function Grid({ rows, refreshData }) {
         row.markVisited ? "Visited" : "Need to Visit",
     };
 
-    return customRows.filter((row) =>
+    return rows.filter((row) =>
       columns.some((col) => {
         const value = row[col.field];
         const formattedValue = needToFormat[col.field]
@@ -173,7 +156,7 @@ export default function Grid({ rows, refreshData }) {
           .includes(searchText.toLowerCase());
       })
     );
-  }, [searchText, customRows]);
+  }, [searchText, rows]);
 
   const onSearchChange = (value) => {
     setSearchText(value);

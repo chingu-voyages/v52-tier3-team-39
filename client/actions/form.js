@@ -86,22 +86,6 @@ export async function cancelAppointment(email) {
   revalidatePath("/my-appointments");
 }
 
-export async function updateVisitedOnServer(id, { status }) {
-  const response = await fetch(serverUrl + `appointments/${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ status }),
-  });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    return { message: data.message };
-  }
-}
-
 export async function updateStatusOnServer(id, newStatus) {
   const response = await fetch(serverUrl + `appointments/${id}/status-change`, {
     method: "PATCH",
