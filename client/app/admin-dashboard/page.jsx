@@ -8,6 +8,8 @@ import { fetchAppointments } from "@/actions/form";
 async function Dashboard() {
   const initAppointments = await fetchAppointments();
 
+  console.log("dashboard", initAppointments);
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
       <Box sx={{ flex: 1, height: "50vh" }}>

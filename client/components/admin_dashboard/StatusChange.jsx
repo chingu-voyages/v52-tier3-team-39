@@ -10,7 +10,7 @@ export default function StatusChange({ id, refreshData, currentStatus }) {
     const newStatus = e.target.value;
     setStatus(newStatus);
     await updateStatusOnServer(id, newStatus);
-    refreshData();
+    await refreshData();
   };
   return (
     <Box sx={{ minWidth: 120 }}>

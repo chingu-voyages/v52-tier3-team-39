@@ -129,9 +129,26 @@ export default function Grid({ rows, refreshData }) {
   ];
 
   const toggleVisited = async (id) => {
+    setCustomRows((customRows) =>
+      customRows.map((row) =>
+        row.id === id
+          ? {
+              ...row,
+              status:
+                row.status === "Scheduled"
+                  ? "Completed"
+                  : row.status === "Visited" || row.status === "Completed"
+                  ? "Scheduled"
+                  : "Visited",
+            }
+          : row
+      )
+    );
+
     await updateVisitedOnServer(id, { status: "Completed" });
-    const updatedRows = await fetchAppointments();
-    setCustomRows(updatedRows);
+    // const updatedRows = await fetchAppointments();
+    // setCustomRows(updatedRows);
+    await refreshData();
   };
 
   const filteredRows = useMemo(() => {

@@ -10,8 +10,11 @@ export default function ReservationTable({ initAppointments }) {
 
   const refreshData = async () => {
     const updatedAppts = await fetchAppointments();
+
     setAppointments(updatedAppts);
   };
+
+  console.log("reso table - grid", appointments);
 
   return (
     <Box sx={{ height: "100%", width: "100%" }}>
