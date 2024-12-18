@@ -120,7 +120,10 @@ export async function getAllAppointments(req, res, next) {
   try {
     const appointments = await Appointment.find();
     const withScheduling = appendSchedule(
-      appointments.map((a) => a.toObject())
+      appointments.map((a) => ({
+        ...a.toObject(),
+        id: a.id,
+      }))
     );
     res.status(200).json(withScheduling);
   } catch (error) {
@@ -191,16 +194,24 @@ export async function cancelAppointment(req, res, next) {
 
 export async function updateVisited(req, res) {
   const { id } = req.params;
+  // const { status } = req.body;
 
   try {
     const data = await Appointment.findById(id);
-    console.log("data", data);
+    // console.log("data", data);
     if (!data) {
       return res.status(404).json({ message: "Could not grab data" });
     }
-    const newStatus = data.status === "Confirmed" ? "Visited" : "Confirmed";
+    const newStatus =
+      data.status === "Scheduled"
+        ? "Completed"
+        : data.status === "Visited" || data.status === "Completed"
+        ? "Scheduled"
+        : "Visited";
+
     data.status = newStatus;
     const visited = await data.save();
+
     console.log("server: visited", visited);
     return res.status(200).json(visited);
   } catch (error) {
