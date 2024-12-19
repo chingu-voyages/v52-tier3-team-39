@@ -71,11 +71,18 @@ export default function Grid({ rows, refreshData }) {
 
         return (
           <Button
-            variant={status === "Visited" ? "contained" : "outlined"}
+            variant={
+              status === ("Visited" || "Completed") ? "contained" : "outlined"
+            }
             color="primary"
-            onClick={() => toggleVisited(id, status === "Visited" ? "Scheduled" : "Visited")}
+            onClick={() =>
+              toggleVisited(
+                id,
+                status === ("Visited" || "Completed") ? "Scheduled" : "Visited"
+              )
+            }
           >
-            {status === "Visited" ? "Visited" : "Not Visited"}
+            {status === ("Visited" || "Completed") ? "Visited" : "Not Visited"}
           </Button>
         );
       },

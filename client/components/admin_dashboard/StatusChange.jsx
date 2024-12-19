@@ -24,7 +24,7 @@ export default function StatusChange({ id, refreshData, currentStatus }) {
           <MenuItem value={"Requested"}>Requested</MenuItem>
           <MenuItem value={"Confirmed"}>Confirmed</MenuItem>
           <MenuItem value={"Scheduled"}>Scheduled</MenuItem>
-          <MenuItem value={"Visited"}>Visited</MenuItem>
+          <MenuItem value={"Completed"}>Completed</MenuItem>
           <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
         </Select>
       </FormControl>
