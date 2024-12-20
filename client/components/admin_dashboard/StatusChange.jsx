@@ -6,7 +6,6 @@ import { updateStatusOnServer } from "@/actions/form";
 export default function StatusChange({ id, refreshData, currentStatus }) {
   const handleChange = async (e, id) => {
     const newStatus = e.target.value;
-    setStatus(newStatus);
     await updateStatusOnServer(id, newStatus);
     await refreshData();
   };

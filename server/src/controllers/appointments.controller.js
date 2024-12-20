@@ -191,30 +191,3 @@ export async function cancelAppointment(req, res, next) {
     return next({ message: "An internal server error occurred" });
   }
 }
-
-export async function updateVisited(req, res) {
-  const { id } = req.params;
-  // const { status } = req.body;
-
-  try {
-    const data = await Appointment.findById(id);
-    // console.log("data", data);
-    if (!data) {
-      return res.status(404).json({ message: "Could not grab data" });
-    }
-    const newStatus =
-      data.status === "Scheduled"
-        ? "Completed"
-        : data.status === "Visited" || data.status === "Completed"
-        ? "Scheduled"
-        : "Visited";
-
-    data.status = newStatus;
-    const visited = await data.save();
-
-    console.log("server: visited", visited);
-    return res.status(200).json(visited);
-  } catch (error) {
-    return res.status(500).json({ message: "Server error: updating status" });
-  }
-}
