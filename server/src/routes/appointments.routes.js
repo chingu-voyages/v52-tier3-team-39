@@ -4,9 +4,9 @@ import {
   getSingleAppointment,
   getUsersAppointments,
   newAppointment,
-  updateVisited,
   cancelAppointment,
 } from "../controllers/appointments.controller.js";
+import { updateStatus } from "../scheduling/scheduler.js";
 
 const router = Router();
 
@@ -25,7 +25,7 @@ router.get("/:email/all", getUsersAppointments);
 // PATCH "/appointments/cancel"
 router.patch("/cancel", cancelAppointment);
 
-// PATCH "/appointments/:id"
-router.patch("/:id", updateVisited);
+// PATCH "/appointments/:id/status-change"
+router.patch("/:id/status-change", updateStatus);
 
 export default router;
