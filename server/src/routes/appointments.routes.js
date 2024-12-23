@@ -16,14 +16,14 @@ router.post("/", newAppointment);
 // GET "/appointments"
 router.get("/", getAllAppointments);
 
-// GET "/appointments/:email"
-router.get("/:email", getSingleAppointment);
-
-// GET "/appointments/:email"/all
-router.get("/:email/all", getUsersAppointments);
+// GET "/appointments/user
+router.get("/user", getUsersAppointments);
 
 // PATCH "/appointments/cancel"
 router.patch("/cancel", cancelAppointment);
+
+// GET "/appointments/:email"
+router.get("/:email", getSingleAppointment);
 
 // PATCH "/appointments/:id"
 router.patch("/:id", updateVisited);

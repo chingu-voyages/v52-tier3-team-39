@@ -147,7 +147,7 @@ export async function getSingleAppointment(req, res, next) {
 }
 
 export async function getUsersAppointments(req, res, next) {
-  const { email } = req.params;
+  const { email } = req.user;
   try {
     const appointments = await Appointment.find({
       email,
@@ -165,7 +165,7 @@ export async function getUsersAppointments(req, res, next) {
 }
 
 export async function cancelAppointment(req, res, next) {
-  const { email } = req.body;
+  const { email } = req.user;
   try {
     const response = await Appointment.updateOne(
       {

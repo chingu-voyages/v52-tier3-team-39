@@ -22,7 +22,7 @@ const checkAuth = async (req, res, next) => {
   const data = await response.json();
   const email = data.email;
 
-  req.user = email;
+  req.user = { email };
 
   next();
 };
