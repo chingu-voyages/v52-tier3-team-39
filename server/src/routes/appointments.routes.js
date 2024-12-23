@@ -7,6 +7,7 @@ import {
   updateVisited,
   cancelAppointment,
 } from "../controllers/appointments.controller.js";
+import { checkAdmin } from "../middleware/auth.middleware.js";
 
 const router = Router();
 
@@ -14,7 +15,7 @@ const router = Router();
 router.post("/", newAppointment);
 
 // GET "/appointments"
-router.get("/", getAllAppointments);
+router.get("/", checkAdmin, getAllAppointments);
 
 // GET "/appointments/user
 router.get("/user", getUsersAppointments);

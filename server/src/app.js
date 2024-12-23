@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import connectDb from "./config/db.js";
 import { port, dbConnectStr } from "./config/env.js";
-import checkAuth from "./middleware/auth.middleware.js";
+import { checkAuth } from "./middleware/auth.middleware.js";
 import appointmentsRouter from "./routes/appointments.routes.js";
 import userRouter from "./routes/user.route.js";
 import addressRouter from "./routes/address.routes.js";
