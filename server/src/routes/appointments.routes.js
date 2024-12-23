@@ -19,11 +19,11 @@ router.get("/", getAllAppointments);
 // GET "/appointments/user
 router.get("/user", getUsersAppointments);
 
+// GET "/appointments/user/latest"
+router.get("/user/latest", getSingleAppointment);
+
 // PATCH "/appointments/cancel"
 router.patch("/cancel", cancelAppointment);
-
-// GET "/appointments/:email"
-router.get("/:email", getSingleAppointment);
 
 // PATCH "/appointments/:id"
 router.patch("/:id", updateVisited);

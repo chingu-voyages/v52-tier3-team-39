@@ -19,12 +19,13 @@ app.use(bodyParser.json());
 //! enable all CORS requests
 app.use(cors());
 
-// authorise all requests with google access token
+app.use("/addresses", addressRouter);
+
+// auth middleware applies to user and appt routes
 app.use(checkAuth);
 
 app.use("/user", userRouter);
 app.use("/appointments", appointmentsRouter);
-app.use("/addresses", addressRouter);
 
 app.use("/database-health", async (_, res) => {
   try {

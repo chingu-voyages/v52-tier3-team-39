@@ -53,9 +53,9 @@ export async function fetchAppointments(token) {
 }
 
 // GET SINGLE APPT
-export async function fetchSingleAppointment(email, token) {
+export async function fetchSingleAppointment(token) {
   try {
-    const response = await fetch(serverUrl + `appointments/${email}`, {
+    const response = await fetch(serverUrl + `appointments/user/latest`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

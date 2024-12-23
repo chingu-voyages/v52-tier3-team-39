@@ -131,7 +131,7 @@ export async function getAllAppointments(req, res, next) {
 }
 
 export async function getSingleAppointment(req, res, next) {
-  const { email } = req.params;
+  const { email } = req.user;
   try {
     const [appointment] = await Appointment.find({ email })
       .sort({ dateCreated: -1 }) // sort descending order
