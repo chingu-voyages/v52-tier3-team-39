@@ -52,7 +52,7 @@ const Toolbar = () => (
   </GridToolbarContainer>
 );
 
-export default function Grid({ rows }) {
+export default function Grid({ rows, token }) {
   const [searchText, setSearchText] = useState("");
   const [customRows, setCustomRows] = useState(rows);
 
@@ -121,7 +121,7 @@ export default function Grid({ rows }) {
 
   const toggleVisited = async (id) => {
     await updateVisitedOnServer(id);
-    const updatedRows = await fetchAppointments();
+    const updatedRows = await fetchAppointments(token);
     setCustomRows(updatedRows);
   };
 

@@ -3,8 +3,8 @@ import { fetchUsersAppointments } from "@/actions/form";
 import NoAppointment from "./NoAppointment";
 import AppointmentDetails from "./AppointmentDetails";
 
-export default async function MyAppointment({ email }) {
-  const fetchResponse = await fetchUsersAppointments(email);
+export default async function MyAppointment({ token }) {
+  const fetchResponse = await fetchUsersAppointments(token);
   if (!fetchResponse.length) {
     return <NoAppointment />;
   }

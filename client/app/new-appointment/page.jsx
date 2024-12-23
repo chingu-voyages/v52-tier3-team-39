@@ -26,7 +26,7 @@ export default async function FormView() {
             Request Service
           </Typography>
         </Stack>
-        <Form email={session.user.email} />
+        <Form email={session.user.email} token={session.accessToken} />
       </Stack>
     </Box>
   );

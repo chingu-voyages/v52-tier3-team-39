@@ -42,7 +42,7 @@ export default async function MyAppointmentView() {
         </Stack>
 
         <Suspense fallback={<Spinner />}>
-          <MyAppointment email={session.user.email} />
+          <MyAppointment token={session.accessToken} />
         </Suspense>
       </Stack>
     </Box>

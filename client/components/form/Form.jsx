@@ -42,7 +42,7 @@ const schema = Joi.object({
     .greater(Joi.ref("earlyTimeHour")),
 });
 
-export default function Form({ email }) {
+export default function Form({ email, token }) {
   const router = useRouter();
   // Form state
   const [name, setName] = useState("");
@@ -92,7 +92,7 @@ export default function Form({ email }) {
     try {
       setIsPending(true);
       // Handle server errors
-      const serverErr = await requestAppt(value);
+      const serverErr = await requestAppt(value, token);
       if (serverErr) {
         setToast(true);
         return setToastMsg(serverErr.message);
