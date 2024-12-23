@@ -28,11 +28,13 @@ export const authOptions = {
 
         const { role } = await response.json();
         token.role = role;
+        token.accessToken = account.access_token;
       }
       return token;
     },
     session({ session, token }) {
       session.user.role = token.role;
+      session.accessToken = token.accessToken;
       return session;
     },
     async redirect({ url, baseUrl }) {
