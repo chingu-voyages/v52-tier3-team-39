@@ -27,8 +27,9 @@ router.get("/user", getUsersAppointments);
 // GET "/appointments/user/latest"
 router.get("/user/latest", getSingleAppointment);
 
+// UPDATE APPOINTMENT STATUS (ADMIN ONLY)
 // PATCH "/appointments/:id/status-change"
-router.patch("/:id/status-change", updateStatus);
+router.patch("/:id/status-change", checkAdmin, updateStatus);
 
 // CANCEL A SINGLE APPOINTMENT
 // PATCH "/appointments/:id/cancel"

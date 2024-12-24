@@ -30,7 +30,9 @@ export async function fetchAppointments(token) {
       cache: "no-store",
     });
 
-    if (!response.ok) throw error;
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
 
     const data = await response.json();
 
@@ -102,7 +104,7 @@ export async function cancelAppointment(id, token) {
   revalidatePath("/my-appointments");
 }
 
-export async function updateStatusOnServer(id, newStatus) {
+export async function updateStatusOnServer(id, newStatus, token) {
   const response = await fetch(serverUrl + `appointments/${id}/status-change`, {
     method: "PATCH",
     headers: {

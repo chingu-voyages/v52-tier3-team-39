@@ -118,13 +118,6 @@ export async function newAppointment(req, res, next) {
 }
 
 export async function getAllAppointments(req, res, next) {
-  const { role } = req.user;
-
-  if (!role || role !== "admin") {
-    res.status(403);
-    return next({ message: "Access forbidden" });
-  }
-
   try {
     const appointments = await Appointment.find();
     const withScheduling = appendSchedule(

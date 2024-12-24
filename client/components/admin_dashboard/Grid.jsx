@@ -19,11 +19,11 @@ const Toolbar = () => (
   </GridToolbarContainer>
 );
 
-export default function Grid({ rows, refreshData }) {
+export default function Grid({ rows, refreshData, token }) {
   const [searchText, setSearchText] = useState("");
 
   const toggleVisited = async (id, status) => {
-    await updateStatusOnServer(id, status);
+    await updateStatusOnServer(id, status, token);
     await refreshData();
   };
 

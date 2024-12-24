@@ -42,9 +42,11 @@ export const checkAdmin = async (req, res, next) => {
 
   try {
     const user = await User.findOne({ email });
-    const role = user?.role ?? "user";
 
-    req.user = { email, role };
+    if (!user || user.role !== "admin") {
+      res.status(403);
+      return next({ message: "Access forbidden" });
+    }
 
     next();
   } catch (error) {
