@@ -17,7 +17,7 @@ const appointmentSchema = new mongoose.Schema({
   status: {
     type: String,
     enum: ["Requested", "Confirmed", "Scheduled", "Completed", "Cancelled"],
-    default: "Pending",
+    default: "Requested",
   },
   notifications: {
     apptRequestEmailUrl: String,
