@@ -12,7 +12,7 @@ export default async function MyAppointment({ token }) {
   return (
     <Box>
       {fetchResponse.map((appt) => (
-        <AppointmentDetails key={appt._id} formData={appt} />
+        <AppointmentDetails key={appt._id} formData={appt} token={token} />
       ))}
 
       <Typography

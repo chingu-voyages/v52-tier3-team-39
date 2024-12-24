@@ -174,9 +174,11 @@ export async function getUsersAppointments(req, res, next) {
 
 export async function cancelAppointment(req, res, next) {
   const { email } = req.user;
+  const { id: apptId } = req.params;
   try {
     const response = await Appointment.updateOne(
       {
+        _id: apptId,
         email,
         status: { $in: ["Pending", "Confirmed"] },
       },
@@ -184,8 +186,8 @@ export async function cancelAppointment(req, res, next) {
     );
 
     if (!response.modifiedCount) {
-      res.status(400);
-      return next({ message: "Invalid request" });
+      res.status(403);
+      return next({ message: "Invalid or unauthorized request" });
     }
 
     res.status(200);

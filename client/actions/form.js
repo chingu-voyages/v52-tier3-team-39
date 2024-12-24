@@ -84,14 +84,13 @@ export async function fetchUsersAppointments(token) {
 }
 
 // UPDATE SINGLE APPT STATUS
-export async function cancelAppointment(email, token) {
-  const response = await fetch(serverUrl + "appointments/cancel", {
+export async function cancelAppointment(id, token) {
+  const response = await fetch(serverUrl + `appointments/${id}/cancel`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ email }),
   });
 
   const data = await response.json();

@@ -8,9 +8,9 @@ function convertHourTo12HourTime(hour) {
   return `${formattedHour}:00 ${period}`;
 }
 
-export default function AppointmentDetails({ formData }) {
+export default function AppointmentDetails({ formData, token }) {
   const {
-    email,
+    _id: id,
     location: { address },
     status,
     notifications: { apptRequestEmailUrl, apptConfirmationEmailUrl },
@@ -84,7 +84,7 @@ export default function AppointmentDetails({ formData }) {
           </Stack>
         </List>
       </CardContent>
-      {showCancelBtn && <CancelAppointment email={email} />}
+      {showCancelBtn && <CancelAppointment id={id} token={token} />}
     </Card>
   );
 }
