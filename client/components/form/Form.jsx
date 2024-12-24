@@ -64,7 +64,7 @@ export default function Form({ email }) {
   const [isPending, setIsPending] = useState(false);
 
   function handleCancel() {
-    router.push("/new-appointment/cancel");
+    router.push("/");
   }
 
   async function handleSubmit(e) {
@@ -119,21 +119,30 @@ export default function Form({ email }) {
         toastMsg={toastMsg}
         setToastMsg={setToastMsg}
       />
-      <Stack
-        gap={2}
-        sx={{ width: { xs: 1, md: 1 / 2 }, marginX: "auto", marginY: 8 }}
-      >
+      <Stack gap={4} sx={{ width: { xs: 1 }, marginX: "auto", marginY: 8 }}>
         <Box>
-          <Typography color="textSecondary">Email: {email}</Typography>
+          <Typography
+            sx={{ color: "var(--foreground)", fontSize: { xs: 16, lg: 20 } }}
+          >
+            Email: {email}
+          </Typography>
         </Box>
-        <form onSubmit={handleSubmit}>
+        <Box component="form" onSubmit={handleSubmit}>
           <Stack direction="column" gap={4}>
             <FormControl>
-              <InputLabel htmlFor="name">Name</InputLabel>
+              <InputLabel htmlFor="name" sx={{ color: "var(--foreground)" }}>
+                Name
+              </InputLabel>
               <Input
                 id="name"
                 aria-describedby="name-error-text"
                 value={name}
+                sx={{
+                  "&:before": {
+                    borderColor: "var(--accent)",
+                  },
+                  color: "var(--foreground)",
+                }}
                 disabled={isPending}
                 onChange={(event) => {
                   setName(event.currentTarget.value);
@@ -147,11 +156,19 @@ export default function Form({ email }) {
             </FormControl>
 
             <FormControl>
-              <InputLabel htmlFor="phone">Phone Number</InputLabel>
+              <InputLabel htmlFor="phone" sx={{ color: "var(--foreground)" }}>
+                Phone Number
+              </InputLabel>
               <Input
                 id="phone"
                 aria-describedby="phone-error-text"
                 value={phone}
+                sx={{
+                  "&:before": {
+                    borderColor: "var(--accent)", // Custom styles for before
+                  },
+                  color: "var(--foreground)",
+                }}
                 disabled={isPending}
                 onChange={(event) => {
                   setPhone(event.currentTarget.value);
@@ -204,7 +221,7 @@ export default function Form({ email }) {
               </Button>
             </Stack>
           </Stack>
-        </form>
+        </Box>
       </Stack>
     </>
   );

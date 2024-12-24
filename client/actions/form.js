@@ -31,7 +31,6 @@ export async function fetchAppointments() {
 
     const data = await response.json();
 
-    console.log("data", data);
     return data.map((item, index) => ({
       id: item.id || index + 1,
       name: item.name,
@@ -91,4 +90,22 @@ export async function cancelAppointment(email) {
   }
 
   revalidatePath("/my-appointments");
+}
+
+export async function updateStatusOnServer(id, newStatus) {
+  const response = await fetch(serverUrl + `appointments/${id}/status-change`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ newStatus }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    return { message: data.message };
+  }
+
+  revalidatePath("/admin-dashboard");
 }

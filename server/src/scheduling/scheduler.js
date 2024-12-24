@@ -1,4 +1,4 @@
-import { graphHopperApiKey } from "../config/env.js";
+import Appointment from "../models/appointments.model.js";
 
 /**
  * Returns a new copy of the array, appending scheduling info to each appointment.
@@ -101,14 +101,35 @@ const getOptimalRoute = async (appointments) => {
     }),
   });
 
-  const data = await resp.json();
-
-  if (!resp.ok) {
-    console.log("data", data);
-    throw new Error("Couldn't connect to graph hopper");
-  } else {
-    return data.solution.routes[0].activities.map((activity) => activity.id);
-  }
+  return appointments.map((appointment, index) => ({
+    ...appointment,
+    schedule: {
+      order: orderMap.get(index),
+    },
+  }));
 };
+
+export async function updateStatus(req, res) {
+  const { id } = req.params;
+  const { newStatus } = req.body;
+
+  try {
+    const data = await Appointment.findByIdAndUpdate(
+      { _id: id },
+      { status: newStatus },
+      { new: true }
+    );
+
+    if (!data) {
+      return res.status(404).json({ message: "Could not get data" });
+    }
+
+    console.log("data.status", data.status);
+    return res.status(200).json(data.status);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Server error: saving new status" });
+  }
+}
 
 export { appendSchedule };

@@ -9,6 +9,7 @@ module.exports = {
     extend: {
       colors: {
         background: "var(--background)",
+        backgroundAccent: "var(--background-accent)",
         foreground: "var(--foreground)",
         branding: "var(--branding)",
         brandingDark: "var(--branding-dark)",
@@ -17,8 +18,11 @@ module.exports = {
         darkAccent: "var(--dark-accent)",
         lightAccent: "var(--light-accent)",
         primary: "var(--primary)",
+        border: "var(--border)",
+        footer: "var(--footer)",
       },
     },
   },
+  darkMode: "selector",
   plugins: [],
 };

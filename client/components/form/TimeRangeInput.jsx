@@ -30,12 +30,20 @@ export default function TimeRangeInput({
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Box className="border rounded-lg p-4 mt-4">
+      <Box
+        sx={{
+          borderWidth: 1,
+          borderRadius: 2,
+          borderColor: "var(--border)",
+          padding: 2,
+          marginTop: 2,
+        }}
+      >
         <Typography variant="subtitle2">
           Preferred Appointment Time Range
         </Typography>
-        <Stack gap={2} className="mt-4">
-          <Stack direction="column" className="w-full">
+        <Stack gap={2} sx={{ marginTop: 2 }}>
+          <Stack direction="column" sx={{ width: 1 }}>
             <TimePicker
               label="Earliest"
               minTime={nineAM}
@@ -57,6 +65,27 @@ export default function TimeRangeInput({
                 setEarlyTime(newValue);
               }}
               disabled={isPending}
+              slotProps={{
+                textField: {
+                  sx: {
+                    "& .MuiOutlinedInput-root": {
+                      "&:hover .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "inherit", // Disable hover styles
+                      },
+                      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "#1976d2 !important", // Force focus color
+                      },
+                    },
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "var(--accent)", // Default border color
+                    },
+                    label: { color: "var(--foreground)" }, // Label color
+                    input: { color: "var(--foreground)" }, // Input text color
+                    button: { display: "none" }, // Hides the clear button
+                  },
+                },
+              }}
+              desktopModeMediaQuery="@media (min-width: 0px)"
             />
             <FormHelperText>Select a time between 9am and 4pm</FormHelperText>
             {earlyTimeErr && (
@@ -67,7 +96,7 @@ export default function TimeRangeInput({
               </FormHelperText>
             )}
           </Stack>
-          <Stack direction="column" className="w-full">
+          <Stack direction="column" sx={{ width: 1 }}>
             <TimePicker
               label="Latest"
               minTime={tenAM}
@@ -89,6 +118,27 @@ export default function TimeRangeInput({
                 setLateTime(newValue);
               }}
               disabled={isPending}
+              slotProps={{
+                textField: {
+                  sx: {
+                    "& .MuiOutlinedInput-root": {
+                      "&:hover .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "inherit", // Disable hover styles
+                      },
+                      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "#1976d2 !important", // Force focus color
+                      },
+                    },
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "var(--accent)", // Default border color
+                    },
+                    label: { color: "var(--foreground)" }, // Label color
+                    input: { color: "var(--foreground)" }, // Input text color
+                    button: { display: "none" }, // Hides the clear button
+                  },
+                },
+              }}
+              desktopModeMediaQuery="@media (min-width: 0px)"
             />
             <FormHelperText>Select a time between 10am and 5pm</FormHelperText>
             {lateTimeErr && (

@@ -23,7 +23,14 @@ export default function AppointmentDetails({ formData }) {
   const showCancelBtn = status === "Pending" || status === "Confirmed";
 
   return (
-    <Card sx={{ mt: 4, padding: 2 }}>
+    <Card
+      sx={{
+        mt: 4,
+        padding: 2,
+        backgroundColor: "var(--background-accent)",
+        color: "var(--foreground)",
+      }}
+    >
       <CardContent>
         <List sx={{ marginY: 0 }}>
           <Stack gap={3}>

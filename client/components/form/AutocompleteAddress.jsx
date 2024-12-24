@@ -56,12 +56,25 @@ export default function Autocomplete({ setAddress, errorMsg, isPending }) {
 
   return (
     <FormControl>
-      <InputLabel htmlFor="address">Address</InputLabel>
+      <InputLabel
+        htmlFor="address"
+        sx={{
+          color: "var(--foreground)",
+        }}
+      >
+        Address
+      </InputLabel>
       <Input
         id="autoComplete"
         aria-describedby="address-autocomplete"
         disabled={isPending}
         fullWidth
+        sx={{
+          "&:before": {
+            borderColor: "var(--accent)", // Custom styles for before
+          },
+          color: "var(--foreground)",
+        }}
       />
       {errorMsg && (
         <FormHelperText id="name-error-text" error>

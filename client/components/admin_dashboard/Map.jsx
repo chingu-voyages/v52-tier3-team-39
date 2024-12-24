@@ -3,8 +3,8 @@ import { GoogleMap, LoadScript } from "@react-google-maps/api";
 import { googleApiKey, appointmentsMapId } from "@/constants";
 import React, { useRef } from "react";
 
-export default function Map({ appointments }) {
-  if (!appointments.length) {
+export default function Map({ initAppointments }) {
+  if (!initAppointments.length) {
     return <p>No map data available</p>;
   }
 
@@ -15,7 +15,7 @@ export default function Map({ appointments }) {
     height: "400px",
   };
 
-  const startCoords = appointments.map((item) => ({
+  const startCoords = initAppointments.map((item) => ({
     location: item.location,
     visitOrder: item.schedule.order,
     customerName: item.name,
@@ -40,7 +40,6 @@ export default function Map({ appointments }) {
       });
     });
   };
-  // console.log(appointments[0]);
 
   return (
     <LoadScript

@@ -24,7 +24,7 @@ export async function newAppointment(req, res, next) {
     // return error if doc with matching address and "Pending" or "Confirmed" status exists
     const checkAddress = await Appointment.findOne({
       "location.address": address,
-      status: { $in: ["Pending", "Confirmed"] },
+      status: { $in: ["Pending", "Requested"] },
     });
 
     if (checkAddress) {
@@ -119,7 +119,7 @@ export async function newAppointment(req, res, next) {
 export async function getAllAppointments(req, res, next) {
   try {
     const appointments = await Appointment.find();
-    const withScheduling = await appendSchedule(
+    const withScheduling = appendSchedule(
       appointments.map((a) => ({
         ...a.toObject(),
         id: a.id,

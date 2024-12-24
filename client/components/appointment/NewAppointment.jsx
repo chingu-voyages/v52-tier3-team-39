@@ -7,7 +7,7 @@ export default function NewAppointment() {
     redirect("/new-appointment");
   }
   return (
-    <Button onClick={handleClick} sx={{ width: "fit-content" }}>
+    <Button onClick={handleClick} sx={{ width: "fit-content", marginY: 2 }}>
       + New Appointment
     </Button>
   );
