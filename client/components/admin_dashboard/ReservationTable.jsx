@@ -1,10 +1,24 @@
+"use client";
+
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "./Grid";
+import { fetchAppointments } from "@/actions/form";
 
-export default function ReservationTable({ appointments, token }) {
+export default function ReservationTable({ initAppointments }) {
+  const [appointments, setAppointments] = useState(initAppointments);
+
+  const refreshData = async () => {
+    const updatedAppts = await fetchAppointments();
+
+    setAppointments(updatedAppts);
+  };
+
+  console.log("reso table - grid", appointments);
+
   return (
     <Box sx={{ height: "100%", width: "100%" }}>
-      <Grid rows={appointments} token={token} />
+      <Grid rows={appointments} refreshData={refreshData} />
     </Box>
   );
 }

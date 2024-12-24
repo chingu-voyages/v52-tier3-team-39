@@ -7,15 +7,18 @@ import Map from "../../components/admin_dashboard/Map";
 import Spinner from "@/components/Spinner";
 import { fetchAppointments } from "@/actions/form";
 
-async function Dashboard({ token }) {
-  const appointments = await fetchAppointments(token);
+async function Dashboard() {
+  const initAppointments = await fetchAppointments(token);
+
+  console.log("dashboard", initAppointments);
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
       <Box sx={{ flex: 1, height: "50vh" }}>
-        <ReservationTable appointments={appointments} token={token} />
+        <ReservationTable initAppointments={initAppointments} />
       </Box>
       <Box sx={{ flex: 1, height: "50vh" }}>
-        <Map appointments={appointments} />
+        <Map initAppointments={initAppointments} />
       </Box>
     </Box>
   );

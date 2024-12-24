@@ -4,10 +4,10 @@ import {
   getSingleAppointment,
   getUsersAppointments,
   newAppointment,
-  updateVisited,
   cancelAppointment,
 } from "../controllers/appointments.controller.js";
 import { checkAdmin } from "../middleware/auth.middleware.js";
+import { updateStatus } from "../scheduling/scheduler.js";
 
 const router = Router();
 
@@ -27,8 +27,8 @@ router.get("/user", getUsersAppointments);
 // GET "/appointments/user/latest"
 router.get("/user/latest", getSingleAppointment);
 
-// PATCH "/appointments/:id"
-router.patch("/:id", updateVisited);
+// PATCH "/appointments/:id/status-change"
+router.patch("/:id/status-change", updateStatus);
 
 // CANCEL A SINGLE APPOINTMENT
 // PATCH "/appointments/:id/cancel"

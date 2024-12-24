@@ -102,13 +102,14 @@ export async function cancelAppointment(id, token) {
   revalidatePath("/my-appointments");
 }
 
-export async function updateVisitedOnServer(id, token) {
-  const response = await fetch(serverUrl + `appointments/${id}`, {
+export async function updateStatusOnServer(id, newStatus) {
+  const response = await fetch(serverUrl + `appointments/${id}/status-change`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
+    body: JSON.stringify({ newStatus }),
   });
 
   const data = await response.json();
@@ -116,20 +117,6 @@ export async function updateVisitedOnServer(id, token) {
   if (!response.ok) {
     return { message: data.message };
   }
+
+  revalidatePath("/admin-dashboard");
 }
-
-// export async function updateStatusOnServer(address, status) {
-//   const response = await fetch(serverUrl + "appointments/status-change", {
-//     method: "PATCH",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({ address, status }),
-//   });
-
-//   const data = await response.json();
-
-//   if (!response.ok) {
-//     return { message: data.message };
-//   }
-// }
