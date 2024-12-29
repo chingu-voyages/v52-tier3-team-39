@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import { jwtKey } from "../config/env.js";
-import User from "../models/user.model.js";
 
 export const checkGoogleAuth = async (req, res, next) => {
   const bearer = req.headers.authorization;
@@ -49,17 +48,27 @@ export const checkJwt = async (req, res, next) => {
 
   const token = bearer.replace("Bearer ", "");
 
-  const payload = jwt.verify(token, jwtKey, (err, decode) => {
-    if (err) {
+  try {
+    const payload = jwt.verify(token, jwtKey);
+
+    req.user = { email: payload.email, role: payload.role };
+
+    next();
+  } catch (error) {
+    console.error(error);
+
+    if (error.name === "TokenExpiredError") {
       res.status(403);
-      return next({ message: "Access forbidden" });
+      return next({
+        message: "Session expired. Please sign in again.",
+      });
     }
-    return decode;
-  });
 
-  req.user = { email: payload.email, role: payload.role };
-
-  next();
+    res.status(500);
+    return next({
+      message: "Access forbidden",
+    });
+  }
 };
 
 export const checkAdmin = async (req, res, next) => {

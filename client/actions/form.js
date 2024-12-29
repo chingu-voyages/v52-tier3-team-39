@@ -30,11 +30,17 @@ export async function fetchAppointments(token) {
       cache: "no-store",
     });
 
+    const data = await response.json();
+
+    // return expected server error message
+    if (data.message) {
+      return { message: data.message };
+    }
+
+    // throw unexpected error
     if (!response.ok) {
       throw new Error(response.statusText);
     }
-
-    const data = await response.json();
 
     return data.map((item, index) => ({
       id: item.id || index + 1,

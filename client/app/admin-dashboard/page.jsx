@@ -6,9 +6,15 @@ import ReservationTable from "../../components/admin_dashboard/ReservationTable"
 import Map from "../../components/admin_dashboard/Map";
 import Spinner from "@/components/Spinner";
 import { fetchAppointments } from "@/actions/form";
+import UnauthorizedError from "@/components/errors/UnauthorizedError";
 
 async function Dashboard({ token }) {
   const initAppointments = await fetchAppointments(token);
+
+  // error message returned from server
+  if (initAppointments.message) {
+    return <UnauthorizedError msg={initAppointments.message} />;
+  }
 
   console.log("dashboard", initAppointments);
 
