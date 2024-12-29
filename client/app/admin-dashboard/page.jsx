@@ -29,7 +29,7 @@ export default async function AdminDashboardView() {
     <div>
       <Typography variant="h1">Reservations:</Typography>
       <Suspense fallback={<Spinner />}>
-        <Dashboard token={session.accessToken} />
+        <Dashboard token={session.jwt} />
       </Suspense>
     </div>
   );

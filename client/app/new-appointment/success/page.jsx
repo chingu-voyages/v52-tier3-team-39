@@ -13,7 +13,7 @@ export default async function SuccessView() {
     return <p>You must be signed in to make an appointment</p>;
   }
 
-  const response = await fetchSingleAppointment(session.accessToken);
+  const response = await fetchSingleAppointment(session.jwt);
 
   return (
     <Stack

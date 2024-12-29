@@ -1,6 +1,8 @@
+import jwt from "jsonwebtoken";
+import { jwtKey } from "../config/env.js";
 import User from "../models/user.model.js";
 
-export const checkAuth = async (req, res, next) => {
+export const checkGoogleAuth = async (req, res, next) => {
   const bearer = req.headers.authorization;
 
   if (!bearer || bearer.split(" ")[0] !== "Bearer") {
@@ -37,23 +39,36 @@ export const checkAuth = async (req, res, next) => {
   }
 };
 
-export const checkAdmin = async (req, res, next) => {
-  const { email } = req.user;
+export const checkJwt = async (req, res, next) => {
+  const bearer = req.headers.authorization;
 
-  try {
-    const user = await User.findOne({ email });
+  if (!bearer || bearer.split(" ")[0] !== "Bearer") {
+    res.status(403);
+    return next({ message: "Access forbidden" });
+  }
 
-    if (!user || user.role !== "admin") {
+  const token = bearer.replace("Bearer ", "");
+
+  const payload = jwt.verify(token, jwtKey, (err, decode) => {
+    if (err) {
       res.status(403);
       return next({ message: "Access forbidden" });
     }
+    return decode;
+  });
 
-    next();
-  } catch (error) {
-    console.error(error);
-    res.status(500);
-    return next({
-      message: "An internal server error occurred",
-    });
+  req.user = { email: payload.email, role: payload.role };
+
+  next();
+};
+
+export const checkAdmin = async (req, res, next) => {
+  const { role } = req.user;
+
+  if (!role || role !== "admin") {
+    res.status(403);
+    return next({ message: "Access forbidden" });
   }
+
+  next();
 };

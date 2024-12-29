@@ -1,3 +1,5 @@
+import jwt from "jsonwebtoken";
+import { jwtKey } from "../config/env.js";
 import User from "../models/user.model.js";
 
 export async function checkRole(req, res) {
@@ -7,5 +9,10 @@ export async function checkRole(req, res) {
 
   // return "admin" or default "user" role
   const role = user?.role ?? "user";
-  res.json({ role });
+
+  // create jwt
+  const payload = { email, role };
+  const token = jwt.sign(payload, jwtKey, { expiresIn: "30d" });
+
+  res.json({ role, token });
 }

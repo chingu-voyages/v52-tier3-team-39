@@ -26,14 +26,16 @@ export const authOptions = {
           throw new Error("Failed to fetch user data");
         }
 
-        const { role } = await response.json();
+        const { role, token: jwt } = await response.json();
         token.role = role;
+        token.jwt = jwt;
         token.accessToken = account.access_token;
       }
       return token;
     },
     session({ session, token }) {
       session.user.role = token.role;
+      session.jwt = token.jwt;
       session.accessToken = token.accessToken;
       return session;
     },
