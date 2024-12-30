@@ -4,10 +4,13 @@ import { revalidatePath } from "next/cache";
 import { serverUrl } from "@/constants";
 
 // CREATE NEW APPT
-export async function requestAppt(formValues) {
+export async function requestAppt(formValues, token) {
   const response = await fetch(serverUrl + "appointments", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
     body: JSON.stringify(formValues),
   });
   const data = await response.json();
@@ -18,15 +21,26 @@ export async function requestAppt(formValues) {
 }
 
 // GET ALL APPTS
-export async function fetchAppointments() {
+export async function fetchAppointments(token) {
   try {
     const response = await fetch(serverUrl + "appointments", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       cache: "no-store",
     });
 
-    if (!response.ok) throw error;
-
     const data = await response.json();
+
+    // return expected server error message
+    if (data.message) {
+      return { message: data.message };
+    }
+
+    // throw unexpected error
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
 
     return data.map((item, index) => ({
       id: item.id || index + 1,
@@ -47,9 +61,13 @@ export async function fetchAppointments() {
 }
 
 // GET SINGLE APPT
-export async function fetchSingleAppointment(email) {
+export async function fetchSingleAppointment(token) {
   try {
-    const response = await fetch(serverUrl + `appointments/${email}`);
+    const response = await fetch(serverUrl + `appointments/user/latest`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     const data = await response.json();
     return data;
   } catch (error) {
@@ -58,9 +76,13 @@ export async function fetchSingleAppointment(email) {
   }
 }
 
-export async function fetchUsersAppointments(email) {
+export async function fetchUsersAppointments(token) {
   try {
-    const response = await fetch(serverUrl + `appointments/${email}/all`);
+    const response = await fetch(serverUrl + `appointments/user`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     const data = await response.json();
     return data;
   } catch (error) {
@@ -70,11 +92,13 @@ export async function fetchUsersAppointments(email) {
 }
 
 // UPDATE SINGLE APPT STATUS
-export async function cancelAppointment(email) {
-  const response = await fetch(serverUrl + "appointments/cancel", {
+export async function cancelAppointment(id, token) {
+  const response = await fetch(serverUrl + `appointments/${id}/cancel`, {
     method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email }),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
   });
 
   const data = await response.json();
@@ -86,11 +110,12 @@ export async function cancelAppointment(email) {
   revalidatePath("/my-appointments");
 }
 
-export async function updateStatusOnServer(id, newStatus) {
+export async function updateStatusOnServer(id, newStatus, token) {
   const response = await fetch(serverUrl + `appointments/${id}/status-change`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ newStatus }),
   });

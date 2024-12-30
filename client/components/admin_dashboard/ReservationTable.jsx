@@ -5,11 +5,11 @@ import Box from "@mui/material/Box";
 import Grid from "./Grid";
 import { fetchAppointments } from "@/actions/form";
 
-export default function ReservationTable({ initAppointments }) {
+export default function ReservationTable({ initAppointments, token }) {
   const [appointments, setAppointments] = useState(initAppointments);
 
   const refreshData = async () => {
-    const updatedAppts = await fetchAppointments();
+    const updatedAppts = await fetchAppointments(token);
 
     setAppointments(updatedAppts);
   };
@@ -18,7 +18,7 @@ export default function ReservationTable({ initAppointments }) {
 
   return (
     <Box sx={{ height: "100%", width: "100%" }}>
-      <Grid rows={appointments} refreshData={refreshData} />
+      <Grid rows={appointments} refreshData={refreshData} token={token} />
     </Box>
   );
 }

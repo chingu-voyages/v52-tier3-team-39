@@ -4,7 +4,7 @@ import { Box, Button, Modal, Stack, Typography } from "@mui/material";
 import { cancelAppointment } from "@/actions/form";
 import ErrorToast from "../errors/ErrorToast";
 
-export default function CancelAppointment({ email }) {
+export default function CancelAppointment({ id, token }) {
   // state
   const [modal, setModal] = useState(false);
   const [toast, setToast] = useState(false);
@@ -14,7 +14,7 @@ export default function CancelAppointment({ email }) {
   const handleConfirm = async () => {
     try {
       // response is undefined unless server-side error msg is returned
-      const res = await cancelAppointment(email);
+      const res = await cancelAppointment(id, token);
       if (res) {
         setToast(true);
         setToastMsg(res.message);

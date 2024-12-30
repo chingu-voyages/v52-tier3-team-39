@@ -2,9 +2,17 @@ import { Box, Typography } from "@mui/material";
 import { fetchUsersAppointments } from "@/actions/form";
 import NoAppointment from "./NoAppointment";
 import AppointmentDetails from "./AppointmentDetails";
+import UnauthorizedError from "../errors/UnauthorizedError";
 
-export default async function MyAppointment({ email }) {
-  const fetchResponse = await fetchUsersAppointments(email);
+export default async function MyAppointment({ token }) {
+  const fetchResponse = await fetchUsersAppointments(token);
+
+  // error message returned from server
+  if (fetchResponse.message) {
+    return <UnauthorizedError msg={fetchResponse.message} />;
+  }
+
+  // the user has no appointments
   if (!fetchResponse.length) {
     return <NoAppointment />;
   }
@@ -12,7 +20,7 @@ export default async function MyAppointment({ email }) {
   return (
     <Box>
       {fetchResponse.map((appt) => (
-        <AppointmentDetails key={appt._id} formData={appt} />
+        <AppointmentDetails key={appt._id} formData={appt} token={token} />
       ))}
 
       <Typography

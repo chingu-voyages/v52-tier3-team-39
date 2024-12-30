@@ -5,6 +5,7 @@ import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth";
 import { fetchSingleAppointment } from "@/actions/form";
+import UnauthorizedError from "@/components/errors/UnauthorizedError";
 
 export default async function SuccessView() {
   const session = await getServerSession(authOptions);
@@ -13,7 +14,12 @@ export default async function SuccessView() {
     return <p>You must be signed in to make an appointment</p>;
   }
 
-  const response = await fetchSingleAppointment(session.user.email);
+  const response = await fetchSingleAppointment(session.jwt);
+
+  // error message returned from server
+  if (response.message) {
+    return <UnauthorizedError msg={response.message} />;
+  }
 
   return (
     <Stack
