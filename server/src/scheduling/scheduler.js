@@ -1,4 +1,5 @@
 import Appointment from "../models/appointments.model.js";
+import { graphHopperApiKey } from "../config/env.js";
 
 /**
  * Returns a new copy of the array, appending scheduling info to each appointment.
@@ -6,6 +7,7 @@ import Appointment from "../models/appointments.model.js";
 
 const appendSchedule = async (appointments) => {
   const optimalRoute = await getOptimalRoute(appointments);
+  console.log("optimal", optimalRoute);
   const orderedIds = optimalRoute.filter((id) =>
     appointments.some((appt) => appt.id === id)
   );
@@ -30,11 +32,11 @@ const appendSchedule = async (appointments) => {
         earlyTime.getTime() + (order - 1) * interval
       );
 
-      if (scheduledTime > preferredLateTime) {
-        console.warn(
-          `Appointment ${appointment.id} exceeds preferred late time but will be logged.`
-        );
-      }
+      // if (scheduledTime > preferredLateTime) {
+      //   console.warn(
+      //     `Appointment ${appointment.id} exceeds preferred late time but will be logged.`
+      //   );
+      // }
 
       return {
         ...appointment,
@@ -101,12 +103,16 @@ const getOptimalRoute = async (appointments) => {
     }),
   });
 
-  return appointments.map((appointment, index) => ({
-    ...appointment,
-    schedule: {
-      order: orderMap.get(index),
-    },
-  }));
+  const data = await resp.json();
+
+  if (!resp.ok) {
+    console.log("data", data);
+    throw new Error("Couldn't connect to graph hopper");
+  } else {
+    return data.solution.routes[0].activities
+      .filter((activity) => activity.id)
+      .map((activity) => activity.id);
+  }
 };
 
 export async function updateStatus(req, res) {
