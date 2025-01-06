@@ -12,8 +12,27 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  // apply dark mode preference while hydrating in SSR (avoids FOUC)
+  // use try block to prevent crash if local storage can't be accessed
+  const themeScript = `
+        (function() {
+          try {
+            const storedTheme = localStorage.getItem('theme');
+            const darkModePreferred = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (storedTheme === 'dark' || (!storedTheme && darkModePreferred)) {
+              document.documentElement.classList.add('dark');
+            } else {
+              document.documentElement.classList.remove('dark');
+            }
+          } catch (e) {}
+        })();
+      `;
   return (
-    <html lang="en">
+    // use suppressHydrationWarning because dark mode class is controlled by inline script
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>
         <AppRouterCacheProvider>
           <StyledRoot>
