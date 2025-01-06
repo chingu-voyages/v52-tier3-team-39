@@ -47,4 +47,4 @@ jobs:
 
                       echo "Starting node server"
                       cd ${{ env.WEB_ROOT}}
-                      PORT=4000 DATABASE_CONNECTION_STRING='${{ secrets.DATABASE_CONNECTION_STRING }}' MOCK_EMAIL_USER='${{secrets.MOCK_EMAIL_USER}}' MOCK_EMAIL_PASS='${{secrets.MOCK_EMAIL_PASS}}' MY_TEST_DB=test pm2 start src/app.js
+                      PORT=4000 DATABASE_CONNECTION_STRING='${{ secrets.DATABASE_CONNECTION_STRING }}' MOCK_EMAIL_USER='${{secrets.MOCK_EMAIL_USER}}' GRAPH_HOPPER_API_KEY=`${{secrets.GRAPH_HOPPER_API_KEY}}` MOCK_EMAIL_PASS='${{secrets.MOCK_EMAIL_PASS}}' MY_TEST_DB=test pm2 start src/app.js
