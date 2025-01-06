@@ -30,6 +30,8 @@ export async function fetchAppointments() {
       );
 
     const data = await response.json();
+    // console.log("rawdata:", data);
+    // console.log("respStatus", response.status);
 
     return data.map((item, index) => ({
       id: item.id || index + 1,
