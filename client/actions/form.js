@@ -26,7 +26,7 @@ export async function fetchAppointments() {
 
     if (!response.ok)
       throw new Error(
-        `Failed to fetch appointments: ${resp.status} ${response.statusText}`
+        `Failed to fetch appointments: ${response.status} ${response.statusText}`
       );
 
     const data = await response.json();

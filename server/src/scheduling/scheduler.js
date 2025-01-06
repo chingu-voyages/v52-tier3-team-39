@@ -100,7 +100,7 @@ const getOptimalRoute = async (appointments) => {
   const data = await resp.json();
 
   if (!resp.ok) {
-    throw new Error(`Couldn't connect to graph hopper: ${response.status}`);
+    throw new Error(`Couldn't connect to graph hopper: ${resp.status}`);
   } else {
     console.log("data", data);
     return data.solution.routes[0].activities.map((activity) => activity.id);
