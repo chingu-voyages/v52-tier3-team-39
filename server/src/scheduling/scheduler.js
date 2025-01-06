@@ -7,10 +7,10 @@ import { graphHopperApiKey } from "../config/env.js";
 
 const appendSchedule = async (appointments) => {
   const optimalRoute = await getOptimalRoute(appointments);
-  console.log("optimal", optimalRoute);
   const orderedIds = optimalRoute.filter((id) =>
     appointments.some((appt) => appt.id === id)
   );
+  console.log("orderedIDs", orderedIds);
 
   return appointments.map((appointment, index) => {
     const order = orderedIds.indexOf(appointment.id) + 1;
@@ -46,7 +46,7 @@ const appendSchedule = async (appointments) => {
         },
       };
     }
-    console.log("appointment.scheduledDate", appointment.scheduledDate);
+    console.log("original appointment:", appointment);
     return appointment;
   });
 };
@@ -106,12 +106,10 @@ const getOptimalRoute = async (appointments) => {
   const data = await resp.json();
 
   if (!resp.ok) {
-    console.log("data", data);
     throw new Error("Couldn't connect to graph hopper");
   } else {
-    return data.solution.routes[0].activities
-      .filter((activity) => activity.id)
-      .map((activity) => activity.id);
+    console.log("data", data);
+    return data.solution.routes[0].activities.map((activity) => activity.id);
   }
 };
 
