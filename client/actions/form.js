@@ -30,8 +30,6 @@ export async function fetchAppointments() {
       );
 
     const data = await response.json();
-    // console.log("rawdata:", data);
-    // console.log("respStatus", response.status);
 
     return data.map((item, index) => ({
       id: item.id || index + 1,
@@ -44,8 +42,8 @@ export async function fetchAppointments() {
       address: item.location.address,
       location: { lat: item.location.lat, lng: item.location.lng },
       schedule: {
-        order: item.schedule?.order,
-        scheduledDate: new Date(item.schedule?.scheduledDate),
+        order: item.schedule.order,
+        scheduledDate: new Date(item.schedule.scheduledDate),
       },
     }));
   } catch (error) {

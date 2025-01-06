@@ -4,7 +4,6 @@ import { googleApiKey, appointmentsMapId } from "@/constants";
 import React, { useRef } from "react";
 
 export default function Map({ appointments }) {
-  console.log("map", appointments);
   if (!appointments.length) {
     return <p>No map data available</p>;
   }
@@ -37,11 +36,10 @@ export default function Map({ appointments }) {
         map: mapInstance,
         title: customerName,
         content: pin.element,
-        zIndex: 100000 - visitOrder, // Keeps earlier markers visible above later overlapping ones
+        zIndex: 100000 - visitOrder,
       });
     });
   };
-  // console.log(appointments[0]);
 
   return (
     <LoadScript
