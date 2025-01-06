@@ -7,7 +7,7 @@ import {
   formatPhone,
 } from "./formatters";
 
-export const getColumns = (refreshData, toggleVisited) => [
+export const getColumns = (toggleVisited) => [
   {
     field: "visitOrder",
     headerName: "Visit Order",
@@ -22,7 +22,7 @@ export const getColumns = (refreshData, toggleVisited) => [
       <VisitedChip
         id={params.row.id}
         status={params.row.status}
-        toggleVisited={toggleVisited}
+        currentStatus={status}
       />
     ),
   },
@@ -32,13 +32,7 @@ export const getColumns = (refreshData, toggleVisited) => [
     width: 190,
     renderCell: (params) => {
       const { id, status } = params.row;
-      return (
-        <StatusChange
-          id={id}
-          refreshData={refreshData}
-          currentStatus={status}
-        />
-      );
+      return <StatusChange id={id} currentStatus={status} />;
     },
   },
   {

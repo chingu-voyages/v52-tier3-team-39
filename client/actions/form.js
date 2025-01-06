@@ -24,7 +24,10 @@ export async function fetchAppointments() {
       cache: "no-store",
     });
 
-    if (!response.ok) throw error;
+    if (!response.ok)
+      throw new Error(
+        `Failed to fetch appointments: ${response.status} ${response.statusText}`
+      );
 
     const data = await response.json();
 
@@ -38,7 +41,10 @@ export async function fetchAppointments() {
       email: item.email,
       address: item.location.address,
       location: { lat: item.location.lat, lng: item.location.lng },
-      schedule: item.schedule,
+      schedule: {
+        order: item.schedule.order,
+        scheduledDate: new Date(item.schedule.scheduledDate),
+      },
     }));
   } catch (error) {
     console.error(error);
