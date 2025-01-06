@@ -10,44 +10,36 @@ const appendSchedule = async (appointments) => {
   const orderedIds = optimalRoute.filter((id) =>
     appointments.some((appt) => appt.id === id)
   );
-  console.log("orderedIDs", orderedIds);
 
   return appointments.map((appointment, index) => {
     const order = orderedIds.indexOf(appointment.id) + 1;
 
-    if (order > 0) {
-      const { preferredTimeRange } = appointment;
-      const { preferredEarlyTime, preferredLateTime } = preferredTimeRange;
-
-      const baseDate = new Date();
-      const earlyTime = new Date(baseDate);
-      earlyTime.setHours(preferredEarlyTime, 0, 0, 0);
-
-      const lateTime = new Date(baseDate);
-      lateTime.setHours(preferredLateTime, 0, 0, 0);
-
-      const interval = 120 * 60 * 1000;
-
-      const scheduledTime = new Date(
-        earlyTime.getTime() + (order - 1) * interval
-      );
-
-      // if (scheduledTime > preferredLateTime) {
-      //   console.warn(
-      //     `Appointment ${appointment.id} exceeds preferred late time but will be logged.`
-      //   );
-      // }
-
-      return {
-        ...appointment,
-        schedule: {
-          order,
-          scheduledDate: scheduledTime.toISOString(),
-        },
-      };
+    if (order <= 0) {
+      console.log("original appointment:", appointment);
+      return appointment;
     }
-    console.log("original appointment:", appointment);
-    return appointment;
+
+    const { preferredTimeRange } = appointment;
+    const { preferredEarlyTime, preferredLateTime } = preferredTimeRange;
+
+    const baseDate = new Date();
+    const earlyTime = new Date(baseDate);
+    earlyTime.setHours(preferredEarlyTime, 0, 0, 0);
+
+    const lateTime = new Date(baseDate);
+    lateTime.setHours(preferredLateTime, 0, 0, 0);
+
+    const twoHrs = 120 * 60 * 1000;
+
+    const scheduledTime = new Date(earlyTime.getTime() + (order - 1) * twoHrs);
+
+    return {
+      ...appointment,
+      schedule: {
+        order,
+        scheduledDate: scheduledTime.toISOString(),
+      },
+    };
   });
 };
 
@@ -55,6 +47,8 @@ const getOptimalRoute = async (appointments) => {
   const query = new URLSearchParams({
     key: graphHopperApiKey,
   }).toString();
+
+  const toSeconds = 3600;
 
   const services = appointments.map((appt) => ({
     id: appt.id,
@@ -65,8 +59,8 @@ const getOptimalRoute = async (appointments) => {
     },
     time_windows: [
       {
-        earliest: appt.preferredTimeRange.preferredEarlyTime * 3600,
-        latest: appt.preferredTimeRange.preferredLateTime * 3600,
+        earliest: appt.preferredTimeRange.preferredEarlyTime * toSeconds,
+        latest: appt.preferredTimeRange.preferredLateTime * toSeconds,
       },
     ],
   }));
@@ -106,7 +100,7 @@ const getOptimalRoute = async (appointments) => {
   const data = await resp.json();
 
   if (!resp.ok) {
-    throw new Error("Couldn't connect to graph hopper");
+    throw new Error(`Couldn't connect to graph hopper: ${response.status}`);
   } else {
     console.log("data", data);
     return data.solution.routes[0].activities.map((activity) => activity.id);
