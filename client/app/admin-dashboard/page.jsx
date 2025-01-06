@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Typography, Box } from "@mui/material";
-import ReservationTable from "../../components/admin_dashboard/ReservationTable";
-import Map from "../../components/admin_dashboard/Map";
+import ReservationTable from "../../components/admin-dashboard/ReservationTable";
+import Map from "../../components/admin-dashboard/Map";
 import Spinner from "@/components/Spinner";
 import { fetchAppointments } from "@/actions/form";
 
@@ -13,10 +13,10 @@ async function Dashboard() {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
       <Box sx={{ flex: 1, height: "50vh" }}>
-        <ReservationTable initAppointments={initAppointments} />
+        <ReservationTable appointments={initAppointments} />
       </Box>
       <Box sx={{ flex: 1, height: "50vh" }}>
-        <Map initAppointments={initAppointments} />
+        <Map appointments={initAppointments} />
       </Box>
     </Box>
   );

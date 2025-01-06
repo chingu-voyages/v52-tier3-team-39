@@ -1,33 +1,110 @@
 import Appointment from "../models/appointments.model.js";
-
-/**
- * Comparator function for 2 appointments. See the definition of array.sort()
- */
-const appointmentComparator = (a, b) => a.dateCreated - b.dateCreated;
+import { graphHopperApiKey } from "../config/env.js";
 
 /**
  * Returns a new copy of the array, appending scheduling info to each appointment.
- * Doesn't change the order of the array.
  */
-const appendSchedule = (appointments) => {
-  const comparator = (a, b) =>
-    appointmentComparator(a.appointment, b.appointment);
-  const sortedArray = appointments
-    .map((appointment, index) => ({ appointment, index }))
-    .sort(comparator);
 
-  const orderMap = new Map();
-  sortedArray.forEach((item, index) => {
-    const visitOrder = index + 1;
-    orderMap.set(item.index, visitOrder);
+const appendSchedule = async (appointments) => {
+  const optimalRoute = await getOptimalRoute(appointments);
+  const orderedIds = optimalRoute.filter((id) =>
+    appointments.some((appt) => appt.id === id)
+  );
+
+  return appointments.map((appointment, index) => {
+    const order = orderedIds.indexOf(appointment.id) + 1;
+
+    if (order <= 0) {
+      console.log("original appointment:", appointment);
+      return appointment;
+    }
+
+    const { preferredTimeRange } = appointment;
+    const { preferredEarlyTime, preferredLateTime } = preferredTimeRange;
+
+    const baseDate = new Date();
+    const earlyTime = new Date(baseDate);
+    earlyTime.setHours(preferredEarlyTime, 0, 0, 0);
+
+    const lateTime = new Date(baseDate);
+    lateTime.setHours(preferredLateTime, 0, 0, 0);
+
+    const twoHrs = 120 * 60 * 1000;
+
+    const scheduledTime = new Date(earlyTime.getTime() + (order - 1) * twoHrs);
+
+    return {
+      ...appointment,
+      schedule: {
+        order,
+        scheduledDate: scheduledTime.toISOString(),
+      },
+    };
+  });
+};
+
+const getOptimalRoute = async (appointments) => {
+  const query = new URLSearchParams({
+    key: graphHopperApiKey,
+  }).toString();
+
+  const toSeconds = 3600;
+
+  const services = appointments.map((appt) => ({
+    id: appt.id,
+    address: {
+      location_id: appt.id,
+      lat: appt.location.lat,
+      lon: appt.location.lng,
+    },
+    time_windows: [
+      {
+        earliest: appt.preferredTimeRange.preferredEarlyTime * toSeconds,
+        latest: appt.preferredTimeRange.preferredLateTime * toSeconds,
+      },
+    ],
+  }));
+
+  const resp = await fetch(`https://graphhopper.com/api/1/vrp?${query}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      vehicles: [
+        {
+          vehicle_id: "vehicle_1",
+          type_id: "car",
+          start_address: {
+            location_id: "Solar Optimum",
+            lat: 34.163738,
+            lon: -118.303307,
+          },
+          end_address: {
+            location_id: "Solar Optimum",
+            lat: 34.163738,
+            lon: -118.303307,
+          },
+        },
+      ],
+      vehicle_types: [
+        {
+          type_id: "car",
+          capacity: [5],
+        },
+      ],
+      services,
+    }),
   });
 
-  return appointments.map((appointment, index) => ({
-    ...appointment,
-    schedule: {
-      order: orderMap.get(index),
-    },
-  }));
+  const data = await resp.json();
+
+  if (!resp.ok) {
+    throw new Error(`Couldn't connect to graph hopper: ${resp.status}`);
+  } else {
+    console.log("data", data);
+    return data.solution.routes[0].activities.map((activity) => activity.id);
+  }
 };
 
 export async function updateStatus(req, res) {
