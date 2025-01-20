@@ -3,8 +3,8 @@ import { GoogleMap, LoadScript } from "@react-google-maps/api";
 import { googleApiKey, appointmentsMapId } from "@/constants";
 import React, { useRef } from "react";
 
-export default function Map({ initAppointments }) {
-  if (!initAppointments.length) {
+export default function Map({ appointments }) {
+  if (!appointments.length) {
     return <p>No map data available</p>;
   }
 
@@ -15,7 +15,7 @@ export default function Map({ initAppointments }) {
     height: "400px",
   };
 
-  const startCoords = initAppointments.map((item) => ({
+  const startCoords = appointments.map((item) => ({
     location: item.location,
     visitOrder: item.schedule.order,
     customerName: item.name,
@@ -36,7 +36,7 @@ export default function Map({ initAppointments }) {
         map: mapInstance,
         title: customerName,
         content: pin.element,
-        zIndex: 100000 - visitOrder, // Keeps earlier markers visible above later overlapping ones
+        zIndex: 100000 - visitOrder,
       });
     });
   };

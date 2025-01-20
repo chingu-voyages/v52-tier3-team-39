@@ -1,23 +1,15 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import {
-  DataGrid,
-  GridToolbarExport,
-  GridToolbarContainer,
-} from "@mui/x-data-grid";
-import { Paper, Box, Tooltip } from "@mui/material";
-import SearchBar from "./SearchBar";
+import { DataGrid } from "@mui/x-data-grid";
+import { Paper, Box } from "@mui/material";
 import { getColumns } from "./grid-components/columns";
-import { updateStatusOnServer } from "@/actions/form";
+import { Toolbar } from "./grid-components/toolbar";
+import SearchBar from "./SearchBar";
 
 const paginationModel = { page: 0, pageSize: 15 };
 
-const Toolbar = () => (
-  <GridToolbarContainer sx={{ justifyContent: "flex-end" }}>
-    <GridToolbarExport />
-  </GridToolbarContainer>
-);
+const columns = getColumns();
 
 export default function Grid({ rows, refreshData, token }) {
   const [searchText, setSearchText] = useState("");
@@ -34,21 +26,22 @@ export default function Grid({ rows, refreshData, token }) {
 
   const filteredRows = useMemo(() => {
     if (!searchText) return rows;
-
-    const needToFormat = {
-      dateCreated: (value) => formatDateCreated(new Date(value)),
-      timeRange: (value) => formatTimeRange(value),
-      markVisited: (value, row) =>
-        row.markVisited ? "Visited" : "Need to Visit",
-    };
-
     return rows.filter((row) =>
       columns.some((col) => {
         const value = row[col.field];
-        const formattedValue = needToFormat[col.field]
-          ? needToFormat[col.field](value, row)
-          : value;
-        return formattedValue
+
+        if (col.field === "dateCreated") {
+          const formattedDate = formatDateCreated(new Date(value));
+          return formattedDate.toLowerCase().includes(searchText.toLowerCase());
+        }
+        if (col.field === "timeRange") {
+          const formattedTimeRange = formatTimeRange(value);
+          return formattedTimeRange
+            .toLowerCase()
+            .includes(searchText.toLowerCase());
+        }
+
+        return value
           ?.toString()
           .toLowerCase()
           .includes(searchText.toLowerCase());

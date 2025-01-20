@@ -8,3 +8,4 @@ export const myTestDb = process.env.MY_TEST_DB;
 export const mockEmailUser = process.env.MOCK_EMAIL_USER;
 export const mockEmailPass = process.env.MOCK_EMAIL_PASS;
 export const jwtKey = process.env.JWT_KEY;
+export const graphHopperApiKey = process.env.GRAPH_HOPPER_API_KEY;

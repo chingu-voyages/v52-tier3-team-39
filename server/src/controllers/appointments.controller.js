@@ -120,12 +120,14 @@ export async function newAppointment(req, res, next) {
 export async function getAllAppointments(req, res, next) {
   try {
     const appointments = await Appointment.find();
-    const withScheduling = appendSchedule(
+    console.log("appts", appointments);
+    const withScheduling = await appendSchedule(
       appointments.map((a) => ({
         ...a.toObject(),
         id: a.id,
       }))
     );
+    console.log("withsched", withScheduling);
     res.status(200).json(withScheduling);
   } catch (error) {
     console.error("Error fetching appointments:", error);

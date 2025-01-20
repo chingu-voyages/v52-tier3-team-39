@@ -1,50 +1,52 @@
 name: Build and Deploy Server
 
 on:
-    push:
-        branches: ["main"]
-    workflow_dispatch:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        env:
-            SSH_USER: ec2-user
-            SSH_HOST: ec2-52-53-202-98.us-west-1.compute.amazonaws.com
-            WEB_ROOT: /home/www
+  build:
+    runs-on: ubuntu-latest
+    env:
+      SSH_USER: ec2-user
+      SSH_HOST: ec2-52-53-202-98.us-west-1.compute.amazonaws.com
+      WEB_ROOT: /home/www
 
-        steps:
-            - uses: actions/checkout@v4
-            - name: Use Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 22
-            - run: npm ci --prefix server
-            - name: Copy server files to EC2 server
-              uses: burnett01/rsync-deployments@7.0.1
-              with:
-                  switches: --verbose --human-readable --archive --delete --exclude "addresses.db"
-                  path: server/
-                  remote_user: ${{ env.SSH_USER }}
-                  remote_host: ${{ env.SSH_HOST }}
-                  remote_path: ${{ env.WEB_ROOT}}
-                  remote_key: ${{ secrets.SERVER_DEPLOYMENT_KEY }}
-            - name: Execute commands on server
-              uses: appleboy/ssh-action@v1.1.0
-              with:
-                  username: ${{ env.SSH_USER }}
-                  host: ${{ env.SSH_HOST }}
-                  key: ${{ secrets.SERVER_DEPLOYMENT_KEY }}
-                  script: |
-                      echo "Checking if pm2 installed"
-                      if [ ! "$(which pm2 2>/dev/null)" ]; then 
-                          echo "Not found. Installing pm2"
-                          sudo npm i -g pm2
-                      fi
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --prefix server
+      - name: Copy server files to EC2 server
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: --verbose --human-readable --archive --delete --exclude "addresses.db"
+          path: server/
+          remote_user: ${{ env.SSH_USER }}
+          remote_host: ${{ env.SSH_HOST }}
+          remote_path: ${{ env.WEB_ROOT}}
+          remote_key: ${{ secrets.SERVER_DEPLOYMENT_KEY }}
+      - name: Execute commands on server
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          username: ${{ env.SSH_USER }}
+          host: ${{ env.SSH_HOST }}
+          key: ${{ secrets.SERVER_DEPLOYMENT_KEY }}
+          script: |
+            echo "Checking if pm2 installed"
+            if [ ! "$(which pm2 2>/dev/null)" ]; then 
+                echo "Not found. Installing pm2"
+                sudo npm i -g pm2
+            fi
 
-                      echo "Deleting node server if exists"
-                      pm2 delete ${{ env.WEB_ROOT}}/src/app.js 2> /dev/null
+            echo "Deleting node server if exists"
+            pm2 delete ${{ env.WEB_ROOT}}/src/app.js 2> /dev/null
+
 
                       echo "Starting node server"
                       cd ${{ env.WEB_ROOT}}
-                      PORT=4000 DATABASE_CONNECTION_STRING='${{ secrets.DATABASE_CONNECTION_STRING }}' MOCK_EMAIL_USER='${{secrets.MOCK_EMAIL_USER}}' MOCK_EMAIL_PASS='${{secrets.MOCK_EMAIL_PASS}}' MY_TEST_DB=test pm2 start src/app.js
+                      PORT=4000 DATABASE_CONNECTION_STRING='${{ secrets.DATABASE_CONNECTION_STRING }}' MOCK_EMAIL_USER='${{secrets.MOCK_EMAIL_USER}}' GRAPH_HOPPER_API_KEY=`${{secrets.GRAPH_HOPPER_API_KEY}}` MOCK_EMAIL_PASS='${{secrets.MOCK_EMAIL_PASS}}' MY_TEST_DB=test pm2 start src/app.js
+

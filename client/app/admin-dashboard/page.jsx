@@ -24,7 +24,7 @@ async function Dashboard({ token }) {
         <ReservationTable token={token} initAppointments={initAppointments} />
       </Box>
       <Box sx={{ flex: 1, height: "50vh" }}>
-        <Map initAppointments={initAppointments} />
+        <Map appointments={initAppointments} />
       </Box>
     </Box>
   );

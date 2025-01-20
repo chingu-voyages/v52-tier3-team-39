@@ -30,6 +30,11 @@ export async function fetchAppointments(token) {
       cache: "no-store",
     });
 
+    if (!response.ok)
+      throw new Error(
+        `Failed to fetch appointments: ${response.status} ${response.statusText}`
+      );
+
     const data = await response.json();
 
     // return expected server error message
@@ -52,7 +57,10 @@ export async function fetchAppointments(token) {
       email: item.email,
       address: item.location.address,
       location: { lat: item.location.lat, lng: item.location.lng },
-      schedule: item.schedule,
+      schedule: {
+        order: item.schedule.order,
+        scheduledDate: new Date(item.schedule.scheduledDate),
+      },
     }));
   } catch (error) {
     console.error(error);
