@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import connectDb from "./config/db.js";
 import { port, dbConnectStr } from "./config/env.js";
+import { checkGoogleAuth, checkJwt } from "./middleware/auth.middleware.js";
 import appointmentsRouter from "./routes/appointments.routes.js";
 import userRouter from "./routes/user.route.js";
 import addressRouter from "./routes/address.routes.js";
@@ -18,9 +19,12 @@ app.use(bodyParser.json());
 //! enable all CORS requests
 app.use(cors());
 
-app.use("/user", userRouter);
-app.use("/appointments", appointmentsRouter);
-app.use("/addresses", addressRouter)
+app.use("/addresses", addressRouter);
+
+// validate Google access token on initial login
+app.use("/user", checkGoogleAuth, userRouter);
+
+app.use("/appointments", checkJwt, appointmentsRouter);
 
 app.use("/database-health", async (_, res) => {
   try {

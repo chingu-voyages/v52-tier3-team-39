@@ -1,7 +1,5 @@
-import { Alert } from "@mui/material";
+import UnauthorizedError from "@/components/errors/UnauthorizedError";
 
 export default function Unauthorized() {
-    return (
-        <Alert severity="error">You are unauthorized to view this page</Alert>
-    );
+  return <UnauthorizedError msg="You are unauthorized to view this page" />;
 }

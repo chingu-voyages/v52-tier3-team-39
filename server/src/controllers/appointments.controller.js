@@ -10,6 +10,7 @@ import sendEmail, {
 import { getLatLong } from "../addresses/address.js";
 
 export async function newAppointment(req, res, next) {
+  const { email } = req.user;
   try {
     // handle validation errors
     const { error } = appointmentSchema.validate(req.body);
@@ -19,7 +20,7 @@ export async function newAppointment(req, res, next) {
       return next({ message: error.details[0].message });
     }
 
-    const { earlyTimeHour, lateTimeHour, address, email, ...rest } = req.body;
+    const { earlyTimeHour, lateTimeHour, address, ...rest } = req.body;
 
     // return error if doc with matching address and "Pending" or "Confirmed" status exists
     const checkAddress = await Appointment.findOne({
@@ -136,7 +137,7 @@ export async function getAllAppointments(req, res, next) {
 }
 
 export async function getSingleAppointment(req, res, next) {
-  const { email } = req.params;
+  const { email } = req.user;
   try {
     const [appointment] = await Appointment.find({ email })
       .sort({ dateCreated: -1 }) // sort descending order
@@ -152,7 +153,7 @@ export async function getSingleAppointment(req, res, next) {
 }
 
 export async function getUsersAppointments(req, res, next) {
-  const { email } = req.params;
+  const { email } = req.user;
   try {
     const appointments = await Appointment.find({
       email,
@@ -170,10 +171,12 @@ export async function getUsersAppointments(req, res, next) {
 }
 
 export async function cancelAppointment(req, res, next) {
-  const { email } = req.body;
+  const { email } = req.user;
+  const { id: apptId } = req.params;
   try {
     const response = await Appointment.updateOne(
       {
+        _id: apptId,
         email,
         status: { $in: ["Pending", "Confirmed"] },
       },
@@ -181,8 +184,8 @@ export async function cancelAppointment(req, res, next) {
     );
 
     if (!response.modifiedCount) {
-      res.status(400);
-      return next({ message: "Invalid request" });
+      res.status(403);
+      return next({ message: "Invalid or unauthorized request" });
     }
 
     res.status(200);

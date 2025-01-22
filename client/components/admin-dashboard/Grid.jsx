@@ -11,8 +11,18 @@ const paginationModel = { page: 0, pageSize: 15 };
 
 const columns = getColumns();
 
-export default function Grid({ rows }) {
+export default function Grid({ rows, refreshData, token }) {
   const [searchText, setSearchText] = useState("");
+
+  const toggleVisited = async (id, status) => {
+    await updateStatusOnServer(id, status, token);
+    await refreshData();
+  };
+
+  const columns = useMemo(
+    () => getColumns(refreshData, toggleVisited),
+    [refreshData]
+  );
 
   const filteredRows = useMemo(() => {
     if (!searchText) return rows;
